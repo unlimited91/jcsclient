@@ -1,0 +1,14 @@
+[paths]
+source =
+   src/client
+   */site-packages/client
+
+[run]
+branch = True
+source = client
+parallel = true
+
+[report]
+show_missing = true
+precision = 2
+omit = *migrations*
