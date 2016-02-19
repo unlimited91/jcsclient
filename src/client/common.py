@@ -51,6 +51,7 @@ class V2Handler(object):
         req.params['AWSAccessKeyId'] = self.access_key
         req.params['SignatureVersion'] = '2'
         req.params['SignatureMethod'] = 'HmacSHA256'
+        req.params['Version'] = '2016-03-01'
         req.params['Timestamp'] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
     @staticmethod
@@ -94,10 +95,9 @@ class V2Handler(object):
 
 
 
-params, headers = {}, {}
 method = 'GET'
-path, port, auth_path = '', '', ''
-body, host, protocol = '', '', ''
+
+params = {}
 
 def add_params(string):
     length = len(string)
@@ -107,6 +107,12 @@ def add_params(string):
         params[key] = val
 
 def requestify(request):
+    """
+    Primary method which generates final request to be sent to JCS servers.
+
+    Example of param 'request':
+        'https://10.140.214.71/?Action=DescribeInstances&Version=2016-03-01'
+    """
     [initial, rest] = request.split('?')
     parts = initial.split('/')
     protocol, host_port = parts[0][ : -1], parts[2]
@@ -118,16 +124,17 @@ def requestify(request):
        [host, port] = host_port.split(':')
     auth_path = path
     add_params(rest)
+    headers = {}
     headers['User-Agent'] = 'curl/7.35.0'
     headers['Content-Type'] = 'application/json'
+    headers['Accept-Encoding'] = 'identity'
+    print headers
+
     reqObj = HTTPRequest(method, protocol, host, port, path, auth_path,
-                         params, headers, body)
+                         params, headers, '')
     authHandlerObj = V2Handler(host)
     reqObj = authHandlerObj.add_auth(reqObj)
-    request_string = 'curl -X ' + reqObj.method
-    request_string += ' -H \"Accept-Encoding: identity\"'
-    request_string += ' -H \"User-Agent: ' + headers['User-Agent'] + '\"'
-    request_string += ' -H \"Content-Type: ' + headers['Content-Type'] + '\"'
+    request_string = reqObj.method
     request_string += ' \"' + initial + '?'
     for keys in reqObj.params:
         request_string += keys + '=' + reqObj.params[keys] + '&'
