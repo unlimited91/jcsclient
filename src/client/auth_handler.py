@@ -10,6 +10,8 @@ import six
 import urllib as ul
 from six.moves import urllib
 
+import config
+
 class HTTPRequest(object):
 
     def __init__(self, method, protocol, host, port, path, auth_path,
@@ -35,7 +37,7 @@ class HTTPRequest(object):
 
 
 class V2Handler(object):
-    
+
     def __init__(self, host, service_name=None, region_name=None):
         # You can set the service_name and region_name to override the
         # values which would otherwise come from the endpoint, e.g.
@@ -43,8 +45,8 @@ class V2Handler(object):
         self.host = host
         self.service_name = service_name
         self.region_name = region_name
-        self.access_key = os.environ.get('JCS_ACCESS_KEY')
-        self.secret_key = os.environ.get('JCS_SECRET_KEY')
+        self.access_key = config.access_key
+        self.secret_key = config.secret_key
 
     def add_params(self, req):
         req.params['AWSAccessKeyId'] = self.access_key
@@ -78,7 +80,7 @@ class V2Handler(object):
 	if req.port != 443:
         	ss += ":" + str(req.port)
 	ss += "\n" + req.path + '\n'
-        self.add_params(req) 
+        self.add_params(req)
         qs = self.sort_params(req.params)
         ss += qs
         return ss
@@ -90,4 +92,3 @@ class V2Handler(object):
         b64 = base64.b64encode(hmac_256.digest()).decode('utf-8')
         req.params['Signature'] = ul.quote(b64)
         return req
-

@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-import os
 import sys
-import datetime
 import auth_handler
-import httplib
+
 params, headers = {}, {}
 method = 'GET'
 path, port, auth_path = '', '', ''
@@ -49,6 +47,6 @@ def main():
     req = sys.argv[1]
     chngd_req = requestify(req)
     print chngd_req
-#    os.system(chngd_req)
 
-main()
+if __name__ == '__main__':
+    main()

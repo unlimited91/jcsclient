@@ -1,10 +1,3 @@
-# AWS Version 4 signing example
-
-# IAM API (CreateUser)
-
-# See: http://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html
-# This version makes a GET request and passes request parameters
-# and authorization information in the query string
 import sys, os, base64, datetime, hashlib, hmac, urllib
 import requests # pip install requests
 
@@ -14,6 +7,8 @@ service = 'iam'
 host = 'iam.amazonaws.com'
 region = 'us-east-1'
 endpoint = 'https://iam.amazonaws.com'
+access_key='blah'
+secret_key='blah'
 
 # Key derivation functions. See:
 # http://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html#signature-v4-examples-python
@@ -27,13 +22,6 @@ def getSignatureKey(key, dateStamp, regionName, serviceName):
     kSigning = sign(kService, 'aws4_request')
     return kSigning
 
-# Read AWS access key from env. variables or configuration file. Best practice is NOT
-# to embed credentials in code.
-access_key = os.environ.get('AWS_ACCESS_KEY_ID')
-secret_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
-if access_key is None or secret_key is None:
-    print 'No access key is available.'
-    sys.exit()
 
 # Create a date for headers and the credential string
 t = datetime.datetime.utcnow()
@@ -110,10 +98,4 @@ canonical_querystring += '&X-Amz-Signature=' + signature
 # must exist as a header in the request.
 request_url = endpoint + "?" + canonical_querystring
 
-print '\nBEGIN REQUEST++++++++++++++++++++++++++++++++++++'
-print 'Request URL = ' + request_url
-r = requests.get(request_url)
-
-print '\nRESPONSE++++++++++++++++++++++++++++++++++++'
-print 'Response code: %d\n' % r.status_code
-print r.text
+def describe_instances():
