@@ -94,17 +94,14 @@ class V2Handler(object):
         return req
 
 
-
-method = 'GET'
-
-params = {}
-
-def add_params(string):
+def create_param_dict(string):
+    params = {}
     length = len(string)
     parts = string.split('&')
     for p in parts:
         (key, val) = p.split('=')
         params[key] = val
+    return params
 
 def requestify(request):
     """
@@ -113,6 +110,14 @@ def requestify(request):
     Example of param 'request':
         'https://10.140.214.71/?Action=DescribeInstances&Version=2016-03-01'
     """
+    request_type = 'GET'
+
+    headers = {
+        'User-Agent': 'curl/7.35.0',
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'identity',
+    }
+
     [initial, rest] = request.split('?')
     parts = initial.split('/')
     protocol, host_port = parts[0][ : -1], parts[2]
@@ -123,29 +128,21 @@ def requestify(request):
     else:
        [host, port] = host_port.split(':')
     auth_path = path
-    add_params(rest)
-    headers = {}
-    headers['User-Agent'] = 'curl/7.35.0'
-    headers['Content-Type'] = 'application/json'
-    headers['Accept-Encoding'] = 'identity'
-    print headers
+    params = create_param_dict(rest)
 
-    reqObj = HTTPRequest(method, protocol, host, port, path, auth_path,
+
+    reqObj = HTTPRequest('GET', protocol, host, port, path, auth_path,
                          params, headers, '')
     authHandlerObj = V2Handler(host)
     reqObj = authHandlerObj.add_auth(reqObj)
-    request_string = reqObj.method
-    request_string += ' \"' + initial + '?'
+    request_string = initial + '?'
     for keys in reqObj.params:
         request_string += keys + '=' + reqObj.params[keys] + '&'
-    request_string = request_string[ : -1]
-    request_string += '\"'
-    return request_string
+    request_string = request_string[:-1]
+    return request_type, request_string, headers
 
 def main():
-    req = sys.argv[1]
-    chngd_req = requestify(req)
-    print chngd_req
+    print requestify(sys.argv[1])
 
 if __name__ == '__main__':
     main()
