@@ -1,12 +1,11 @@
 import base64
-import copy
-import datetime
 import time
 import hmac
 import os
-import posixpath
 import hashlib
 import six
+import sys
+
 import urllib as ul
 from six.moves import urllib
 
@@ -92,3 +91,54 @@ class V2Handler(object):
         b64 = base64.b64encode(hmac_256.digest()).decode('utf-8')
         req.params['Signature'] = ul.quote(b64)
         return req
+
+
+
+params, headers = {}, {}
+method = 'GET'
+path, port, auth_path = '', '', ''
+body, host, protocol = '', '', ''
+
+def add_params(string):
+    length = len(string)
+    parts = string.split('&')
+    for p in parts:
+        (key, val) = p.split('=')
+        params[key] = val
+
+def requestify(request):
+    [initial, rest] = request.split('?')
+    parts = initial.split('/')
+    protocol, host_port = parts[0][ : -1], parts[2]
+    path = '/'
+    if (':' not in host_port):
+        host = host_port
+        port = 443
+    else:
+       [host, port] = host_port.split(':')
+    auth_path = path
+    add_params(rest)
+    headers['User-Agent'] = 'curl/7.35.0'
+    headers['Content-Type'] = 'application/json'
+    reqObj = HTTPRequest(method, protocol, host, port, path, auth_path,
+                         params, headers, body)
+    authHandlerObj = V2Handler(host)
+    reqObj = authHandlerObj.add_auth(reqObj)
+    request_string = 'curl -X ' + reqObj.method
+    request_string += ' -H \"Accept-Encoding: identity\"'
+    request_string += ' -H \"User-Agent: ' + headers['User-Agent'] + '\"'
+    request_string += ' -H \"Content-Type: ' + headers['Content-Type'] + '\"'
+    request_string += ' \"' + initial + '?'
+    for keys in reqObj.params:
+        request_string += keys + '=' + reqObj.params[keys] + '&'
+    request_string = request_string[ : -1]
+    request_string += '\"'
+    return request_string
+
+def main():
+    req = sys.argv[1]
+    chngd_req = requestify(req)
+    print chngd_req
+
+if __name__ == '__main__':
+    main()
