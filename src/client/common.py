@@ -11,28 +11,20 @@ from six.moves import urllib
 
 import config
 
+# TODO(rushiagr): remove this HTTPRequest class, it's unnecessary bloat
+
 class HTTPRequest(object):
 
-    def __init__(self, method, protocol, host, port, path, auth_path,
-                 params, headers, body):
+    def __init__(self, method, host, params, headers):
         self.method = method
-        self.protocol = protocol
         self.host = host
-        self.port = port
-        self.path = path
-        if auth_path is None:
-            auth_path = path
-        self.auth_path = auth_path
         self.params = params
         # chunked Transfer-Encoding should act only on PUT request.
         self.headers = headers
-        self.body = body
 
     def __str__(self):
-        return (('method:(%s) protocol:(%s) host(%s) port(%s) path(%s) auth_path(%s)'
-                 ' params(%s) headers(%s) body(%s)') % (self.method,
-                 self.protocol, self.host, self.port, self.path, self.auth_path, self.params,
-                 self.headers, self.body))
+        return (('method:(%s) host(%s)' ' params(%s) headers(%s)') % (
+                     self.method, self.host, self.params, self.headers))
 
 
 class V2Handler(object):
@@ -75,19 +67,17 @@ class V2Handler(object):
         qs = '&'.join(pairs)
         return qs
 
-    def string_to_sign(self, req):
+    def string_to_sign(self, req, method, host):
         ss = req.method + '\n' + req.host
-	if req.port != 443:
-        	ss += ":" + str(req.port)
-	ss += "\n" + req.path + '\n'
+	ss += "\n" + '/' + '\n'
         self.add_params(req)
         qs = self.sort_params(req.params)
         ss += qs
         return ss
 
-    def add_auth(self, req):
-        hmac_256 = hmac.new(self.secret_key, digestmod=hashlib.sha256)
-        canonical_string = self.string_to_sign(req)
+    def add_auth(self, req, secret_key, method, host):
+        hmac_256 = hmac.new(secret_key, digestmod=hashlib.sha256)
+        canonical_string = self.string_to_sign(req, method, host)
         hmac_256.update(canonical_string.encode('utf-8'))
         b64 = base64.b64encode(hmac_256.digest()).decode('utf-8')
         req.params['Signature'] = ul.quote(b64)
@@ -103,14 +93,24 @@ def create_param_dict(string):
         params[key] = val
     return params
 
-def requestify(request):
+def requestify(host_or_ip, request):
     """
-    Primary method which generates final request to be sent to JCS servers.
+    Primary method which generates final request URL to be sent to JCS servers.
 
-    Example of param 'request':
-        'https://10.140.214.71/?Action=DescribeInstances&Version=2016-03-01'
+    Input:
+        host_or_ip: e.g. 'http://12.34.56.78'
+        request: e.g. 'Action=DescribeInstances&key1=val1&key2=val2'
+
+    Return value is a 3-tuple.
+        First index: request type as a string: 'GET' or 'POST'
+        Second index: Request URL. e.g.  'https://<ip>/?<other-details>'
+        Third index: headers, as a dictionary
     """
     request_type = 'GET'
+
+    if not host_or_ip.endswith('/'):
+        host_or_ip += '/'
+    host_or_ip += '?'
 
     headers = {
         'User-Agent': 'curl/7.35.0',
@@ -118,24 +118,13 @@ def requestify(request):
         'Accept-Encoding': 'identity',
     }
 
-    [initial, rest] = request.split('?')
-    parts = initial.split('/')
-    protocol, host_port = parts[0][ : -1], parts[2]
-    path = '/'
-    if (':' not in host_port):
-        host = host_port
-        port = 443
-    else:
-       [host, port] = host_port.split(':')
-    auth_path = path
-    params = create_param_dict(rest)
+    params = create_param_dict(request)
 
-
-    reqObj = HTTPRequest('GET', protocol, host, port, path, auth_path,
-                         params, headers, '')
-    authHandlerObj = V2Handler(host)
-    reqObj = authHandlerObj.add_auth(reqObj)
-    request_string = initial + '?'
+    reqObj = HTTPRequest('GET', host_or_ip, params, headers)
+    authHandlerObj = V2Handler(host_or_ip)
+    reqObj = authHandlerObj.add_auth(reqObj, config.secret_key, 'GET',
+            host_or_ip)
+    request_string = host_or_ip
     for keys in reqObj.params:
         request_string += keys + '=' + reqObj.params[keys] + '&'
     request_string = request_string[:-1]
