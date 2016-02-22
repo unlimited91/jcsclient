@@ -21,8 +21,8 @@ common_params_v2 = {
     'Timestamp': time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
 }
 
-headers = {
-    'User-Agent': 'curl/7.35.0',
+common_headers = {
+    # 'User-Agent': 'curl/7.35.0', # not required I guess
     'Content-Type': 'application/json',
     'Accept-Encoding': 'identity',
 }
