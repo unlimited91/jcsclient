@@ -1,4 +1,5 @@
 from client import common
 
+from client import config
 
-print common.requestify('https://10.140.214.71', 'Action=DescribeInstances')
+print common.requestify(config.compute_url, 'Action=DescribeInstances')
