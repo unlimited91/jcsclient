@@ -72,18 +72,14 @@ def create_param_dict(string):
 
 def requestify(host_or_ip, request):
     """
-    Primary method which generates final request URL to be sent to JCS servers.
+    Method which generates final request URL to be sent to JCS servers.
 
     Input:
         host_or_ip: e.g. 'http://12.34.56.78'
         request: e.g. 'Action=DescribeInstances&key1=val1&key2=val2'
 
-    Return value is a 3-tuple.
-        First index: request type as a string: 'GET' or 'POST'
-        Second index: Request URL. e.g.  'https://<ip>/?<other-details>'
-        Third index: headers, as a dictionary
+    Response: Request URL. e.g.  'https://<ip>/?<query-params>'
     """
-    request_type = 'GET'
 
     if not host_or_ip.endswith('/'):
         host_or_ip += '/'
@@ -96,12 +92,27 @@ def requestify(host_or_ip, request):
     for key, value in params.items():
         request_string += key + '=' + value + '&'
     request_string = request_string[:-1]  # remove last '&'
-    return request_type, request_string, headers
+    return request_string
 
 def do_request(method, url, headers=None):
-    """Performs HTTP request, and returns response as an ordered dict."""
+    """
+    Performs HTTP request, and returns response as an ordered dict.
+
+    Method can be 'GET' (string).
+    url is also a string.
+    headers is a dictionary.
+    """
+    current_headers = common_headers.copy()
+
+    if headers is not None:
+        current_headers.update(headers)
+
     if method == 'GET':
-        resp = requests.get(url)
+        resp = requests.get(url, headers=current_headers)
+        if resp.status_code >= 400:
+            print 'Exception %s thrown!!!' % resp.status_code
+            print 'Error: ', resp.content
+            raise Exception
         xml = resp.content()
         return xmltodict.parse(xml)
     else:
