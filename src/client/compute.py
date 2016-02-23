@@ -10,4 +10,5 @@ def describe_instances():
     resp_dict = common.do_request('GET', request_string)
     print resp_dict
 
-describe_instances()
+if __name__ == '__main__':
+    describe_instances()

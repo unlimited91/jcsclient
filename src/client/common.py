@@ -6,9 +6,10 @@ import hashlib
 import six
 import sys
 
-import urllib as ul
+import json
 import requests
 from six.moves import urllib
+import urllib as ul
 import xmltodict
 
 import config
@@ -114,7 +115,13 @@ def do_request(method, url, headers=None):
             print 'Error: ', resp.content
             raise Exception
         xml = resp.content()
-        return xmltodict.parse(xml)
+        resp_ordereddict = xmltodict.parse(xml)
+        # Ordered dict is difficult to read when printed, and we don't need an
+        # order anyway, so just convert it to a normal dictionary
+        # NOTE(rushiagr): the dictionary still contains 'items' keys, so either
+        # document that, or remove them
+        resp_dict = json.loads(json.dumps(resp_ordereddict))
+        return resp_dict
     else:
         raise NotImplementedError
 
