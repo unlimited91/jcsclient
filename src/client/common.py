@@ -49,6 +49,14 @@ def get_query_string_from_params(params):
     return qs
 
 def string_to_sign(method, host, params):
+    # For the 'host' param, strip off 'http[s]://' part from the start, and
+    # strip off everything after the first slash. E.g.
+    # 'https://example.com/one/two/three'  will
+    # become 'example.com'
+    if host.startswith('http'):
+        host = host.split('//')[1]
+    if host.find('/') != -1:
+        host = host.split('/')[0]
     ss = method + '\n' + host + '\n' + '/' + '\n'
     params.update(common_params_v2)
     qs = get_query_string_from_params(params)
@@ -87,7 +95,7 @@ def requestify(host_or_ip, request):
         host_or_ip += '/'
     host_or_ip += '?'
 
-    request['X-JCS-Signature'] = get_signature('GET', host_or_ip, request)
+    request['Signature'] = get_signature('GET', host_or_ip, request)
     request_string = host_or_ip
     for key, value in request.items():
         request_string += key + '=' + value + '&'
@@ -115,7 +123,8 @@ def do_request(method, url, headers=None):
             print 'Exception %s thrown!!!' % resp.status_code
             print 'Error content: ', resp.content
             raise Exception
-        xml = resp.content()
+        xml = resp.content
+        print xml
         resp_ordereddict = xmltodict.parse(xml)
         # Ordered dict is difficult to read when printed, and we don't need an
         # order anyway, so just convert it to a normal dictionary
