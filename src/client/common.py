@@ -15,7 +15,7 @@ import xmltodict
 import config
 
 common_params_v2 = {
-    'AWSAccessKeyId': config.access_key,
+    'JCSAccessKeyId': config.access_key,
     'SignatureVersion': '2',
     'SignatureMethod': 'HmacSHA256',
     'Version': '2016-03-01',
@@ -64,7 +64,6 @@ def get_signature(method, host, params):
 
 def create_param_dict(string):
     params = {}
-    length = len(string)
     parts = string.split('&')
     for p in parts:
         (key, val) = p.split('=')
@@ -77,20 +76,20 @@ def requestify(host_or_ip, request):
 
     Input:
         host_or_ip: e.g. 'http://12.34.56.78'
-        request: e.g. 'Action=DescribeInstances&key1=val1&key2=val2'
+        request: dictionary, e.g.. {'Action': 'DescribeInstances'}
 
     Response: Request URL. e.g.  'https://<ip>/?<query-params>'
     """
+    if not type(request) == dict:
+        raise Exception
 
     if not host_or_ip.endswith('/'):
         host_or_ip += '/'
     host_or_ip += '?'
 
-    params = create_param_dict(request)
-
-    params['Signature'] = get_signature('GET', host_or_ip, params)
+    request['X-JCS-Signature'] = get_signature('GET', host_or_ip, request)
     request_string = host_or_ip
-    for key, value in params.items():
+    for key, value in request.items():
         request_string += key + '=' + value + '&'
     request_string = request_string[:-1]  # remove last '&'
     return request_string
@@ -109,10 +108,12 @@ def do_request(method, url, headers=None):
         current_headers.update(headers)
 
     if method == 'GET':
-        resp = requests.get(url, headers=current_headers)
+        print 'url is', url, 'header is', current_headers
+        resp = requests.get(url, headers=current_headers,
+                verify=config.is_secure)
         if resp.status_code >= 400:
             print 'Exception %s thrown!!!' % resp.status_code
-            print 'Error: ', resp.content
+            print 'Error content: ', resp.content
             raise Exception
         xml = resp.content()
         resp_ordereddict = xmltodict.parse(xml)
