@@ -14,6 +14,7 @@ import xmltodict
 
 import config
 
+
 common_params_v2 = {
     'JCSAccessKeyId': config.access_key,
     'SignatureVersion': '2',
@@ -198,17 +199,17 @@ def _remove_items_keys(response):
     # TODO(rushiagr): implement this :)
     return response
 
-def curlify(service, req_str):
+def curlify(service, req_str, execute=False):
+    """ If execute=True, don't return curl url, but execute it!"""
     params = create_param_dict(req_str)
     if service == 'compute':
         service_url = config.compute_url
     elif service == 'vpc':
         service_url = config.vpc_url
-    print "curl --insecure '"+requestify(service_url, params)+"'"
 
-if __name__ == '__main__':
-    if len(sys.argv) < 3:
-        print "Example usage: python cloud.py compute Action=DescribeInstances\n"
-        print "First argument can be 'compute' or 'vpc'"
-        sys.exit(1)
-    curlify(sys.argv[1], sys.argv[2])
+    if execute:
+        request_string = requestify(service_url, params)
+        print do_request('GET', request_string)
+        return
+
+    print "curl --insecure '"+requestify(service_url, params)+"'"
