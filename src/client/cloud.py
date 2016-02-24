@@ -1,13 +1,15 @@
 from client import common
 from client import config
 
+import pprint
+
 # TODO(rushiagr): also check the 'type' of parameter supplied. E.g. don't
 # accept 'blah' as a value for InstanceCount, which expects an integer
 
-def _do_compute_request(valid_params, supplied_optional_params,
+def _do_compute_request(valid_optional_params, supplied_optional_params,
         supplied_mandatory_params=None):
     request_dict = _create_valid_request_dictionary(
-        valid_params,
+        valid_optional_params,
         supplied_optional_params,
         supplied_mandatory_params)
     request_string = common.requestify(config.compute_url, request_dict)
@@ -30,9 +32,9 @@ def _create_valid_request_dictionary(valid_params, supplied_optional_params,
     if supplied_mandatory_params:
         final_dict = supplied_mandatory_params.copy()
 
-    for key, value in supplied_optional_params:
+    for key, value in supplied_optional_params.items():
         if key in valid_params:
-            final_dict[key] = value
+            final_dict[key] = str(value)  # Everything must be stringified
         else:
             print 'Unsupported key! Dropping key-value', key, value
 
@@ -57,17 +59,17 @@ def _remove_items_keys(response):
     # TODO(rushiagr): implement this :)
     return response
 
-
+# =============== Instances =================
 
 def describe_instances():
     """DescribeInstances API wrapper."""
-    valid_params = []
-
+    valid_optional_params = []
+    optional_params = {}
     request_dict = {'Action': 'DescribeInstances'}
 
-    return _do_compute_request(valid_params, {}, request_dict)
+    return _do_compute_request(valid_optional_params, optional_params, request_dict)
 
-def run_instances(ImageId, InstanceTypeId, **kwargs):
+def run_instances(ImageId, InstanceTypeId, **optional_params):
     """
     Run one or more instances.
 
@@ -79,15 +81,15 @@ def run_instances(ImageId, InstanceTypeId, **kwargs):
         ambiguity.
     """
     # TODO(rushiagr): support for BlockDeviceMapping.N, SecurityGroupId.N
-    valid_params = ['KeyName', 'InstanceCount', 'SubnetId', 'PrivateIPAddress']
+    valid_optional_params = ['KeyName', 'InstanceCount', 'SubnetId', 'PrivateIPAddress']
 
-    request_dict = {
+    mandatory_params = {
         'Action': 'RunInstances',
         'ImageId': ImageId,
         'InstanceTypeId': InstanceTypeId,
     }
 
-    return _do_compute_request(valid_params, kwargs, request_dict)
+    return _do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
 
 def delete_instance():
@@ -108,6 +110,10 @@ def reboot_instances():
 def terminate_instances():
     """TerminateInstances API wrapper."""
     pass
+
+# =============== Images =================
+
+# =============== Key pairs =================
 
 def create_key_pair():
     """CreateKeyPair."""
