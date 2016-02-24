@@ -107,8 +107,8 @@ def do_request(method, url, headers=None):
     Performs HTTP request, and returns response as an ordered dict.
 
     Method can be 'GET' (string).
-    url is also a string.
-    headers is a dictionary.
+    url, also a string, is the URL to make request to.
+    headers, a dictionary, can contain request headers.
     """
     current_headers = common_headers.copy()
 
@@ -135,8 +135,80 @@ def do_request(method, url, headers=None):
     else:
         raise NotImplementedError
 
-def main():
-    print requestify(config.compute_url, sys.argv[1])
+def do_compute_request(valid_optional_params, supplied_optional_params,
+        supplied_mandatory_params=None):
+    request_dict = _create_valid_request_dictionary(
+        valid_optional_params,
+        supplied_optional_params,
+        supplied_mandatory_params)
+    request_string = requestify(config.compute_url, request_dict)
+    resp_dict = do_request('GET', request_string)
+    return _remove_items_keys(resp_dict)
+
+def do_vpc_request(valid_optional_params, supplied_optional_params,
+        supplied_mandatory_params=None):
+    request_dict = _create_valid_request_dictionary(
+        valid_optional_params,
+        supplied_optional_params,
+        supplied_mandatory_params)
+    request_string = requestify(config.vpc_url, request_dict)
+    resp_dict = do_request('GET', request_string)
+    return _remove_items_keys(resp_dict)
+
+def _create_valid_request_dictionary(valid_params, supplied_optional_params,
+        supplied_mandatory_params):
+    """
+    Create a valid request dictionary from user supplied key-values.
+
+    valid_params is a list, e.g. ['InstanceCount', 'KeyName']
+    supplied_optional_params is a dictionary, e.g. {'InstanceCount': 3}
+    supplied_mandatory_params is a dictionary of mandatory params.
+
+    Returns a dictionary of valid parameters for the given request
+    """
+    final_dict = {}
+
+    if supplied_mandatory_params:
+        final_dict = supplied_mandatory_params.copy()
+
+    for key, value in supplied_optional_params.items():
+        if key in valid_params:
+            final_dict[key] = str(value)  # Everything must be stringified
+        else:
+            print 'Unsupported key! Dropping key-value', key, value
+
+    return final_dict
+
+def _remove_items_keys(response):
+    """
+    Remove all 'items' keys from 'response' dictionary.
+
+    The value for 'items' key can be either a dictionary or a list of
+    dictionaries. Replace the dict whose key is 'items' with the value of
+    'items' key. And if this value is a dict, then make it a list which
+    contains only that dict.
+
+    Examples:
+        Input: {'instances': {'items': {'key1': 'value1'}}}
+        Output: {'instances': [{'key1': 'value1'}]}
+
+        Input: {'instances': {'items': [{'key1': 'value1'}, {'key2': 'value2'}]}}
+        Output: {'instances': [{'key1': 'value1'}, {'key2': 'value2'}]}
+    """
+    # TODO(rushiagr): implement this :)
+    return response
+
+def curlify(service, req_str):
+    params = create_param_dict(req_str)
+    if service == 'compute':
+        service_url = config.compute_url
+    elif service == 'vpc':
+        service_url = config.vpc_url
+    print "curl --insecure '"+requestify(service_url, params)+"'"
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) < 3:
+        print "Example usage: python cloud.py compute Action=DescribeInstances\n"
+        print "First argument can be 'compute' or 'vpc'"
+        sys.exit(1)
+    curlify(sys.argv[1], sys.argv[2])
