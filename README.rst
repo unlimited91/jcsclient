@@ -53,9 +53,10 @@ Client library for JCS
 Installation
 ============
 
+.. pip install client
+
 ::
 
-    .. pip install client
     git clone https://gitlab.com/jiocloudservices/common.git
     cd common
     sudo pip install requirements.txt   # Can use virtual environment too
@@ -83,11 +84,9 @@ You can use CLI to make an API request
 
 ::
 
-    # Make an API call
-    $ jcs compute Action=DescribeInstances
+    $ jcs compute Action=DescribeInstances          # Make an API call
     
-    # Get the curl input URL
-    $ jcs --curl compute Action=DescribeInstances
+    $ jcs --curl compute Action=DescribeInstances   # Get the curl input URL
 
 
 Python Client
@@ -98,7 +97,6 @@ Once you have installed this library in your computer (systemwide or in a virtua
 ::
 
     from client import cloud
-    
     print cloud.describe_instances()
 
 
