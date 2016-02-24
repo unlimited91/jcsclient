@@ -80,7 +80,7 @@ If you are from your local machine, you might need to add entries to `/etc/hosts
 CLI
 ===
 
-You can use CLI to make an API request
+You can use CLI to make an API request, or just get the input which you can use with 'curl' command.
 
 ::
 
