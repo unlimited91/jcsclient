@@ -125,20 +125,73 @@ def describe_key_pairs():
     """DescribeKeyPairs."""
     pass
 
+# =============== Volumes =================
+
+def describe_volumes():
+    """DescribeVolumes API wrapper."""
+    valid_optional_params = []
+    mandatory_params = {'Action': 'DescribeVolumes'}
+    return _do_compute_request(valid_optional_params, {}, mandatory_params)
+
+def create_volume(**optional_params):
+    """
+    CreateVolume API wrapper.
+
+    Either Size or SnapshotId is mandatory.
+    """
+    if not optional_params.get('Size') and not optional_params.get('SnapshotId'):
+        print 'size or snap id is required'
+        raise Exception
+    valid_optional_params = ['Size', 'SnapshotId']
+    mandatory_params = {'Action': 'CreateVolume'}
+    return _do_compute_request(valid_optional_params, optional_params, mandatory_params)
+
 def attach_volume():
     """AttachVolume."""
     pass
 
-def create_volume():
-    pass
+def delete_volume(VolumeId):
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params = {
+        'Action': 'DeleteVolume',
+        'VolumeId': VolumeId,
+    }
+    return _do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
-def delete_volume():
-    pass
+# =============== Snapshots =================
 
-def create_volume():
-    pass
+def describe_snapshots():
+    """DescribeSnapshots API wrapper."""
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params = {'Action': 'DescribeSnapshots'}
+    return _do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
+def create_snapshot(VolumeId, **optional_params):
+    """DescribeSnapshots API wrapper."""
+    valid_optional_params = ['Name', 'Description']
+    mandatory_params = {
+        'Action': 'CreateSnapshot',
+        'VolumeId': VolumeId,
+    }
+    return _do_compute_request(valid_optional_params, optional_params, mandatory_params)
+
+def delete_snapshot(SnapshotId):
+    """DescribeSnapshots API wrapper."""
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params = {
+        'Action': 'DeleteSnapshot',
+        'SnapshotId': SnapshotId,
+    }
+    return _do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
 
 if __name__ == '__main__':
-    print describe_instances()
+    pp = pprint.PrettyPrinter(indent=2)
+    pp.pprint(describe_instances())
+    pp.pprint(describe_volumes())
+    #pp.pprint(describe_snapshots())
+    #pp.pprint(delete_volume('9e501705-6721-4880-abcd-cd4d8bdbf005'))
+    #print create_volume(Size=2)
