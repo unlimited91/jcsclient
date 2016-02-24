@@ -16,6 +16,7 @@ Why does this file exist, and why not put this in __main__?
 """
 import sys
 
+from client import common
 
 def main(argv=sys.argv):
     """
@@ -27,6 +28,9 @@ def main(argv=sys.argv):
 
     Does stuff.
     """
-
-    print(argv)
+    if len(argv) < 3:
+        print "Example usage: jcs compute Action=DescribeInstances\n"
+        print "First argument can be 'compute' or 'vpc'"
+        sys.exit(1)
+    common.curlify(argv[1], argv[2])
     return 0
