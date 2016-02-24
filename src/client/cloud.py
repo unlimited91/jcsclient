@@ -16,6 +16,16 @@ def _do_compute_request(valid_optional_params, supplied_optional_params,
     resp_dict = common.do_request('GET', request_string)
     return _remove_items_keys(resp_dict)
 
+def _do_vpc_request(valid_optional_params, supplied_optional_params,
+        supplied_mandatory_params=None):
+    request_dict = _create_valid_request_dictionary(
+        valid_optional_params,
+        supplied_optional_params,
+        supplied_mandatory_params)
+    request_string = common.requestify(config.vpc_url, request_dict)
+    resp_dict = common.do_request('GET', request_string)
+    return _remove_items_keys(resp_dict)
+
 def _create_valid_request_dictionary(valid_params, supplied_optional_params,
         supplied_mandatory_params):
     """
@@ -66,7 +76,6 @@ def describe_instances():
     valid_optional_params = []
     optional_params = {}
     request_dict = {'Action': 'DescribeInstances'}
-
     return _do_compute_request(valid_optional_params, optional_params, request_dict)
 
 def run_instances(ImageId, InstanceTypeId, **optional_params):
@@ -112,6 +121,13 @@ def terminate_instances():
     pass
 
 # =============== Images =================
+
+def describe_images():
+    """DescribeImages API wrapper."""
+    valid_optional_params = []
+    optional_params = {}
+    request_dict = {'Action': 'DescribeImages'}
+    return _do_compute_request(valid_optional_params, optional_params, request_dict)
 
 # =============== Key pairs =================
 
@@ -193,11 +209,19 @@ def delete_snapshot(SnapshotId):
     }
     return _do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
+def describe_vpcs():
+    """DescribeVpcs API wrapper."""
+    valid_optional_params = []
+    optional_params = {}
+    request_dict = {'Action': 'DescribeVpcs'}
+    return _do_vpc_request(valid_optional_params, optional_params, request_dict)
 
 if __name__ == '__main__':
     pp = pprint.PrettyPrinter(indent=2)
     pp.pprint(describe_instances())
     pp.pprint(describe_volumes())
+    pp.pprint(describe_images())
+    pp.pprint(describe_vpcs())
     #pp.pprint(describe_snapshots())
     #pp.pprint(delete_volume('9e501705-6721-4880-abcd-cd4d8bdbf005'))
     #print create_volume(Size=2)
