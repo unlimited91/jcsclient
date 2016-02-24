@@ -55,33 +55,71 @@ Installation
 
 ::
 
-    pip install client
+    .. pip install client
+    git clone https://gitlab.com/jiocloudservices/common.git
+    cd common
+    sudo pip install requirements.txt   # Can use virtual environment too
+    sudo python setup.py develop
 
-Documentation
+Configuration
 =============
 
-https://client.readthedocs.org/
+Edit the src/common/config.py to include your credentials.
 
-Development
-===========
+If you are from your local machine, you might need to add entries to `/etc/hosts` file to map an IP to the endpoint. No need to do the same if you are using this library from a staging machien.
 
-To run the all tests run::
+**NOTE**: Never ever commit your access and secret keys and push to a public repository. You have been warned.
 
-    tox
 
-Note, to combine the coverage data from all the tox environments run:
+.. Documentation
+.. =============
+..
+.. https://client.readthedocs.org/
 
-.. list-table::
-    :widths: 10 90
-    :stub-columns: 1
+CLI
+===
 
-    - - Windows
-      - ::
+You can use CLI to make an API request
 
-            set PYTEST_ADDOPTS=--cov-append
-            tox
+::
 
-    - - Other
-      - ::
+    # Make an API call
+    $ jcs compute Action=DescribeInstances
+    
+    # Get the curl input URL
+    $ jcs --curl compute Action=DescribeInstances
 
-            PYTEST_ADDOPTS=--cov-append tox
+
+Python Client
+=============
+
+Once you have installed this library in your computer (systemwide or in a virtual environment), you can import the module and start using the associated Python functions. For example, the following file will list all your instances:
+
+::
+
+    from client import cloud
+    
+    print cloud.describe_instances()
+
+
+
+.. To run the all tests run::
+..
+..     tox
+..
+.. Note, to combine the coverage data from all the tox environments run:
+..
+.. .. list-table::
+..     :widths: 10 90
+..     :stub-columns: 1
+..
+..     - - Windows
+..       - ::
+..
+..             set PYTEST_ADDOPTS=--cov-append
+..             tox
+..
+..     - - Other
+..       - ::
+..
+..             PYTEST_ADDOPTS=--cov-append tox
