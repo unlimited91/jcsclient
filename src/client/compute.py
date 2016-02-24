@@ -61,14 +61,11 @@ def _remove_items_keys(response):
 
 def describe_instances():
     """DescribeInstances API wrapper."""
-    # TODO(rushiagr): add filters etc in params.
-    request_string = common.requestify(config.compute_url, {'Action': 'DescribeInstances'})
-    resp_dict = common.do_request('GET', request_string)
-    instances = resp_dict['ListInstancesResponse']['instanceSet']['item']
-    if type(instances) == dict:
-        instances = [instances]  # Only one instance
-    print resp_dict
-    return instances
+    valid_params = []
+
+    request_dict = {'Action': 'DescribeInstances'}
+
+    return _do_compute_request(valid_params, {}, request_dict)
 
 def run_instances(ImageId, InstanceTypeId, **kwargs):
     """
