@@ -83,8 +83,8 @@ def run_instances(ImageId, InstanceTypeId, **kwargs):
 
     request_dict = {
         'Action': 'RunInstances',
-        'ImageId': image_id,
-        'InstanceTypeId': instance_type_id,
+        'ImageId': ImageId,
+        'InstanceTypeId': InstanceTypeId,
     }
 
     return _do_compute_request(valid_params, kwargs, request_dict)
