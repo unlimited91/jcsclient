@@ -141,4 +141,4 @@ def create_volume():
 
 
 if __name__ == '__main__':
-    describe_instances()
+    print describe_instances()
