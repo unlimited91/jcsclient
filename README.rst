@@ -65,7 +65,7 @@ Installation
 Configuration
 =============
 
-Edit the src/common/config.py to include your credentials.
+Edit the src/client/config.py to include your credentials.
 
 If you are from your local machine, you might need to add entries to `/etc/hosts` file to map an IP to the endpoint. No need to do the same if you are using this library from a staging machien.
 
