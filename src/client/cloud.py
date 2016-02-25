@@ -68,13 +68,27 @@ def describe_images():
 
 # =============== Key pairs =================
 
-def create_key_pair():
-    """CreateKeyPair."""
-    pass
+    # TODO(rushiagr): don't use request_dict
 
-def delete_key_pair():
-    """DelateKeyPair."""
-    pass
+def create_key_pair(KeyName):
+    """CreateKeyPair."""
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params = {
+        'Action': 'CreateKeyPair',
+        'KeyName': KeyName,
+    }
+    return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
+
+def delete_key_pair(KeyName):
+    """DeleteKeyPair."""
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params = {
+        'Action': 'DeleteKeyPair',
+        'KeyName': KeyName,
+    }
+    return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
 def import_key_pair():
     """ImportKeyPair."""
@@ -82,7 +96,10 @@ def import_key_pair():
 
 def describe_key_pairs():
     """DescribeKeyPairs."""
-    pass
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params= {'Action': 'DescribeKeyPairs'}
+    return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
 # =============== Volumes =================
 
