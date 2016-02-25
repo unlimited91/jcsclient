@@ -86,6 +86,8 @@ You can use CLI to make an API request, or just get the input which you can use 
 
     $ jcs compute Action=DescribeInstances          # Make an API call
     
+    $ jcs --prettyprint compute Action=DescribeInstances # Make API call and pretty-print dictionary
+    
     $ jcs --curl compute Action=DescribeInstances   # Get the curl input URL
 
 

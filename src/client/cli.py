@@ -29,13 +29,17 @@ def main(argv=sys.argv):
     Does stuff.
     """
     if len(argv) < 3:
-        print "Example usage: jcs [--curl] compute Action=DescribeInstances\n"
+        print "Example usage: jcs [--curl|--prettyprint] compute Action=DescribeInstances\n"
         print "Service argument can be 'compute' or 'vpc'"
         print "If '--curlx' is specified, only curl request input will be"
         print "produced. No request will be made"
+        print "If --prettyprint is specified, response of request made will be"
+        print "printedd using 'prettyprint' printer"
         sys.exit(1)
     if argv[1] == '--curl':
         common.curlify(argv[2], argv[3])
+    elif argv[1] == '--prettyprint':
+        common.curlify(argv[2], argv[3], True, True)
     else:
         common.curlify(argv[1], argv[2], True)
     return 0

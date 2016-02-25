@@ -7,6 +7,7 @@ import six
 import sys
 
 import json
+import pprint
 import requests
 from six.moves import urllib
 import urllib as ul
@@ -224,7 +225,7 @@ def _remove_item_keys(response):
 
     return response
 
-def curlify(service, req_str, execute=False):
+def curlify(service, req_str, execute=False, prettyprint=False):
     """ If execute=True, don't return curl url, but execute it!"""
     params = create_param_dict(req_str)
     if service == 'compute':
@@ -234,7 +235,13 @@ def curlify(service, req_str, execute=False):
 
     if execute:
         request_string = requestify(service_url, params)
-        print do_request('GET', request_string)
+
+        if prettyprint:
+            pp = pprint.PrettyPrinter(indent=2)
+            pp.pprint(_remove_item_keys(do_request('GET', request_string)))
+            return
+
+        print _remove_item_keys(do_request('GET', request_string))
         return
 
     print "curl --insecure '"+requestify(service_url, params)+"'"
