@@ -68,8 +68,6 @@ def describe_images():
 
 # =============== Key pairs =================
 
-    # TODO(rushiagr): don't use request_dict
-
 def create_key_pair(KeyName):
     """CreateKeyPair."""
     valid_optional_params = []
