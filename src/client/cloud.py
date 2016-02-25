@@ -12,8 +12,8 @@ def describe_instances():
     """DescribeInstances API wrapper."""
     valid_optional_params = []
     optional_params = {}
-    request_dict = {'Action': 'DescribeInstances'}
-    return common.do_compute_request(valid_optional_params, optional_params, request_dict)
+    mandatory_params = {'Action': 'DescribeInstances'}
+    return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
 def run_instances(ImageId, InstanceTypeId, **optional_params):
     """
@@ -63,8 +63,8 @@ def describe_images():
     """DescribeImages API wrapper."""
     valid_optional_params = []
     optional_params = {}
-    request_dict = {'Action': 'DescribeImages'}
-    return common.do_compute_request(valid_optional_params, optional_params, request_dict)
+    mandatory_params = {'Action': 'DescribeImages'}
+    return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
 # =============== Key pairs =================
 
@@ -106,8 +106,9 @@ def describe_key_pairs():
 def describe_volumes():
     """DescribeVolumes API wrapper."""
     valid_optional_params = []
+    optional_params = {}
     mandatory_params = {'Action': 'DescribeVolumes'}
-    return common.do_compute_request(valid_optional_params, {}, mandatory_params)
+    return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
 def create_volume(**optional_params):
     """
@@ -167,8 +168,8 @@ def describe_vpcs():
     """DescribeVpcs API wrapper."""
     valid_optional_params = []
     optional_params = {}
-    request_dict = {'Action': 'DescribeVpcs'}
-    return common.do_vpc_request(valid_optional_params, optional_params, request_dict)
+    mandatory_params = {'Action': 'DescribeVpcs'}
+    return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
 
 if __name__ == '__main__':
