@@ -77,4 +77,5 @@ setup(
             'jcs = client.cli:main',
         ]
     },
+    test_suite='client'
 )

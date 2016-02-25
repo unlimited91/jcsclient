@@ -129,8 +129,6 @@ def do_request(method, url, headers=None):
         resp_ordereddict = xmltodict.parse(xml)
         # Ordered dict is difficult to read when printed, and we don't need an
         # order anyway, so just convert it to a normal dictionary
-        # NOTE(rushiagr): the dictionary still contains 'items' keys, so either
-        # document that, or remove them
         resp_dict = json.loads(json.dumps(resp_ordereddict))
         return resp_dict
     else:
@@ -144,7 +142,7 @@ def do_compute_request(valid_optional_params, supplied_optional_params,
         supplied_mandatory_params)
     request_string = requestify(config.compute_url, request_dict)
     resp_dict = do_request('GET', request_string)
-    return _remove_items_keys(resp_dict)
+    return _remove_item_keys(resp_dict)
 
 def do_vpc_request(valid_optional_params, supplied_optional_params,
         supplied_mandatory_params=None):
@@ -154,7 +152,7 @@ def do_vpc_request(valid_optional_params, supplied_optional_params,
         supplied_mandatory_params)
     request_string = requestify(config.vpc_url, request_dict)
     resp_dict = do_request('GET', request_string)
-    return _remove_items_keys(resp_dict)
+    return _remove_item_keys(resp_dict)
 
 def _create_valid_request_dictionary(valid_params, supplied_optional_params,
         supplied_mandatory_params):
@@ -180,23 +178,50 @@ def _create_valid_request_dictionary(valid_params, supplied_optional_params,
 
     return final_dict
 
-def _remove_items_keys(response):
+def _remove_item_keys(response):
     """
-    Remove all 'items' keys from 'response' dictionary.
+    Remove all 'item' keys from 'response' dictionary.
 
-    The value for 'items' key can be either a dictionary or a list of
-    dictionaries. Replace the dict whose key is 'items' with the value of
-    'items' key. And if this value is a dict, then make it a list which
+    The value for 'item' key can be either a dictionary or a list of
+    dictionaries. Replace the dict whose key is 'item' with the value of
+    'item' key. And if this value is a dict, then make it a list which
     contains only that dict.
 
+    See the corresponding test for more examples.
+
     Examples:
-        Input: {'instances': {'items': {'key1': 'value1'}}}
+        Input: {'instances': {'item': {'key1': 'value1'}}}
         Output: {'instances': [{'key1': 'value1'}]}
 
-        Input: {'instances': {'items': [{'key1': 'value1'}, {'key2': 'value2'}]}}
+        Input: {'instances': {'item': [{'key1': 'value1'}, {'key2': 'value2'}]}}
         Output: {'instances': [{'key1': 'value1'}, {'key2': 'value2'}]}
     """
-    # TODO(rushiagr): implement this :)
+    if type(response) != dict:
+        raise Exception
+
+    # 'item' can't be a first-level key
+    if 'item' in response.keys():
+        raise Exception
+
+    for key, value in response.items():
+        if type(value) == dict:
+            item_value = value.get('item')
+            if item_value is not None:
+                # If the dictionary has a key 'item', then this dictionary
+                # shouldn't have any more keys
+                if len(value.keys()) != 1:
+                    raise Exception
+
+                # Value for 'item' key should be a list or a dict
+                if type(item_value) not in [list, dict]:
+                    raise Exception
+
+                response[key] = item_value if type(item_value) == list else [item_value]
+
+                response[key] = [_remove_item_keys(d) for d in response[key]]
+            else:
+                response[key] = _remove_item_keys(value)
+
     return response
 
 def curlify(service, req_str, execute=False):
