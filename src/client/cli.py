@@ -30,9 +30,9 @@ def main(argv=sys.argv):
     """
     if len(argv) < 3:
         print "Example usage: jcs [--curl|--prettyprint] compute Action=DescribeInstances\n"
-        print "               jcs [--curl]--prettyprint] compute 'Action=CreateVolume&Size=1'\n"
+        print "               jcs [--curl|--prettyprint] compute 'Action=CreateVolume&Size=1'\n"
         print "Service argument can be 'compute' or 'vpc'"
-        print "If '--curlx' is specified, only curl request input will be"
+        print "If '--curl' is specified, only curl request input will be"
         print "produced. No request will be made"
         print "If --prettyprint is specified, response of request made will be"
         print "printedd using 'prettyprint' printer"
