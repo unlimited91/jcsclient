@@ -14,6 +14,7 @@ import urllib as ul
 import xmltodict
 
 import config
+import exceptions
 
 
 common_params_v2 = {
@@ -122,8 +123,10 @@ def do_request(method, url, headers=None):
         resp = requests.get(url, headers=current_headers,
                 verify=config.is_secure)
         if resp.status_code >= 400:
-            print 'Exception %s thrown!!!' % resp.status_code
+            print 'Exception %s thrown!!! Status code:' % resp.status_code
             print 'Error content: ', resp.content
+            if resp.status_code == 400:
+                raise exceptions.HTTP400()
             raise Exception
         xml = resp.content
         print xml
