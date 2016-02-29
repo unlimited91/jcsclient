@@ -101,10 +101,9 @@ def describe_key_pairs():
 
 # =============== Volumes =================
 
-def describe_volumes():
+def describe_volumes(**optional_params):
     """DescribeVolumes API wrapper."""
-    valid_optional_params = []
-    optional_params = {}
+    valid_optional_params = ['VolumeId']
     mandatory_params = {'Action': 'DescribeVolumes'}
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
@@ -117,7 +116,7 @@ def create_volume(**optional_params):
     if not optional_params.get('Size') and not optional_params.get('SnapshotId'):
         print 'size or snap id is required'
         raise Exception
-    valid_optional_params = ['Size', 'SnapshotId']
+    valid_optional_params = ['Size', 'SnapshotId', 'Description']
     mandatory_params = {'Action': 'CreateVolume'}
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
