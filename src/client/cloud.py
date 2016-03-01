@@ -201,6 +201,20 @@ def release_address(AllocationId):
     }
     return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
 
+def associate_address(AllocationId, **optional_params):
+    """AssociateAddress API wrapper."""
+
+    if not optional_params.get('InstanceId') and not optional_params.get('NetworkInterfaceId'):
+        print 'InstanceId or NetworkInterfaceId is required'
+        raise Exception
+
+    valid_optional_params = ['InstanceId', 'NetworkInterfaceId']
+    mandatory_params = {
+        'Action': 'AssociateAddress',
+        'AllocationId': AllocationId,
+    }
+    return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
+
 if __name__ == '__main__':
     pp = pprint.PrettyPrinter(indent=2)
     pp.pprint(describe_instances())
