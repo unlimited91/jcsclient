@@ -103,7 +103,7 @@ def describe_key_pairs():
 
 def describe_volumes(**optional_params):
     """DescribeVolumes API wrapper."""
-    valid_optional_params = ['VolumeId']
+    valid_optional_params = ['VolumeId', 'Detail']
     mandatory_params = {'Action': 'DescribeVolumes'}
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
