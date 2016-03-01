@@ -161,13 +161,45 @@ def delete_snapshot(SnapshotId):
     }
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
+# =============== VPC =================
+
 def describe_vpcs():
     """DescribeVpcs API wrapper."""
     valid_optional_params = []
     optional_params = {}
     mandatory_params = {'Action': 'DescribeVpcs'}
-    return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
+    return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
 
+def create_vpc(CidrBlock):
+    """CreateVpc API wrapper."""
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params = {
+        'Action': 'CreateVpc',
+        'CidrBlock': CidrBlock,
+    }
+    return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
+
+def allocate_address(Domain, **optional_params):
+    """AllocateAddress API wrapper."""
+    # TODO(rushiagr): seems like specifying Domain (with value = 'vpc') is
+    # required to get a proper 'allocationId'.
+    valid_optional_params = ['Domain']
+    mandatory_params = {
+        'Action': 'AllocateAddress',
+        'Domain': Domain,
+    }
+    return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
+
+def release_address(AllocationId):
+    """ReleaseAddress API wrapper."""
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params = {
+        'Action': 'ReleaseAddress',
+        'AllocationId': AllocationId,
+    }
+    return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
 
 if __name__ == '__main__':
     pp = pprint.PrettyPrinter(indent=2)
