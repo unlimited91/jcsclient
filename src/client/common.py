@@ -24,8 +24,20 @@ global_vars = {
     'is_secure': False,
 }
 
+common_params_v2 = {
+    'JCSAccessKeyId': global_vars['access_key'],
+    'SignatureVersion': '2',
+    'SignatureMethod': 'HmacSHA256',
+    'Version': '2016-03-01',
+    'Timestamp': time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+}
+
 def _ensure_global_vars_populated():
     """Raises exception if global vars are not populated."""
+    # TODO(rushiagr): doing 'global global_vars' is error prone -- somebody
+    # might forget to do it and this will cause all kind of bugs. Better we
+    # write a method _populate_global_vars(key, value) and use only that to
+    # populate global vars
     global global_vars
     for key in ['access_key', 'secret_key', 'compute_url', 'vpc_url']:
         if global_vars[key] is None:
@@ -37,15 +49,8 @@ def _populate_global_vars(access_key, secret_key, compute_url, vpc_url):
     global_vars['secret_key'] = secret_key
     global_vars['compute_url'] = compute_url
     global_vars['vpc_url'] = vpc_url
-
-
-common_params_v2 = {
-    'JCSAccessKeyId': global_vars['access_key'],
-    'SignatureVersion': '2',
-    'SignatureMethod': 'HmacSHA256',
-    'Version': '2016-03-01',
-    'Timestamp': time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-}
+    global common_params_v2
+    common_params_v2['JCSAccessKeyId'] = access_key
 
 common_headers = {
     # 'User-Agent': 'curl/7.35.0', # not required I guess
@@ -78,7 +83,7 @@ def string_to_sign(method, host, params):
     # strip off everything after the first slash. E.g.
     # 'https://example.com/one/two/three'  will
     # become 'example.com'
-    if host.startswith('http'):
+    if host.startswith('http') or host.startswith('https'):
         host = host.split('//')[1]
     if host.find('/') != -1:
         host = host.split('/')[0]
@@ -89,6 +94,7 @@ def string_to_sign(method, host, params):
     return ss
 
 def get_signature(method, host, params):
+    global global_vars
     hmac_256 = hmac.new(global_vars['secret_key'], digestmod=hashlib.sha256)
     canonical_string = string_to_sign(method, host, params)
     hmac_256.update(canonical_string.encode('utf-8'))
@@ -136,6 +142,8 @@ def do_request(method, url, headers=None):
     headers, a dictionary, can contain request headers.
     """
 
+    global global_vars
+
     current_headers = common_headers.copy()
 
     if headers is not None:
@@ -168,6 +176,7 @@ def do_compute_request(valid_optional_params, supplied_optional_params,
         valid_optional_params,
         supplied_optional_params,
         supplied_mandatory_params)
+    global global_vars
     request_string = requestify(global_vars['compute_url'], request_dict)
     resp_dict = do_request('GET', request_string)
     return _remove_item_keys(resp_dict)
@@ -179,6 +188,7 @@ def do_vpc_request(valid_optional_params, supplied_optional_params,
         valid_optional_params,
         supplied_optional_params,
         supplied_mandatory_params)
+    global global_vars
     request_string = requestify(global_vars['vpc_url'], request_dict)
     resp_dict = do_request('GET', request_string)
     return _remove_item_keys(resp_dict)
@@ -274,6 +284,7 @@ def curlify(service, req_str, execute=False, prettyprint=False):
         sys.exit()
 
     params = create_param_dict(req_str)
+    global global_vars
     if service == 'compute':
         service_url = global_vars['compute_url']
     elif service == 'vpc':

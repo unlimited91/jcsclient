@@ -3,7 +3,6 @@ import json
 
 import requests
 
-from config import *
 
 # Example curl request:
 # curl --insecure -i -H "Content-Type: application/json" -d '{"auth": {"identity": {"methods": ["password"], "password": {"user": {"name": "rds", "account": {"id": "0bc437d91ce3401fa0fc97366a11ba3b" }, "password": "Reliance111@"}}}}}' https://iam.ind-west-1.staging.jiocloudservices.com:5000/v3/auth/tokens
