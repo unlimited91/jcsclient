@@ -13,12 +13,34 @@ from six.moves import urllib
 import urllib as ul
 import xmltodict
 
-import config
 import exceptions
 
 
+global_vars = {
+    'access_key': None,
+    'secret_key': None,
+    'compute_url': None,
+    'vpc_url': None,
+    'is_secure': False,
+}
+
+def _ensure_global_vars_populated():
+    """Raises exception if global vars are not populated."""
+    global global_vars
+    for key in ['access_key', 'secret_key', 'compute_url', 'vpc_url']:
+        if global_vars[key] is None:
+            raise Exception
+
+def _populate_global_vars(access_key, secret_key, compute_url, vpc_url):
+    global global_vars
+    global_vars['access_key'] = access_key
+    global_vars['secret_key'] = secret_key
+    global_vars['compute_url'] = compute_url
+    global_vars['vpc_url'] = vpc_url
+
+
 common_params_v2 = {
-    'JCSAccessKeyId': config.access_key,
+    'JCSAccessKeyId': global_vars['access_key'],
     'SignatureVersion': '2',
     'SignatureMethod': 'HmacSHA256',
     'Version': '2016-03-01',
@@ -67,7 +89,7 @@ def string_to_sign(method, host, params):
     return ss
 
 def get_signature(method, host, params):
-    hmac_256 = hmac.new(config.secret_key, digestmod=hashlib.sha256)
+    hmac_256 = hmac.new(global_vars['secret_key'], digestmod=hashlib.sha256)
     canonical_string = string_to_sign(method, host, params)
     hmac_256.update(canonical_string.encode('utf-8'))
     b64 = base64.b64encode(hmac_256.digest()).decode('utf-8')
@@ -113,6 +135,7 @@ def do_request(method, url, headers=None):
     url, also a string, is the URL to make request to.
     headers, a dictionary, can contain request headers.
     """
+
     current_headers = common_headers.copy()
 
     if headers is not None:
@@ -121,7 +144,7 @@ def do_request(method, url, headers=None):
     if method == 'GET':
         print 'url is', url, 'header is', current_headers
         resp = requests.get(url, headers=current_headers,
-                verify=config.is_secure)
+                verify=global_vars['is_secure'])
         if resp.status_code >= 400:
             print 'Exception %s thrown!!! Status code:' % resp.status_code
             print 'Error content: ', resp.content
@@ -140,21 +163,23 @@ def do_request(method, url, headers=None):
 
 def do_compute_request(valid_optional_params, supplied_optional_params,
         supplied_mandatory_params=None):
+    _ensure_global_vars_populated()
     request_dict = _create_valid_request_dictionary(
         valid_optional_params,
         supplied_optional_params,
         supplied_mandatory_params)
-    request_string = requestify(config.compute_url, request_dict)
+    request_string = requestify(global_vars['compute_url'], request_dict)
     resp_dict = do_request('GET', request_string)
     return _remove_item_keys(resp_dict)
 
 def do_vpc_request(valid_optional_params, supplied_optional_params,
         supplied_mandatory_params=None):
+    _ensure_global_vars_populated()
     request_dict = _create_valid_request_dictionary(
         valid_optional_params,
         supplied_optional_params,
         supplied_mandatory_params)
-    request_string = requestify(config.vpc_url, request_dict)
+    request_string = requestify(global_vars['vpc_url'], request_dict)
     resp_dict = do_request('GET', request_string)
     return _remove_item_keys(resp_dict)
 
@@ -229,12 +254,30 @@ def _remove_item_keys(response):
     return response
 
 def curlify(service, req_str, execute=False, prettyprint=False):
-    """ If execute=True, don't return curl url, but execute it!"""
+    """Print output which can be run as a 'curl' CLI command.
+
+    This function, if global vars is not set, will print output saying global
+    variables are not set, and exit.
+
+
+    If execute=True, don't return curl url, but execute it!
+    """
+    try:
+        _populate_global_vars(os.environ.get('ACCESS_KEY'),
+                              os.environ.get('SECRET_KEY'),
+                              os.environ.get('COMPUTE_URL'),
+                              os.environ.get('VPC_URL'))
+        _ensure_global_vars_populated()
+    except Exception:
+        # TODO(rushiagr):
+        print "You need to set environment variables: COMPUTE_URL, VPC_URL, ACCESS_KEY and SECRET_KEY to make a request"
+        sys.exit()
+
     params = create_param_dict(req_str)
     if service == 'compute':
-        service_url = config.compute_url
+        service_url = global_vars['compute_url']
     elif service == 'vpc':
-        service_url = config.vpc_url
+        service_url = global_vars['vpc_url']
 
     if execute:
         request_string = requestify(service_url, params)

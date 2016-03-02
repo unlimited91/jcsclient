@@ -1,5 +1,4 @@
 from client import common
-from client import config
 
 import pprint
 
