@@ -48,8 +48,6 @@ Overview
 
 Client library for JCS
 
-* Free software: BSD license
-
 Installation
 ============
 
