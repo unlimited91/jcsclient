@@ -50,12 +50,13 @@ def _ensure_global_vars_populated():
             print 'Global variable %s not populated!!' % key
             raise Exception
 
-def setup_client(access_key, secret_key, compute_url, vpc_url):
+def setup_client(access_key, secret_key, compute_url, vpc_url, **other_params):
     global global_vars
     global_vars['access_key'] = access_key
     global_vars['secret_key'] = secret_key
     global_vars['compute_url'] = compute_url
     global_vars['vpc_url'] = vpc_url
+    global_vars.update(other_params)
     global common_params_v2
     common_params_v2['JCSAccessKeyId'] = access_key
 
