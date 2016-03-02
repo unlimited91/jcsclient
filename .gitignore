@@ -1,4 +1,5 @@
 .venv/*
+openrc
 
 
 *.py[cod]

@@ -1,0 +1,13 @@
+# Environment vars for jcs cli
+#
+# If you want to modify this file to put in your credentials (of course you
+# want to do that :) ), then create a copy of this file with name openrc:
+#      cp openrc.sample openrc
+# and source that file
+#      source openrc
+
+export IS_SECURE=False
+export COMPUTE_URL=https://compute.ind-west-1.staging.jiocloudservices.com/services/Cloud/
+export VPC_URL=https://vpc.ind-west-1.staging.jiocloudservices.com
+export ACCESS_KEY=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+export SECRET_KEY=ssssssssssssssssssssssssssssssss
