@@ -32,6 +32,12 @@ common_params_v2 = {
     'Timestamp': time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
 }
 
+common_headers = {
+    # 'User-Agent': 'curl/7.35.0', # not required I guess
+    'Content-Type': 'application/json',
+    'Accept-Encoding': 'identity',
+}
+
 def _ensure_global_vars_populated():
     """Raises exception if global vars are not populated."""
     # TODO(rushiagr): doing 'global global_vars' is error prone -- somebody
@@ -41,9 +47,10 @@ def _ensure_global_vars_populated():
     global global_vars
     for key in ['access_key', 'secret_key', 'compute_url', 'vpc_url']:
         if global_vars[key] is None:
+            print 'Global variable %s not populated!!' % key
             raise Exception
 
-def _populate_global_vars(access_key, secret_key, compute_url, vpc_url):
+def setup_client(access_key, secret_key, compute_url, vpc_url):
     global global_vars
     global_vars['access_key'] = access_key
     global_vars['secret_key'] = secret_key
@@ -52,11 +59,12 @@ def _populate_global_vars(access_key, secret_key, compute_url, vpc_url):
     global common_params_v2
     common_params_v2['JCSAccessKeyId'] = access_key
 
-common_headers = {
-    # 'User-Agent': 'curl/7.35.0', # not required I guess
-    'Content-Type': 'application/json',
-    'Accept-Encoding': 'identity',
-}
+def setup_client_from_env_vars():
+    """Populates client from environment variables."""
+    setup_client(os.environ.get('ACCESS_KEY'),
+                          os.environ.get('SECRET_KEY'),
+                          os.environ.get('COMPUTE_URL'),
+                          os.environ.get('VPC_URL'))
 
 def _get_utf8_value(value):
     """Get the UTF8-encoded version of a value."""
@@ -85,6 +93,8 @@ def string_to_sign(method, host, params):
     # become 'example.com'
     if host.startswith('http') or host.startswith('https'):
         host = host.split('//')[1]
+    else:
+        raise Exception('your compute/vpc url must start with http:// or https://')
     if host.find('/') != -1:
         host = host.split('/')[0]
     ss = method + '\n' + host + '\n' + '/' + '\n'
@@ -273,10 +283,7 @@ def curlify(service, req_str, execute=False, prettyprint=False):
     If execute=True, don't return curl url, but execute it!
     """
     try:
-        _populate_global_vars(os.environ.get('ACCESS_KEY'),
-                              os.environ.get('SECRET_KEY'),
-                              os.environ.get('COMPUTE_URL'),
-                              os.environ.get('VPC_URL'))
+        setup_client_from_env_vars()
         _ensure_global_vars_populated()
     except Exception:
         # TODO(rushiagr):
