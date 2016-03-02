@@ -65,7 +65,15 @@ Installation
 Configuration
 =============
 
-Edit the src/client/config.py to include your credentials.
+Copy openrc.sample to create `openrc` file, put your actual credentials in this
+file and then source this file Edit the src/client/config.py to include your
+credentials.
+
+::
+
+    cp openrc.sample openrc
+    # Update openrc now, and add your access/secret keys
+    source openrc
 
 If you are from your local machine, you might need to add entries to `/etc/hosts` file to map an IP to the endpoint. No need to do the same if you are using this library from a staging machien.
 
@@ -98,8 +106,18 @@ Once you have installed this library in your computer (systemwide or in a virtua
 
 ::
 
+    from client import common
     from client import cloud
-    print cloud.describe_instances()
+    
+    # Set up client with parameters as sourced environment variables
+    common.setup_client_from_env_vars()
+    
+    # OR alternatively set up client by passing required parameters
+    #common.setup_client('myaccesskey', 'mysecretkey', 'mycomputeurl', 'myvpcurl')
+    
+    print cloud.describe_snapshots()
+
+
 
 
 
