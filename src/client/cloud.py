@@ -7,10 +7,10 @@ import pprint
 
 # =============== Instances =================
 
-def describe_instances():
+def describe_instances(**params):
     """DescribeInstances API wrapper."""
-    valid_optional_params = []
-    optional_params = {}
+    valid_optional_params = ['InstanceId.1']
+    optional_params = params
     mandatory_params = {'Action': 'DescribeInstances'}
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
@@ -217,27 +217,27 @@ def allocate_address(Domain, **optional_params):
     }
     return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
 
-def release_address(AllocationId):
+def release_address(allocation_id):
     """ReleaseAddress API wrapper."""
     valid_optional_params = []
     optional_params = {}
     mandatory_params = {
         'Action': 'ReleaseAddress',
-        'AllocationId': AllocationId,
+        'AllocationId': allocation_id,
     }
     return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
 
-def associate_address(AllocationId, **optional_params):
+def associate_address(allocation_id, instance_id, allow_reassignment):
     """AssociateAddress API wrapper."""
 
-    if not optional_params.get('InstanceId') and not optional_params.get('NetworkInterfaceId'):
-        print 'InstanceId or NetworkInterfaceId is required'
-        raise Exception
+    optional_params = {}
 
-    valid_optional_params = ['InstanceId', 'NetworkInterfaceId']
+    valid_optional_params = ['NetworkInterfaceId']
     mandatory_params = {
         'Action': 'AssociateAddress',
-        'AllocationId': AllocationId,
+        'AllocationId': allocation_id,
+        'InstanceId': instance_id,
+        'AllowReassignment': allow_reassignment
     }
     return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
 
