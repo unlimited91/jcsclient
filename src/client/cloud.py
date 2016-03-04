@@ -44,17 +44,44 @@ def stop_instances():
     """StopInstances API wrapper"""
     pass
 
-def start_instances():
-    """StartInstances API wrapper."""
-    pass
+
+def run_instances(image_id,
+                  flavor_id,
+                  keypair_name,
+                  subnet_id,
+                  security_group_id,
+                  instance_count):
+    """RunInstances API wrapper."""
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params= {
+        'Action': 'RunInstances',
+        'ImageId': image_id,
+        'InstanceTypeId': flavor_id,
+        'KeyName': keypair_name,
+        'InstanceCount': instance_count,
+        'SubnetId': subnet_id,
+        'SecurityGroupId.1': security_group_id
+    }
+    return common.do_compute_request(valid_optional_params,
+                                     optional_params,
+                                     mandatory_params)
 
 def reboot_instances():
     """RebootInstances API wrapper."""
     pass
 
-def terminate_instances():
+def terminate_instances(instance_id):
     """TerminateInstances API wrapper."""
-    pass
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params= {
+        'Action': 'TerminateInstances',
+        'InstanceId': instance_id
+    }
+    return  common.do_compute_request(valid_optional_params,
+                                     optional_params,
+                                     mandatory_params)
 
 # =============== Images =================
 
