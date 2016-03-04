@@ -100,6 +100,9 @@ def string_to_sign(method, host, params):
         host = host.split('/')[0]
     ss = method + '\n' + host + '\n' + '/' + '\n'
     params.update(common_params_v2)
+    # Timestamp should be updated always while making request.
+    # TODO(rushiagr): don't update TimeStamp at the top when declaring the dict
+    params['Timestamp'] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     qs = get_query_string_from_params(params)
     ss += qs
     return ss
