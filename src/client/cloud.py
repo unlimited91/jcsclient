@@ -146,16 +146,35 @@ def create_volume(**optional_params):
     mandatory_params = {'Action': 'CreateVolume'}
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
-def attach_volume():
+def attach_volume(volume_id, instance_id, device):
     """AttachVolume."""
-    pass
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params = {
+        'Action': 'AttachVolume',
+        'VolumeId': volume_id,
+        'InstanceId': instance_id,
+        'device': device
+    }
+    return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
+
+def detach_volume(volume_id, instance_id):
+    """DetactVolume."""
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params = {
+        'Action': 'DetactVolume',
+        'VolumeId': volume_id,
+        'InstanceId': instance_id
+    }
+    return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
 def delete_volume(VolumeId):
     valid_optional_params = []
     optional_params = {}
     mandatory_params = {
         'Action': 'DeleteVolume',
-        'VolumeId': VolumeId,
+        'VolumeId': VolumeId
     }
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
