@@ -246,7 +246,7 @@ def release_address(allocation_id):
     }
     return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
 
-def associate_address(allocation_id, instance_id, allow_reassignment):
+def associate_address(allocation_id, instance_id):
     """AssociateAddress API wrapper."""
 
     optional_params = {}
@@ -256,7 +256,6 @@ def associate_address(allocation_id, instance_id, allow_reassignment):
         'Action': 'AssociateAddress',
         'AllocationId': allocation_id,
         'InstanceId': instance_id,
-        'AllowReassignment': allow_reassignment
     }
     return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
 
