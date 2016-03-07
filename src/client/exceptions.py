@@ -4,5 +4,8 @@ class HTTP4xx(Exception):
 class HTTP400(HTTP4xx):
     pass
 
+class HTTP404(HTTP4xx):
+    pass
+
 class HTTP409(HTTP4xx):
     pass
