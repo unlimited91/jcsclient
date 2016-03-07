@@ -143,7 +143,7 @@ def requestify(host_or_ip, request):
     request['Signature'] = get_signature('GET', host_or_ip, request)
     request_string = host_or_ip
     for key, value in request.items():
-        request_string += key + '=' + value + '&'
+        request_string += str(key) + '=' + str(value) + '&'
     request_string = request_string[:-1]  # remove last '&'
     return request_string
 
