@@ -172,6 +172,8 @@ def do_request(method, url, headers=None):
             print 'Error content: ', resp.content
             if resp.status_code == 400:
                 raise exceptions.HTTP400()
+            elif resp.status_code == 404:
+                raise exceptions.HTTP404()
             raise Exception
         xml = resp.content
         print xml
