@@ -159,11 +159,11 @@ def attach_volume(volume_id, instance_id, device):
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
 def detach_volume(volume_id, instance_id):
-    """DetactVolume."""
+    """DetachVolume."""
     valid_optional_params = []
     optional_params = {}
     mandatory_params = {
-        'Action': 'DetactVolume',
+        'Action': 'DetachVolume',
         'VolumeId': volume_id,
         'InstanceId': instance_id
     }
