@@ -77,7 +77,7 @@ def terminate_instances(instance_id):
     optional_params = {}
     mandatory_params= {
         'Action': 'TerminateInstances',
-        'InstanceId': instance_id
+        'InstanceId.1': instance_id
     }
     return  common.do_compute_request(valid_optional_params,
                                      optional_params,
