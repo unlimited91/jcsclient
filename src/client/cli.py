@@ -28,7 +28,7 @@ def main(argv=sys.argv):
 
     Does stuff.
     """
-    if len(argv) < 3:
+    if len(argv) < 3 or argv[1] in ['-h', '--help', 'help']:
         print "Example usage: jcs [--curl|--prettyprint] compute Action=DescribeInstances\n"
         print "               jcs [--curl|--prettyprint] compute 'Action=CreateVolume&Size=1'\n"
         print "Service argument can be 'compute' or 'vpc'"
