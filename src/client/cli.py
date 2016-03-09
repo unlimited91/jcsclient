@@ -37,10 +37,14 @@ def main(argv=sys.argv):
         print "If --prettyprint is specified, response of request made will be"
         print "printedd using 'prettyprint' printer"
         sys.exit(1)
-    if argv[1] == '--curl':
+    if argv[1] == '--curl' and len(argv) == 4:
         common.curlify(argv[2], argv[3])
-    elif argv[1] == '--prettyprint':
-        common.curlify(argv[2], argv[3], True, True)
+    elif argv[1] == '--prettyprint' and len(argv) == 4:
+        common.curlify(argv[2], argv[3], False, True, True)
+    elif len(argv) == 3 and '=' in argv[2]:
+        common.curlify(argv[1], argv[2], False, True)
+    elif len(argv) >= 3:
+        common.curlify(argv[1], argv[2:], True, True)
     else:
-        common.curlify(argv[1], argv[2], True)
+        print "Invalid client request"
     return 0
