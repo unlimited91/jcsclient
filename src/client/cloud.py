@@ -259,6 +259,37 @@ def associate_address(allocation_id, instance_id):
     }
     return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
 
+# =============== RDS =================
+
+def describe_db_instances(**optional_params):
+    valid_optional_params = ['DBInstanceIdentifier']
+    mandatory_params = {'Action': 'DescribeDBInstances'}
+    return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
+
+def create_db_instance(DBInstanceIdentifier, DBInstanceClass, Engine,
+        AllocatedStorage, MasterUsername, MasterUserPassword, **optional_params):
+    valid_optional_params = ['Port', 'EngineVersion',
+        'PreferredMaintenanceWindow', 'PreferredBackupWindow',
+        'BackupRetentionPeriod']
+    mandatory_params = {
+        'Action': 'CreateDBInstance',
+        'DBInstanceIdentifier': DBInstanceIdentifier,
+        'DBInstanceClass': DBInstanceClass,
+        'Engine': Engine,
+        'AllocatedStorage': AllocatedStorage,
+        'MasterUsername': MasterUsername,
+        'MasterUserPassword': MasterUserPassword,
+    }
+    return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
+
+def delete_db_instance(DBInstanceIdentifier, **optional_params):
+    valid_optional_params = ['FinalDBSnapshotIdentifier', 'SkipFinalSnapshot']
+    mandatory_params = {
+        'Action': 'DeleteDBInstance',
+        'DBInstanceIdentifier', DBInstanceIdentifier,
+    }
+    return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
+
 if __name__ == '__main__':
     pp = pprint.PrettyPrinter(indent=2)
     pp.pprint(describe_instances())

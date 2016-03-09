@@ -51,6 +51,8 @@ def _ensure_global_vars_populated():
             raise Exception
 
 def setup_client(access_key, secret_key, compute_url, vpc_url, **other_params):
+    # TODO(rushiagr): add a check to see if other params is of type *_url where
+    # * is in ['rds'] for now
     global global_vars
     global_vars['access_key'] = access_key
     global_vars['secret_key'] = secret_key
@@ -65,7 +67,8 @@ def setup_client_from_env_vars():
     setup_client(os.environ.get('ACCESS_KEY'),
                           os.environ.get('SECRET_KEY'),
                           os.environ.get('COMPUTE_URL'),
-                          os.environ.get('VPC_URL'))
+                          os.environ.get('VPC_URL'),
+                          rds_url=os.environ.get('RDS_URL'))
 
 def _get_utf8_value(value):
     """Get the UTF8-encoded version of a value."""
@@ -210,6 +213,18 @@ def do_vpc_request(valid_optional_params, supplied_optional_params,
     resp_dict = do_request('GET', request_string)
     return _remove_item_keys(resp_dict)
 
+def do_rds_request(valid_optional_params, supplied_optional_params,
+        supplied_mandatory_params=None):
+    _ensure_global_vars_populated()
+    request_dict = _create_valid_request_dictionary(
+        valid_optional_params,
+        supplied_optional_params,
+        supplied_mandatory_params)
+    global global_vars
+    request_string = requestify(global_vars['rds_url'], request_dict)
+    resp_dict = do_request('GET', request_string)
+    return _remove_item_keys(resp_dict)
+
 def _create_valid_request_dictionary(valid_params, supplied_optional_params,
         supplied_mandatory_params):
     """
@@ -295,6 +310,7 @@ def curlify(service, req_str, execute=False, prettyprint=False):
     except Exception:
         # TODO(rushiagr):
         print "You need to set environment variables: COMPUTE_URL, VPC_URL, ACCESS_KEY and SECRET_KEY to make a request"
+        print "For making RDS API calls, also set RDS_URL."
         sys.exit()
 
     params = create_param_dict(req_str)
