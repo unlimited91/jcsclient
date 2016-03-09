@@ -127,7 +127,7 @@ def create_param_dict(string):
         params[key] = val
     return params
 
-def requestify(host_or_ip, request):
+def requestify(host_or_ip, request, verb='GET'):
     """
     Method which generates final request URL to be sent to JCS servers.
 
@@ -144,7 +144,7 @@ def requestify(host_or_ip, request):
         host_or_ip += '/'
     host_or_ip += '?'
 
-    request['Signature'] = get_signature('GET', host_or_ip, request)
+    request['Signature'] = get_signature(verb, host_or_ip, request)
     request_string = host_or_ip
     for key, value in request.items():
         request_string += str(key) + '=' + str(value) + '&'
@@ -167,10 +167,15 @@ def do_request(method, url, headers=None):
     if headers is not None:
         current_headers.update(headers)
 
-    if method == 'GET':
-        #print 'url is', url, 'header is', current_headers
-        resp = requests.get(url, headers=current_headers,
-                verify=global_vars['is_secure'])
+    if method in ['GET', 'POST']:
+        print 'url is', url, 'header is', current_headers
+        if method == 'GET':
+            resp = requests.get(url, headers=current_headers,
+                    verify=global_vars['is_secure'])
+        elif method == 'POST':
+            resp = requests.post(url, headers=current_headers,
+                    verify=global_vars['is_secure'])
+
         if resp.status_code >= 400:
             print 'Exception %s thrown!!! Status code:' % resp.status_code
             print 'Error content: ', resp.content
@@ -221,8 +226,14 @@ def do_rds_request(valid_optional_params, supplied_optional_params,
         supplied_optional_params,
         supplied_mandatory_params)
     global global_vars
-    request_string = requestify(global_vars['rds_url'], request_dict)
-    resp_dict = do_request('GET', request_string)
+
+    verb = 'GET'
+    if request_dict['Action'] in ['CreateDBInstance', 'DeleteDBInstance']:
+        verb = 'POST'
+
+    request_string = requestify(global_vars['rds_url'], request_dict, verb)
+
+    resp_dict = do_request(verb, request_string)
     return _remove_item_keys(resp_dict)
 
 def _create_valid_request_dictionary(valid_params, supplied_optional_params,
@@ -317,21 +328,29 @@ def curlify(service, req_str, execute=False, prettyprint=False):
         sys.exit()
 
     params = create_param_dict(req_str)
+    verb = 'GET'
+    if params['Action'] in ['CreateDBInstance', 'DeleteDBInstance']:
+        verb = 'POST'
+
     global global_vars
     if service == 'compute':
         service_url = global_vars['compute_url']
     elif service == 'vpc':
         service_url = global_vars['vpc_url']
+    elif service == 'rds':
+        service_url = global_vars['rds_url']
+    else:
+        raise Exception
 
     if execute:
-        request_string = requestify(service_url, params)
+        request_string = requestify(service_url, params, verb)
 
         if prettyprint:
             pp = pprint.PrettyPrinter(indent=2)
-            pp.pprint(_remove_item_keys(do_request('GET', request_string)))
+            pp.pprint(_remove_item_keys(do_request(verb, request_string)))
             return
 
-        print _remove_item_keys(do_request('GET', request_string))
+        print _remove_item_keys(do_request(verb, request_string))
         return
 
-    print "curl --insecure '"+requestify(service_url, params)+"'"
+    print "curl --insecure '"+requestify(service_url, params, verb)+"'"

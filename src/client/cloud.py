@@ -286,7 +286,7 @@ def delete_db_instance(DBInstanceIdentifier, **optional_params):
     valid_optional_params = ['FinalDBSnapshotIdentifier', 'SkipFinalSnapshot']
     mandatory_params = {
         'Action': 'DeleteDBInstance',
-        'DBInstanceIdentifier', DBInstanceIdentifier,
+        'DBInstanceIdentifier': DBInstanceIdentifier,
     }
     return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
 
