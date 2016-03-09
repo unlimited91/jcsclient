@@ -203,15 +203,17 @@ def do_request(method, url, headers=None):
                 raise exceptions.HTTP404()
             raise Exception
         xml = resp.content
-        print xml
+        #print xml
         resp_ordereddict = xmltodict.parse(xml)
         # Ordered dict is difficult to read when printed, and we don't need an
         # order anyway, so just convert it to a normal dictionary
         try:
             resp_dict = json.loads(json.dumps(resp_ordereddict))
         except:
-            resp_dict = json.loads(xml)
-            print json.dumps(resp_dict, indent=4, sort_keys=True)
+            resp_dict = dict()
+            if xml is not '':
+                resp_dict = json.loads(xml)
+                print json.dumps(resp_dict, indent=4, sort_keys=True)
 
         return resp_dict
     else:
@@ -330,7 +332,8 @@ def _remove_item_keys(response):
             else:
                 response[key] = _remove_item_keys(value)
 
-    return response
+
+    return "\n\nDONE!"
 
 def curlify(service, req_str, gnucli=False, execute=False, prettyprint=False):
     """Print output which can be run as a 'curl' CLI command.
