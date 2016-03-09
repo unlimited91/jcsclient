@@ -112,7 +112,7 @@ def string_to_sign(method, host, params):
 
 def get_signature(method, host, params):
     global global_vars
-    hmac_256 = hmac.new(global_vars['secret_key'], digestmod=hashlib.sha256)
+    hmac_256 = hmac.new(str(global_vars['secret_key']), digestmod=hashlib.sha256)
     canonical_string = string_to_sign(method, host, params)
     hmac_256.update(canonical_string.encode('utf-8'))
     b64 = base64.b64encode(hmac_256.digest()).decode('utf-8')
