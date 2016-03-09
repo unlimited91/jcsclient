@@ -228,7 +228,7 @@ def do_rds_request(valid_optional_params, supplied_optional_params,
     global global_vars
 
     verb = 'GET'
-    if request_dict['Action'] in ['CreateDBInstance', 'DeleteDBInstance', 'ModifyDBInstance', 'CreateDBSnapshot', 'DeleteDBSnapshot']:
+    if request_dict['Action'] in ['CreateDBInstance', 'DeleteDBInstance', 'ModifyDBInstance', 'CreateDBSnapshot', 'DeleteDBSnapshot', 'RestoreDBInstanceFromDBSnapshot']:
         verb = 'POST'
 
     request_string = requestify(global_vars['rds_url'], request_dict, verb)
@@ -329,7 +329,7 @@ def curlify(service, req_str, execute=False, prettyprint=False):
 
     params = create_param_dict(req_str)
     verb = 'GET'
-    if params['Action'] in ['CreateDBInstance', 'DeleteDBInstance', 'ModifyDBInstance', 'CreateDBSnapshot', 'DeleteDBSnapshot']:
+    if params['Action'] in ['CreateDBInstance', 'DeleteDBInstance', 'ModifyDBInstance', 'CreateDBSnapshot', 'DeleteDBSnapshot', 'RestoreDBInstanceFromDBSnapshot']:
         verb = 'POST'
 
     global global_vars
