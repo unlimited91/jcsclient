@@ -68,7 +68,8 @@ def setup_client_from_env_vars():
                           os.environ.get('SECRET_KEY'),
                           os.environ.get('COMPUTE_URL'),
                           os.environ.get('VPC_URL'),
-                          rds_url=os.environ.get('RDS_URL'))
+                          rds_url=os.environ.get('RDS_URL'),
+                          iam_url=os.environ.get('IAM_URL'))
 
 def _get_utf8_value(value):
     """Get the UTF8-encoded version of a value."""
@@ -127,6 +128,23 @@ def create_param_dict(string):
         params[key] = val
     return params
 
+def create_param_dict_gnucli(array):
+    #print array
+    params = dict()
+    params['Action'] = array[0]
+    array = array[1:]
+    l = len(array)
+    if l%2 != 0:
+        print "ERROR: Missing parameter values in request\n"
+        raise Exception
+    for index in range(0,l,2):
+        if index % 2 == 0 and array[index][:2] != "--":
+            print "ERROR: improper request"
+            print "Refer to jcs --help "
+            raise Exception
+        params[array[index][2:]] = array[index+1]
+    return params
+
 def requestify(host_or_ip, request, verb='GET'):
     """
     Method which generates final request URL to be sent to JCS servers.
@@ -168,7 +186,7 @@ def do_request(method, url, headers=None):
         current_headers.update(headers)
 
     if method in ['GET', 'POST']:
-        print 'url is', url, 'header is', current_headers
+        #print 'url is', url, 'header is', current_headers
         if method == 'GET':
             resp = requests.get(url, headers=current_headers,
                     verify=global_vars['is_secure'])
@@ -189,7 +207,12 @@ def do_request(method, url, headers=None):
         resp_ordereddict = xmltodict.parse(xml)
         # Ordered dict is difficult to read when printed, and we don't need an
         # order anyway, so just convert it to a normal dictionary
-        resp_dict = json.loads(json.dumps(resp_ordereddict))
+        try:
+            resp_dict = json.loads(json.dumps(resp_ordereddict))
+        except:
+            resp_dict = json.loads(xml)
+            print json.dumps(resp_dict, indent=4, sort_keys=True)
+
         return resp_dict
     else:
         raise NotImplementedError
@@ -309,7 +332,7 @@ def _remove_item_keys(response):
 
     return response
 
-def curlify(service, req_str, execute=False, prettyprint=False):
+def curlify(service, req_str, gnucli=False, execute=False, prettyprint=False):
     """Print output which can be run as a 'curl' CLI command.
 
     This function, if global vars is not set, will print output saying global
@@ -327,7 +350,10 @@ def curlify(service, req_str, execute=False, prettyprint=False):
         print "For making RDS API calls, also set RDS_URL."
         sys.exit()
 
-    params = create_param_dict(req_str)
+    if gnucli:
+        params = create_param_dict_gnucli(req_str)
+    else:
+        params = create_param_dict(req_str)
     verb = 'GET'
     if params['Action'] in ['CreateDBInstance', 'DeleteDBInstance', 'ModifyDBInstance', 'CreateDBSnapshot', 'DeleteDBSnapshot']:
         verb = 'POST'
@@ -339,6 +365,8 @@ def curlify(service, req_str, execute=False, prettyprint=False):
         service_url = global_vars['vpc_url']
     elif service == 'rds':
         service_url = global_vars['rds_url']
+    elif service == 'iam':
+        service_url = global_vars['iam_url']
     else:
         raise Exception
 
