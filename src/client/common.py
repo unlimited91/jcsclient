@@ -15,7 +15,7 @@ import xmltodict
 
 import exceptions
 
-
+requests.packages.urllib3.disable_warnings()
 global_vars = {
     'access_key': None,
     'secret_key': None,
@@ -116,6 +116,7 @@ def get_signature(method, host, params):
     return ul.quote(b64)
 
 def create_param_dict(string):
+    #print string
     params = {}
     parts = string.split('&')
     for p in parts:
@@ -164,7 +165,7 @@ def do_request(method, url, headers=None):
         current_headers.update(headers)
 
     if method == 'GET':
-        print 'url is', url, 'header is', current_headers
+        #print 'url is', url, 'header is', current_headers
         resp = requests.get(url, headers=current_headers,
                 verify=global_vars['is_secure'])
         if resp.status_code >= 400:
