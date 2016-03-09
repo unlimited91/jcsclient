@@ -15,7 +15,7 @@ import xmltodict
 
 import exceptions
 
-requests.packages.urllib3.disable_warnings()
+#requests.packages.urllib3.disable_warnings()
 global_vars = {
     'access_key': None,
     'secret_key': None,
@@ -228,7 +228,7 @@ def do_rds_request(valid_optional_params, supplied_optional_params,
     global global_vars
 
     verb = 'GET'
-    if request_dict['Action'] in ['CreateDBInstance', 'DeleteDBInstance']:
+    if request_dict['Action'] in ['CreateDBInstance', 'DeleteDBInstance', 'ModifyDBInstance', 'CreateDBSnapshot', 'DeleteDBSnapshot']:
         verb = 'POST'
 
     request_string = requestify(global_vars['rds_url'], request_dict, verb)
@@ -329,7 +329,7 @@ def curlify(service, req_str, execute=False, prettyprint=False):
 
     params = create_param_dict(req_str)
     verb = 'GET'
-    if params['Action'] in ['CreateDBInstance', 'DeleteDBInstance']:
+    if params['Action'] in ['CreateDBInstance', 'DeleteDBInstance', 'ModifyDBInstance', 'CreateDBSnapshot', 'DeleteDBSnapshot']:
         verb = 'POST'
 
     global global_vars
