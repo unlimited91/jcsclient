@@ -7,10 +7,9 @@ import pprint
 
 # =============== Instances =================
 
-def describe_instances(**params):
+def describe_instances(**optional_params):
     """DescribeInstances API wrapper."""
     valid_optional_params = ['InstanceId.1']
-    optional_params = params
     mandatory_params = {'Action': 'DescribeInstances'}
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
@@ -180,19 +179,19 @@ def delete_volume(VolumeId):
 
 # =============== Snapshots =================
 
-def describe_snapshots():
+def describe_snapshots(**optional_params):
     """DescribeSnapshots API wrapper."""
-    valid_optional_params = []
-    optional_params = {}
+    valid_optional_params = ['SnapshotId']
     mandatory_params = {'Action': 'DescribeSnapshots'}
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
-def create_snapshot(VolumeId, **optional_params):
+def create_snapshot(volume_id):
     """DescribeSnapshots API wrapper."""
     valid_optional_params = ['Name', 'Description']
+    optional_params = {}
     mandatory_params = {
         'Action': 'CreateSnapshot',
-        'VolumeId': VolumeId,
+        'VolumeId': volume_id,
     }
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
