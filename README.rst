@@ -58,7 +58,7 @@ Installation from source
 
 ::
 
-    git clone https://gitlab.com/jiocloudservices/common.git
+    git clone https://github.com/jiocloudservices/jcsclient.git
     cd common
     sudo pip install -r requirements.txt   # Can use virtual environment too
     sudo python setup.py develop
