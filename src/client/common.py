@@ -242,10 +242,13 @@ def _create_valid_request_dictionary(valid_params, supplied_optional_params,
         final_dict = supplied_mandatory_params.copy()
 
     for key, value in supplied_optional_params.items():
-        if key in valid_params:
-            final_dict[key] = str(value)  # Everything must be stringified
-        else:
-            print 'Unsupported key! Dropping key-value', key, value
+        # NOTE: for now, we're turning off validation of supplied params.
+        # The commented 4 lines will add back validation
+        final_dict[key] = str(value)
+        # if key in valid_params:
+        #     final_dict[key] = str(value)  # Everything must be stringified
+        # else:
+        #     print 'Unsupported key! Dropping key-value', key, value
 
     return final_dict
 
