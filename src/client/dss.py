@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import hmac
+import json
 import base64
 import requests
 import exceptions
@@ -21,6 +22,7 @@ dss_info  = {
     'sign'   : None,
     'printer': None,
 }
+os.environ['REQUESTS_CA_BUNDLE'] = os.path.join('/etc/ssl/certs/','ca-certificates.crt')
 
 def initiate(printer, action, target):
     global dss_info
@@ -44,7 +46,11 @@ def parse_dss_info(printer, action, target):
     global dss_info
     printer = printer[2:]
     action  = action[7:]
-    target  = target[7:]
+    if target is not None:
+        target  = target[7:]
+    else:
+        target = '/'
+
     whisper("DSS code received:\nPrinter: " + str(printer) + "\nAction: " + str(action) + "\nTarget: " + str(target) + "\n")
 
     if printer not in ['curl', 'prettyprint']:
@@ -79,6 +85,11 @@ def parse_dss_info(printer, action, target):
         print "No valid action provided for DSS service!"
         valid_dss_actions()
         sys.exit(0)
+
+    if dss_info['action'] == 'ListAllMyBuckets':
+        if len(dss_info['bucket']) > 0:
+            print "ListAllMyBuckets only accepts \'/\' as target"
+            sys.exit(0)
     return
 
 def whisper(mystr):
@@ -164,26 +175,36 @@ def make_dss_request():
         return
 
     if dss_info['op'] == 'GET':
-        resp = requests.get(url, headers=headers, verify="False")
+        resp = requests.get(url, headers=headers)
     elif dss_info['op'] == 'HEAD':
-        resp = requests.head(url, headers=headers, verify="False")
+        resp = requests.head(url, headers=headers)
     elif dss_info['op'] == 'DELETE':
-        resp = requests.delete(url, headers=headers, verify="False")
+        resp = requests.delete(url, headers=headers)
     elif dss_info['op'] == 'PUT':
         if dss_info['object'] is not None:
             # Put object is blocked from dss_op_from_action() itself.
             # A smart alec can give create bucket action and pass bucket/object
             print "Bad bucket name in create bucket!. Slash not allowed in bucket name."
             sys.exit(0)
-        resp = requests.put(url, headers=headers, verify="False")
+        resp = requests.put(url, headers=headers)
     else:
         print "Unexpected operation!"
         sys.exit(0)
 
     if resp.status_code >= 400:
-        print 'Exception %s thrown' % resp.status_code
+        print 'Error %s thrown' % resp.status_code
+    else:
+        rawheaders = {}
+        rawheaders.update(resp.headers)
+        #parsedheaders = json.loads(rawheaders)
+        #print json.dumps(parsedheaders, indent=4, sort_keys=True)
+        print rawheaders
 
-    if (dss_info['printer'] == 'prettyprint'):
-        xmlret = xml.dom.minidom.parseString(resp.content)
-        print xmlret.toprettyxml()
+    rawxmlret = resp.content
+    if (dss_info['printer'] == 'prettyprint' and len(rawxmlret) != 0):
+        if dss_info['action'] == 'GetObject':
+            print resp.content
+        else:
+            xmlret = xml.dom.minidom.parseString(rawxmlret)
+            print xmlret.toprettyxml()
     return

@@ -9,5 +9,6 @@
 export IS_SECURE=False
 export COMPUTE_URL=https://compute.ind-west-1.staging.jiocloudservices.com/services/Cloud/
 export VPC_URL=https://vpc.ind-west-1.staging.jiocloudservices.com
-export ACCESS_KEY=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-export SECRET_KEY=ssssssssssssssssssssssssssssssss
+export DSS_URL=https://dss.ind-west-1.staging.jiocloudservices.com
+export ACCESS_KEY=''
+export SECRET_KEY=''

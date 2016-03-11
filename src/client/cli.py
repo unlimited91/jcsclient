@@ -44,8 +44,27 @@ def main(argv=sys.argv):
         sys.exit(1)
 
     ## Separate out DSS workflow
-    if len(argv) >= 3 and argv[2].lower() == "dss":
-        dss.initiate(argv[1], argv[3], argv[4])
+    if argv[2].lower() == "dss" or argv[1].lower() == "dss":
+        if argv[2].lower() == "dss":
+            if len(argv) >= 5:
+                dss.initiate(argv[1], argv[3], argv[4])
+            elif len(argv) == 4:
+                dss.initiate(argv[1], argv[3], None)
+            else:
+                print "Not enough args for DSS service!"
+                return 0
+
+        elif argv[1].lower() == "dss":
+            #dss.initiate("--prettyprint", argv[2], argv[3])
+            if len(argv) >= 4:
+                dss.initiate("--prettyprint", argv[2], argv[3])
+            elif len(argv) == 3:
+                dss.initiate("--prettyprint", argv[2], None)
+            else:
+                #Control will never reach here as help menu gets printed for less than 3 args
+                print "Not enough args for DSS service!"
+                return 0
+
         return 0
 
     if argv[1] == '--curl':
