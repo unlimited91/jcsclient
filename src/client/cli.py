@@ -64,13 +64,16 @@ def main(argv=sys.argv):
                 #Control will never reach here as help menu gets printed for less than 3 args
                 print "Not enough args for DSS service!"
                 return 0
+    return 0
 
-        return 0
-
-    if argv[1] == '--curl':
+    if argv[1] == '--curl' and len(argv) == 4:
         common.curlify(argv[2], argv[3])
-    elif argv[1] == '--prettyprint':
-        common.curlify(argv[2], argv[3], True, True)
+    elif argv[1] == '--prettyprint' and len(argv) == 4:
+        common.curlify(argv[2], argv[3], False, True, True)
+    elif len(argv) == 3 and '=' in argv[2]:
+        common.curlify(argv[1], argv[2], False, True)
+    elif len(argv) >= 3:
+        common.curlify(argv[1], argv[2:], True, True)
     else:
-        common.curlify(argv[1], argv[2], True)
+        print "Invalid client request"
     return 0
