@@ -204,16 +204,17 @@ def do_request(method, url, headers=None):
             elif resp.status_code == 404:
                 raise exceptions.HTTP404()
             raise Exception
-        xml = resp.content
-        print xml
-        resp_ordereddict = xmltodict.parse(xml)
-        # Ordered dict is difficult to read when printed, and we don't need an
-        # order anyway, so just convert it to a normal dictionary
+        response = resp.content
+
         try:
-            resp_dict = json.loads(json.dumps(resp_ordereddict))
+            resp_dict = dict()
+            if response is not '':
+                resp_dict = json.loads(response)
+                print json.dumps(resp_dict, indent=4, sort_keys=True)
         except:
-            resp_dict = json.loads(xml)
-            print json.dumps(resp_dict, indent=4, sort_keys=True)
+            resp_dict = dict()
+            resp_ordereddict = xmltodict.parse(response)
+            resp_dict = json.loads(json.dumps(resp_ordereddict))
 
         return resp_dict
     else:
@@ -288,7 +289,7 @@ def _create_valid_request_dictionary(valid_params, supplied_optional_params,
 
     return final_dict
 
-def _remove_item_keys(response):
+def _remove_item_keys(response, cli=False):
     """
     Remove all 'item' keys from 'response' dictionary.
 
@@ -306,6 +307,9 @@ def _remove_item_keys(response):
         Input: {'instances': {'item': [{'key1': 'value1'}, {'key2': 'value2'}]}}
         Output: {'instances': [{'key1': 'value1'}, {'key2': 'value2'}]}
     """
+    if cli:
+        return ""
+
     if type(response) != dict:
         raise Exception
 
@@ -331,6 +335,7 @@ def _remove_item_keys(response):
                 response[key] = [_remove_item_keys(d) for d in response[key]]
             else:
                 response[key] = _remove_item_keys(value)
+
 
     return response
 
@@ -380,7 +385,7 @@ def curlify(service, req_str, gnucli=False, execute=False, prettyprint=False):
             pp.pprint(_remove_item_keys(do_request(verb, request_string)))
             return
 
-        print _remove_item_keys(do_request(verb, request_string))
+        print _remove_item_keys(do_request(verb, request_string), gnucli)
         return
 
     print "curl --insecure '"+requestify(service_url, params, verb)+"'"
