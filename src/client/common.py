@@ -21,6 +21,7 @@ global_vars = {
     'secret_key': None,
     'compute_url': None,
     'vpc_url': None,
+    #'dss_url': None,
     'is_secure': False,
 }
 
@@ -68,6 +69,7 @@ def setup_client_from_env_vars():
                           os.environ.get('SECRET_KEY'),
                           os.environ.get('COMPUTE_URL'),
                           os.environ.get('VPC_URL'),
+                          dss_url=os.environ.get('DSS_URL'),
                           rds_url=os.environ.get('RDS_URL'),
                           iam_url=os.environ.get('IAM_URL'))
 
@@ -347,7 +349,7 @@ def curlify(service, req_str, gnucli=False, execute=False, prettyprint=False):
     except Exception:
         # TODO(rushiagr):
         print "You need to set environment variables: COMPUTE_URL, VPC_URL, ACCESS_KEY and SECRET_KEY to make a request"
-        print "For making RDS API calls, also set RDS_URL."
+        print "For making DSS or RDS API calls, also set DSS_URL and RDS_URL respectively."
         sys.exit()
 
     if gnucli:
