@@ -21,7 +21,7 @@ global_vars = {
     'secret_key': None,
     'compute_url': None,
     'vpc_url': None,
-    'dss_url': None,
+    #'dss_url': None,
     'is_secure': False,
 }
 
@@ -46,12 +46,12 @@ def _ensure_global_vars_populated():
     # write a method _populate_global_vars(key, value) and use only that to
     # populate global vars
     global global_vars
-    for key in ['access_key', 'secret_key', 'compute_url', 'vpc_url', 'dss_url']:
+    for key in ['access_key', 'secret_key', 'compute_url', 'vpc_url']:
         if global_vars[key] is None:
             print 'Global variable %s not populated!!' % key
             raise Exception
 
-def setup_client(access_key, secret_key, compute_url, vpc_url, dss_url, **other_params):
+def setup_client(access_key, secret_key, compute_url, vpc_url, **other_params):
     # TODO(rushiagr): add a check to see if other params is of type *_url where
     # * is in ['rds'] for now
     global global_vars
@@ -59,7 +59,6 @@ def setup_client(access_key, secret_key, compute_url, vpc_url, dss_url, **other_
     global_vars['secret_key'] = secret_key
     global_vars['compute_url'] = compute_url
     global_vars['vpc_url'] = vpc_url
-    global_vars['dss_url'] = dss_url
     global_vars.update(other_params)
     global common_params_v2
     common_params_v2['JCSAccessKeyId'] = access_key
@@ -70,8 +69,8 @@ def setup_client_from_env_vars():
                           os.environ.get('SECRET_KEY'),
                           os.environ.get('COMPUTE_URL'),
                           os.environ.get('VPC_URL'),
-                          os.environ.get('DSS_URL'),
-                          rds_url=os.environ.get('RDS_URL'))
+                          dss_url=os.environ.get('DSS_URL'),
+                          rds_url=os.environ.get('RDS_URL'),
                           iam_url=os.environ.get('IAM_URL'))
 
 def _get_utf8_value(value):
@@ -349,8 +348,8 @@ def curlify(service, req_str, gnucli=False, execute=False, prettyprint=False):
         _ensure_global_vars_populated()
     except Exception:
         # TODO(rushiagr):
-        print "You need to set environment variables: COMPUTE_URL, VPC_URL, DSS_URL, ACCESS_KEY and SECRET_KEY to make a request"
-        print "For making RDS API calls, also set RDS_URL."
+        print "You need to set environment variables: COMPUTE_URL, VPC_URL, ACCESS_KEY and SECRET_KEY to make a request"
+        print "For making DSS or RDS API calls, also set DSS_URL and RDS_URL respectively."
         sys.exit()
 
     if gnucli:

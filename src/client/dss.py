@@ -31,9 +31,11 @@ def initiate(printer, action, target):
     try:
         common.setup_client_from_env_vars()
         common._ensure_global_vars_populated()
+        if common.global_vars['dss_url'] is None:
+            print "Global variable dss_url not set!"
+            raise Exception
     except Exception:
-        print "You need to set environment variables: COMPUTE_URL, VPC_URL, DSS_URL, ACCESS_KEY and SECRET_KEY to make a request"
-        print "For making RDS API calls, also set RDS_URL."
+        print "You need to set environment variables: DSS_URL, ACCESS_KEY and SECRET_KEY to make a DSS request"
         sys.exit()
 
     parse_dss_info(printer, action, target)
