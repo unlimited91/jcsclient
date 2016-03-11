@@ -11,6 +11,11 @@ from hashlib import sha1
 from client import common
 from email.utils import formatdate
 
+##===================================
+## Global vars
+##===================================
+
+
 # Set this value to 1 for debugging
 DSS_DEBUG = 0
 
@@ -23,6 +28,10 @@ dss_info  = {
     'printer': None,
 }
 os.environ['REQUESTS_CA_BUNDLE'] = os.path.join('/etc/ssl/certs/','ca-certificates.crt')
+
+##===================================
+## Main workflow
+##===================================
 
 def initiate(printer, action, target):
     global dss_info
@@ -43,8 +52,11 @@ def initiate(printer, action, target):
     make_dss_request()
     return
 
+##===================================
+## Parses received arguments
+##===================================
+
 def parse_dss_info(printer, action, target):
-    # Can populate a bucket name of zero length. Careful!
     global dss_info
     printer = printer[2:]
     action  = action[7:]
@@ -94,13 +106,21 @@ def parse_dss_info(printer, action, target):
             sys.exit(0)
     return
 
+##===================================
+## Prints debug logs when DSS_DEBUG is set
+##===================================
+
 def whisper(mystr):
     if DSS_DEBUG == 1:
         print "DEBUG: " + mystr
     return
 
+##===================================
+## Returns HTTP verb from DSS action
+##===================================
+
 def dss_op_from_action(action):
-    if action in ['CreateBucket']:
+    if action in ['CreateBucket', 'PutObject']:
         return 'PUT'
     if action in ['ListAllMyBuckets', 'ListBucket', 'GetObject']:
         return 'GET'
@@ -110,6 +130,10 @@ def dss_op_from_action(action):
         return 'DELETE'
     return None
 
+##===================================
+## Prints a list of DSS actions
+##===================================
+
 def valid_dss_actions():
     print "Valid actions for DSS:"
     print "\tListAllMyBuckets: Lists all the buckets created for a user"
@@ -117,10 +141,15 @@ def valid_dss_actions():
     print "\tCreateBucket:     Creates the bucket mentioned in Target parameter"
     print "\tDeleteBucket:     Deletes the bucket mentioned in Target parameter"
     print "\tHeadBucket:       Lists details of the bucket mentioned in Target parameter"
-    print "\tGetObject:        Fetches the object mentioned in Target parameter"
+    print "\tGetObject:        Fetches the object mentioned in Target parameter and saves in pwd"
+    print "\tPutObject:        Uploads the object mentioned in File parameter as object mentioned in Target"
     print "\tHeadObject:       Lists details of the object mentioned in Target parameter"
     print "\tDeleteObject:     Deletes the object mentioned in Target parameter"
     return
+
+##===================================
+## Returns cannonical string
+##===================================
 
 def gets_dss_cannonical_str():
     cannonical_str = ''
@@ -136,6 +165,10 @@ def gets_dss_cannonical_str():
     cannonical_str += "\n" + path
     return cannonical_str
 
+##===================================
+## Signs and build Auth header
+##===================================
+
 def gets_dss_signature():
     secret = common.global_vars['secret_key']
     secret_str = (str(secret)).encode('utf-8')
@@ -149,6 +182,10 @@ def gets_dss_signature():
     whisper("Generated new signature: " + auth)
     return auth
 
+##===================================
+## Builds the path DSS recognizes
+##===================================
+
 def gets_dss_path():
     path = ''
     if (dss_info['bucket'] is None or len(dss_info['bucket']) == 0):
@@ -159,6 +196,10 @@ def gets_dss_path():
         path += '/' + dss_info['object']
     return path
 
+##==========================================
+## Makes request to DSS and parses response
+##==========================================
+
 def make_dss_request():
     ## Try using curl and pretty print
     headers = {
@@ -168,26 +209,30 @@ def make_dss_request():
 
     headers['Authorization'] = dss_info['sign']
     headers['Date'] = formatdate(usegmt=True)
+    # Action specific headers
+
     url = common.global_vars['dss_url']
     url += gets_dss_path()
     resp = ''
-
     if (dss_info['printer'] == 'curl'):
+        # If user picked curl, make his a nice curl string and exit
         print "curl -i -v -X " + dss_info['op'] + " -H \'Authorization: " + dss_info['sign'] + "\' " + "-H \'Date: " + headers['Date'] + "\' " + url
         return
 
     if dss_info['op'] == 'GET':
-        resp = requests.get(url, headers=headers)
+        if dss_info['action'] == 'GetObject':
+            filname = dss_info['bucket'] + "_" + dss_info['object']
+            resp = download_file(filname, url, headers)
+        else:
+            resp = requests.get(url, headers=headers)
     elif dss_info['op'] == 'HEAD':
         resp = requests.head(url, headers=headers)
     elif dss_info['op'] == 'DELETE':
         resp = requests.delete(url, headers=headers)
     elif dss_info['op'] == 'PUT':
-        if dss_info['object'] is not None:
-            # Put object is blocked from dss_op_from_action() itself.
-            # A smart alec can give create bucket action and pass bucket/object
-            print "Bad bucket name in create bucket!. Slash not allowed in bucket name."
-            sys.exit(0)
+        if dss_info['action'] == 'PutObject':
+            # Put object
+            print "blah"
         resp = requests.put(url, headers=headers)
     else:
         print "Unexpected operation!"
@@ -202,11 +247,24 @@ def make_dss_request():
         #print json.dumps(parsedheaders, indent=4, sort_keys=True)
         print rawheaders
 
-    rawxmlret = resp.content
-    if (dss_info['printer'] == 'prettyprint' and len(rawxmlret) != 0):
-        if dss_info['action'] == 'GetObject':
-            print resp.content
-        else:
+    # GetObject iterates over the content and finishes it off
+    if dss_info['action'] != 'GetObject':
+        rawxmlret = resp.content
+        if (dss_info['printer'] == 'prettyprint' and len(rawxmlret) != 0):
             xmlret = xml.dom.minidom.parseString(rawxmlret)
             print xmlret.toprettyxml()
     return
+
+##===================================
+## Downloads object as file
+##===================================
+
+def download_file(filname, url, headers):
+    with open(filname, 'wb') as handle:
+        resp = requests.get(url, headers=headers, stream=True)
+        if not resp.ok:
+            print "Error downloading file " + dss_info['object']
+            return resp
+        for block in resp.iter_content(1024):
+            handle.write(block)
+    return resp
