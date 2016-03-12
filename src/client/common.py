@@ -21,7 +21,6 @@ global_vars = {
     'secret_key': None,
     'compute_url': None,
     'vpc_url': None,
-    #'dss_url': None,
     'is_secure': False,
 }
 

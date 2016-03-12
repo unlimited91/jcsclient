@@ -26,6 +26,7 @@ dss_info  = {
     'object' : None,
     'sign'   : None,
     'printer': None,
+    'file'   : None,
 }
 os.environ['REQUESTS_CA_BUNDLE'] = os.path.join('/etc/ssl/certs/','ca-certificates.crt')
 
@@ -33,7 +34,7 @@ os.environ['REQUESTS_CA_BUNDLE'] = os.path.join('/etc/ssl/certs/','ca-certificat
 ## Main workflow
 ##===================================
 
-def initiate(printer, action, target):
+def initiate(printer, action, target=None, file=None):
     global dss_info
 
     # Fetch access key, secret key and endpoints from env
@@ -47,7 +48,7 @@ def initiate(printer, action, target):
         print "You need to set environment variables: DSS_URL, ACCESS_KEY and SECRET_KEY to make a DSS request"
         sys.exit()
 
-    parse_dss_info(printer, action, target)
+    parse_dss_info(printer, action, target, file)
     dss_info['sign'] = gets_dss_signature()
     make_dss_request()
     return
@@ -56,7 +57,7 @@ def initiate(printer, action, target):
 ## Parses received arguments
 ##===================================
 
-def parse_dss_info(printer, action, target):
+def parse_dss_info(printer, action, target, file):
     global dss_info
     printer = printer[2:]
     action  = action[7:]
@@ -64,6 +65,8 @@ def parse_dss_info(printer, action, target):
         target  = target[7:]
     else:
         target = '/'
+    if file is not None:
+        file = file[5:]
 
     whisper("DSS code received:\nPrinter: " + str(printer) + "\nAction: " + str(action) + "\nTarget: " + str(target) + "\n")
 
@@ -73,6 +76,7 @@ def parse_dss_info(printer, action, target):
 
     dss_info['action'] = action
     dss_info['printer'] = printer
+    dss_info['file'] = file
 
     if target[0] == '/':
         target = target[1:]
@@ -153,14 +157,17 @@ def valid_dss_actions():
 
 def gets_dss_cannonical_str():
     cannonical_str = ''
-    md5_checksum   = '' #TODO: Shivanshu: make a function to calculate this for put object
+    md5_checksum   = ''
     date           = formatdate(usegmt=True)
     content_type   = 'application/octet-stream'
     path           = gets_dss_path()
 
     cannonical_str += dss_info['op']
     cannonical_str += "\n" + md5_checksum
-    cannonical_str += "\n" #+ content_type
+    if dss_info['action'] == 'PutObject':
+        cannonical_str += "\n" + content_type
+    else:
+        cannonical_str += "\n"
     cannonical_str += "\n" + date
     cannonical_str += "\n" + path
     return cannonical_str
@@ -201,24 +208,37 @@ def gets_dss_path():
 ##==========================================
 
 def make_dss_request():
-    ## Try using curl and pretty print
+
+    ## Build headers
     headers = {
         'Authorization': None,
         'Date': None,
     }
-
     headers['Authorization'] = dss_info['sign']
     headers['Date'] = formatdate(usegmt=True)
     # Action specific headers
+    files = {}
+    if dss_info['action'] == 'PutObject':
+        files = {dss_info['object'] : open(dss_info['file'], 'rb')}
+        try:
+            statinfo = os.stat(dss_info['file'])
+            headers['Content-Length'] = statinfo.st_size
+            headers['Content-Type'] = 'application/octet-stream'
+        except:
+            print "Error in getting file stats: " + str(sys.exc_info())
+            sys.exit(0)
 
+
+    ## Build URL and send request
     url = common.global_vars['dss_url']
     url += gets_dss_path()
     resp = ''
     if (dss_info['printer'] == 'curl'):
         # If user picked curl, make his a nice curl string and exit
-        print "curl -i -v -X " + dss_info['op'] + " -H \'Authorization: " + dss_info['sign'] + "\' " + "-H \'Date: " + headers['Date'] + "\' " + url
+        curl_str = "curl -i -v -X " + dss_info['op'] + " -H \'Authorization: " + \
+                   + dss_info['sign'] + "\' " + "-H \'Date: " + headers['Date'] + "\' " + url
+        print curl_str
         return
-
     if dss_info['op'] == 'GET':
         if dss_info['action'] == 'GetObject':
             filname = dss_info['bucket'] + "_" + dss_info['object']
@@ -231,15 +251,17 @@ def make_dss_request():
         resp = requests.delete(url, headers=headers)
     elif dss_info['op'] == 'PUT':
         if dss_info['action'] == 'PutObject':
-            # Put object
-            print "blah"
-        resp = requests.put(url, headers=headers)
+            resp = requests.put(url, headers=headers, files=files, verify='False')
+        if dss_info['action'] == 'CreateBucket':
+            resp = requests.put(url, headers=headers)
     else:
         print "Unexpected operation!"
         sys.exit(0)
 
+
+    ## Parse output
     if resp.status_code >= 400:
-        print 'Error %s thrown' % resp.status_code
+        print 'HTTP error code: %s' % resp.status_code
     else:
         rawheaders = {}
         rawheaders.update(resp.headers)

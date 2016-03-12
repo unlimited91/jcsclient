@@ -58,7 +58,6 @@ def main(argv=sys.argv):
                 return 0
 
         elif argv[1].lower() == "dss":
-            #dss.initiate("--prettyprint", argv[2], argv[3])
             if len(argv) == 5:
                 dss.initiate("--prettyprint", argv[2], argv[3], argv[4])
             elif len(argv) == 4:
