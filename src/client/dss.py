@@ -236,7 +236,7 @@ def make_dss_request():
     if (dss_info['printer'] == 'curl'):
         # If user picked curl, make his a nice curl string and exit
         curl_str = "curl -i -v -X " + dss_info['op'] + " -H \'Authorization: " + \
-                   + dss_info['sign'] + "\' " + "-H \'Date: " + headers['Date'] + "\' " + url
+                   dss_info['sign'] + "\' " + "-H \'Date: " + headers['Date'] + "\' " + url
         print curl_str
         return
     if dss_info['op'] == 'GET':
@@ -251,7 +251,7 @@ def make_dss_request():
         resp = requests.delete(url, headers=headers)
     elif dss_info['op'] == 'PUT':
         if dss_info['action'] == 'PutObject':
-            resp = requests.put(url, headers=headers, files=files, verify='False')
+            resp = requests.put(url, headers=headers, files=files)
         if dss_info['action'] == 'CreateBucket':
             resp = requests.put(url, headers=headers)
     else:
