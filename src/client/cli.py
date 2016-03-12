@@ -41,7 +41,7 @@ def main(argv=sys.argv):
         print "If --prettyprint is specified, response of request made will be"
         print "printed using a pretty printer"
         print "DSS Target is the path of the entity you want to address"
-        print "It can be just the bucket name, or bucket name followed by object name"
+        print "It can be just the bucket name, or bucket name followed by object name. Eg. /bucket1/obj2"
         sys.exit(1)
 
     ## Separate out DSS workflow
@@ -54,7 +54,7 @@ def main(argv=sys.argv):
             elif len(argv) == 4:
                 dss.initiate(argv[1], argv[3])
             else:
-                print "Not enough args for DSS service!"
+                print "ERROR: Not enough parameters specified for DSS service!"
                 return 0
 
         elif argv[1].lower() == "dss":
@@ -66,7 +66,7 @@ def main(argv=sys.argv):
                 dss.initiate("--prettyprint", argv[2])
             else:
                 #Control will never reach here as help menu gets printed for less than 3 args
-                print "Not enough args for DSS service!"
+                print "ERROR: Not enough parameters specified for DSS service!"
                 return 0
         return 0
 

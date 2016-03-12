@@ -100,13 +100,25 @@ def parse_dss_info(printer, action, target, file):
         sys.exit(0)
 
     if dss_info['op'] is None:
-        print "No valid action provided for DSS service!"
+        print "ERROR: No valid action provided for DSS service!"
         valid_dss_actions()
         sys.exit(0)
 
     if dss_info['action'] == 'ListAllMyBuckets':
         if len(dss_info['bucket']) > 0:
-            print "ListAllMyBuckets only accepts \'/\' as target"
+            print "ERROR: ListAllMyBuckets only accepts \'/\' as target"
+            sys.exit(0)
+
+    if dss_info['action'] in ['CreateBucket', 'DeleteBucket', 'HeadBucket', 'ListBucket']:
+        if len(dss_info['bucket']) == 0:
+            print "ERROR: Bucket name must be specified to list, create, delete or head a bucket. Use the \'Target\' argument to specify bucket name. Eg. Target=/bucket1"
+            sys.exit(0)
+        if (dss_info['object'] is not None):
+            print "ERROR: ListBucket, CreateBucket, DeleteBucket and HeadBucket commands do not accept object name"
+            sys.exit(0)
+    if dss_info['action'] in ['GetObject', 'PutObject', 'HeadObject', 'DeleteObject']:
+        if (dss_info['object'] is None or len(dss_info['object']) == 0):
+            print "ERROR: Object name must be specified for actions GetObject, PutObject, HeadObject and DeleteObject"
             sys.exit(0)
     return
 
@@ -145,7 +157,7 @@ def valid_dss_actions():
     print "\tCreateBucket:     Creates the bucket mentioned in Target parameter"
     print "\tDeleteBucket:     Deletes the bucket mentioned in Target parameter"
     print "\tHeadBucket:       Lists details of the bucket mentioned in Target parameter"
-    print "\tGetObject:        Fetches the object mentioned in Target parameter and saves in pwd"
+    print "\tGetObject:        Fetches the object mentioned in Target parameter and saves in the current working directory as bucketname_object"
     print "\tPutObject:        Uploads the object mentioned in File parameter as object mentioned in Target"
     print "\tHeadObject:       Lists details of the object mentioned in Target parameter"
     print "\tDeleteObject:     Deletes the object mentioned in Target parameter"
@@ -219,11 +231,11 @@ def make_dss_request():
     # Action specific headers
     files = {}
     if dss_info['action'] == 'PutObject':
-        files = {dss_info['object'] : open(dss_info['file'], 'rb')}
         try:
             statinfo = os.stat(dss_info['file'])
             headers['Content-Length'] = statinfo.st_size
             headers['Content-Type'] = 'application/octet-stream'
+            files = {dss_info['object'] : open(dss_info['file'], 'rb')}
         except:
             print "Error in getting file stats: " + str(sys.exc_info())
             sys.exit(0)
