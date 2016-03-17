@@ -16,19 +16,24 @@ Why does this file exist, and why not put this in __main__?
 """
 import sys
 
+from client.newcli import common_cli
+
 from client import common
 from client import dss
+
 
 def main(argv=sys.argv):
     """
     Args:
         argv (list): List of arguments
 
-    Returns:
-        int: A return code
-
-    Does stuff.
+    Example usage of 'newcli':
+        jcs newcli rds describe-db-instances --instance-identifier mydb
     """
+
+    if argv[1] == 'newcli':
+        common_cli.generate_cli_output(argv[2:])
+        return
 
     if len(argv) < 3 or argv[1] in ['-h', '--help', 'help']:
         print "Example usage: jcs [--curl|--prettyprint] compute Action=DescribeInstances\n"
