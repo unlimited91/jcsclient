@@ -33,41 +33,19 @@ def main(argv=sys.argv):
     if len(argv) < 3 or argv[1] in ['-h', '--help', 'help']:
         print "Example usage: jcs [--curl|--prettyprint] compute Action=DescribeInstances\n"
         print "               jcs [--curl|--prettyprint] compute 'Action=CreateVolume&Size=1'\n"
-        print "               jcs [--curl|--prettyprint] dss      Action=GetObject Target=bucketname/obj\n"
-        print "               jcs [--curl|--prettyprint] dss      Action=PutObject Target=bucketname/obj File=/path/filename\n"
+        print "               jcs [--curl|--prettyprint] dss <command> [<src-path>] <target-path>\n"
         print "Service argument can be 'compute', 'vpc' or 'dss'"
         print "If '--curl' is specified, only curl request input will be"
         print "produced. No request will be made"
         print "If --prettyprint is specified, response of request made will be"
         print "printed using a pretty printer"
-        print "DSS Target is the path of the entity you want to address"
+        print "DSS <target-path> is the path of the entity you want to address"
         print "It can be just the bucket name, or bucket name followed by object name. Eg. /bucket1/obj2"
         sys.exit(1)
 
     ## Separate out DSS workflow
     if argv[2].lower() == "dss" or argv[1].lower() == "dss":
-        if argv[2].lower() == "dss":
-            if len(argv) == 6:
-                dss.initiate(argv[1], argv[3], argv[4], argv[5])
-            elif len(argv) == 5:
-                dss.initiate(argv[1], argv[3], argv[4])
-            elif len(argv) == 4:
-                dss.initiate(argv[1], argv[3])
-            else:
-                print "ERROR: Not enough parameters specified for DSS service!"
-                return 0
-
-        elif argv[1].lower() == "dss":
-            if len(argv) == 5:
-                dss.initiate("--prettyprint", argv[2], argv[3], argv[4])
-            elif len(argv) == 4:
-                dss.initiate("--prettyprint", argv[2], argv[3])
-            elif len(argv) == 3:
-                dss.initiate("--prettyprint", argv[2])
-            else:
-                #Control will never reach here as help menu gets printed for less than 3 args
-                print "ERROR: Not enough parameters specified for DSS service!"
-                return 0
+        dss.initiate(argv)
         return 0
 
     if argv[1] == '--curl' and len(argv) == 4:
