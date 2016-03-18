@@ -23,7 +23,6 @@ DSS_DEBUG = 0
 
 # valid list of actions 
 
-dss_valid_actions = ['ls', 'cp', 'rm', 'mb', 'rb', 'hb', 'ho']
 
 dss_info  = {
     'op' : None,
@@ -34,6 +33,7 @@ dss_info  = {
     'printer': None,
     'src'   : None,
     'target'   : None,
+    'dss_valid_action_list': ['ls', 'cp', 'rm', 'mb', 'rb', 'hb', 'ho'],
 }
 os.environ['REQUESTS_CA_BUNDLE'] = os.path.join('/etc/ssl/certs/','ca-certificates.crt')
 
@@ -49,14 +49,16 @@ def initiate(argv):
         common.setup_client_from_env_vars()
         common._ensure_global_vars_populated()
         if common.global_vars['dss_url'] is None:
-            print "Global variable DSS_URL not set!"
+            print "Global variable dss_url not set!"
             raise Exception
     except Exception:
         print "You need to set environment variables: DSS_URL, ACCESS_KEY and SECRET_KEY to make a DSS request"
         sys.exit()
 
     parse_dss_info(argv)
-    validate_args()
+    ret = validate_args()
+    if(ret < 0):
+        sys.exit(ret)
     dss_info['sign'] = gets_dss_signature()
     make_dss_request()
     return
@@ -87,7 +89,7 @@ def parse_dss_info(argv):
         sys.exit(1)
 
     action  = argv[dss_params_start_index]
-    if(action == "help" or action not in dss_valid_actions):
+    if(action == "help" or action not in dss_info['dss_valid_action_list']):
         valid_dss_actions()
         sys.exit(1)
     src = None
@@ -134,6 +136,37 @@ def is_valid_dss_path(path):
     # TODO: more checks to come
     return path.startswith("dss://")
 
+def is_valid_dss_bucket_path(path):
+    if(is_valid_dss_path(path)):
+        bucket_path = path.replace("dss://", "")
+        pos = bucket_path.find('/')
+        # case  1 : / in between
+        if(pos != -1 and not bucket_path.endswith('/')):
+            return False
+        # case 2: / at end
+        if(pos != -1 and pos == len(bucket_path) -1):
+            return True
+        # case 3 : no /
+        if(pos == -1):
+            return True
+        return False
+    else:
+        return False
+
+def is_valid_dss_object_path(path):
+    # there should be atlease one / and it should not be at the end
+    if(is_valid_dss_path(path)):
+        object_path = path.replace("dss://", "")
+        pos = object_path.find('/')
+        if(pos != -1 and not object_path.endswith('/')):
+            return True
+        else:
+            return False
+    else:
+        return False
+
+
+
 def is_valid_local_path(path):
     # TODO: more checks to come
     return not (path.startswith("dss://"))
@@ -147,7 +180,7 @@ def validate_args():
         return -1
 
     # check for valid actions
-    if(dss_info['action'] not in dss_valid_actions):
+    if(dss_info['action'] not in dss_info['dss_valid_action_list']):
         print dss_info['action'] + " is not a valid command"
         return -1
 
@@ -166,6 +199,28 @@ def validate_args():
         elif(is_valid_local_path(src) and is_valid_local_path(target)):
             print "both source and target cannot be local paths"
             return -1
+    
+    if(action == 'rm' or action == 'ho'):
+        # target path should be object
+        if(not is_valid_dss_object_path(target)):
+            print "for action " + action + " target path " + target + " should be a object"
+            return -1
+
+    if(action == 'mb' or action == 'rb' or action == 'hb' or action == 'ls'):
+        # target path should be bucket
+        if(not is_valid_dss_bucket_path(target)):
+            print "for action " + action + " target path " + target + " should be a bucket"
+            return -1
+
+    if(action == 'cp'):
+        # dss target path should be object
+        if(is_valid_dss_path(src) and not is_valid_dss_object_path(src)):
+            print "for action " + action + " source path " + src + " should be a object"
+            return -1
+        if(is_valid_dss_path(target) and not is_valid_dss_object_path(target)):
+            print "for action " + action + " target path " + target + " should be a object"
+            return -1
+    return 0
 
 
 ##===================================
@@ -361,7 +416,7 @@ class ErrorHandler( xml.sax.ContentHandler ):
 
 def make_dss_request():
    
-    #print dss_info
+    whisper("DSS INFO : " + str(dss_info))
 
     ## Build headers
     headers = {
@@ -371,16 +426,12 @@ def make_dss_request():
     headers['Authorization'] = dss_info['sign']
     headers['Date'] = formatdate(usegmt=True)
     # Action specific headers
-    files = {}
     if dss_info['action'] == 'cp' and dss_info['op'] == 'PUT':
         try:
             
             statinfo = os.stat(dss_info['src'])
             headers['Content-Length'] = statinfo.st_size
             headers['Content-Type'] = 'application/octet-stream'
-            #files = {dss_info['object'] : open(dss_info['src'], 'rb')}
-            #print files
-            #print headers
         except:
             print "Error in getting file stats: " + str(sys.exc_info())
             sys.exit(0)
@@ -389,7 +440,8 @@ def make_dss_request():
     url = common.global_vars['dss_url']
     url += gets_dss_path()
     resp = ''
-    #print url
+    whisper("URL : " + url)
+    whisper("Headers : " + str(headers))
     if (dss_info['printer'] == 'curl'):
         # If user picked curl, make his a nice curl string and exit
         curl_str = "curl -i -v -X " + dss_info['op'] + " -H \'Authorization: " + \
@@ -421,12 +473,15 @@ def make_dss_request():
     if resp.status_code >= 400:
         print "Request failed"
         print 'HTTP error code: %s' % resp.status_code
-        rawxmlret = resp.content
-        parser = xml.sax.make_parser()
-        parser.setFeature(xml.sax.handler.feature_namespaces, 0)
-        Handler = ErrorHandler()
-        parser.setContentHandler(Handler)
-        xml.sax.parseString(rawxmlret, Handler)
+        try:
+            rawxmlret = resp.content
+            parser = xml.sax.make_parser()
+            parser.setFeature(xml.sax.handler.feature_namespaces, 0)
+            Handler = ErrorHandler()
+            parser.setContentHandler(Handler)
+            xml.sax.parseString(rawxmlret, Handler)
+        except Exception:
+            sys.exit(-1)
         
 
     else:

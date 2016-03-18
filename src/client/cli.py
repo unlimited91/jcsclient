@@ -33,7 +33,6 @@ def main(argv=sys.argv):
     if len(argv) < 3 or argv[1] in ['-h', '--help', 'help']:
         print "Example usage: jcs [--curl|--prettyprint] compute Action=DescribeInstances\n"
         print "               jcs [--curl|--prettyprint] compute 'Action=CreateVolume&Size=1'\n"
-        print "               jcs [--curl|--prettyprint] dss      Action=GetObject Target=bucketname/obj\n"
         print "               jcs [--curl|--prettyprint] dss <command> [<src-path>] <target-path>\n"
         print "Service argument can be 'compute', 'vpc' or 'dss'"
         print "If '--curl' is specified, only curl request input will be"
