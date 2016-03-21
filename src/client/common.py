@@ -214,7 +214,7 @@ def do_request(method, url, headers=None):
             resp_dict = dict()
             resp_ordereddict = xmltodict.parse(response)
             resp_dict = yaml.safe_load(json.dumps(resp_ordereddict))
-
+            print json.dumps(resp_dict)
         return resp_dict
     else:
         raise NotImplementedError
@@ -384,7 +384,7 @@ def curlify(service, req_str, gnucli=False, execute=False, prettyprint=True):
             pp.pprint(_remove_item_keys(do_request(verb, request_string)))
             return
 
-        print _remove_item_keys(do_request(verb, request_string))
+        print _remove_item_keys(do_request(verb, request_string), gnucli)
         return
 
     print "curl --insecure '"+requestify(service_url, params, verb)+"'"
