@@ -15,7 +15,9 @@ import xmltodict
 
 import exceptions
 
-#requests.packages.urllib3.disable_warnings()
+import yaml
+
+requests.packages.urllib3.disable_warnings()
 global_vars = {
     'access_key': None,
     'secret_key': None,
@@ -130,7 +132,6 @@ def create_param_dict(string):
     return params
 
 def create_param_dict_gnucli(array):
-    #print array
     params = dict()
     params['Action'] = array[0]
     array = array[1:]
@@ -204,7 +205,6 @@ def do_request(method, url, headers=None):
                 raise exceptions.HTTP404()
             raise Exception
         response = resp.content
-
         try:
             resp_dict = dict()
             if response is not '':
@@ -213,7 +213,7 @@ def do_request(method, url, headers=None):
         except:
             resp_dict = dict()
             resp_ordereddict = xmltodict.parse(response)
-            resp_dict = json.loads(json.dumps(resp_ordereddict))
+            resp_dict = yaml.safe_load(json.dumps(resp_ordereddict))
 
         return resp_dict
     else:
@@ -338,7 +338,7 @@ def _remove_item_keys(response, cli=False):
 
     return response
 
-def curlify(service, req_str, gnucli=False, execute=False, prettyprint=False):
+def curlify(service, req_str, gnucli=False, execute=False, prettyprint=True):
     """Print output which can be run as a 'curl' CLI command.
 
     This function, if global vars is not set, will print output saying global
@@ -384,7 +384,7 @@ def curlify(service, req_str, gnucli=False, execute=False, prettyprint=False):
             pp.pprint(_remove_item_keys(do_request(verb, request_string)))
             return
 
-        print _remove_item_keys(do_request(verb, request_string), gnucli)
+        print _remove_item_keys(do_request(verb, request_string))
         return
 
     print "curl --insecure '"+requestify(service_url, params, verb)+"'"
