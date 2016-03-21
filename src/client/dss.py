@@ -28,6 +28,7 @@ dss_info  = {
     'op' : None,
     'action' : None,
     'bucket' : None,
+    'prefix' : None,
     'object' : None,
     'sign'   : None,
     'printer': None,
@@ -122,14 +123,27 @@ def parse_dss_info(argv):
     pos = target.find('/')
     # If there is no '/' in target, its just a bucket name, cant populate obj
     # If it ends with /, its again just bucket name
-    if pos != -1 and not target.endswith('/'):
-        dss_info['bucket'] = target[0:pos]
-        dss_info['object'] = target[pos + 1:]
-    else:
-        if target.endswith('/'):
+    if(dss_info['action'] != 'ls'):
+        if pos != -1 and not target.endswith('/'):
             dss_info['bucket'] = target[0:pos]
+            dss_info['object'] = target[pos + 1:]
         else:
-            dss_info['bucket'] = target
+            if target.endswith('/'):
+                dss_info['bucket'] = target[0:pos]
+            else:
+                dss_info['bucket'] = target
+    else:
+        if pos != -1: 
+            dss_info['bucket'] = target[0:pos]
+            if(pos < len(target) -1):
+                dss_info['prefix'] = target[pos+1:]
+        else:
+            if target.endswith('/'):
+                dss_info['bucket'] = target[0:pos]
+            else:
+                dss_info['bucket'] = target
+
+
 
 
 def is_valid_dss_path(path):
@@ -206,7 +220,7 @@ def validate_args():
             print "for action " + action + " target path " + target + " should be a object"
             return -1
 
-    if(action == 'mb' or action == 'rb' or action == 'hb' or action == 'ls'):
+    if(action == 'mb' or action == 'rb' or action == 'hb'):
         # target path should be bucket
         if(not is_valid_dss_bucket_path(target)):
             print "for action " + action + " target path " + target + " should be a bucket"
@@ -333,6 +347,8 @@ def gets_dss_path():
         #    path += "?max-keys=1000000000"
     if dss_info['object'] is not None:
         path += '/' + dss_info['object']
+    if dss_info['prefix'] is not None:
+        path += '?prefix=' + dss_info['prefix']
     return path
 
 
@@ -348,16 +364,16 @@ class ListBucketHandler( xml.sax.ContentHandler ):
         self.CurrentData = tag
 
     def endElement(self, tag):
-        if self.CurrentData == "Size":
-            name_len = len(self.name)
+        if tag == "Size":
+            modified_len = len(self.modified)
             space1 = "\t"
-            if(name_len  < 32):
-                space1 = " " * (32 - name_len)
+            if(modified_len  < 32):
+                space1 = " " * (32 - modified_len)
             size_len = len(self.size)
             space2 = "\t"
             if(size_len  < 16):
                 space2 = " " * (16 - size_len)
-            print self.name + space1 + self.size + space2 + self.modified
+            print self.modified + space1 + self.size + space2 + self.name
 
     def characters(self, content):
         if self.CurrentData == "Key":
@@ -378,12 +394,12 @@ class ListAllMyBucketsHandler( xml.sax.ContentHandler ):
         self.CurrentData = tag
 
     def endElement(self, tag):
-        if self.CurrentData == "CreationDate":
-            name_len = len(self.name)
+        if tag == "CreationDate":
+            created_len = len(self.created)
             space = "\t"
-            if(name_len  < 32):
-                space = " " * (32 - name_len)
-            print self.name + space + self.created
+            if(created_len  < 32):
+                space = " " * (32 - created_len)
+            print self.created + space + self.name
 
     def characters(self, content):
         if self.CurrentData == "Name":
@@ -400,7 +416,7 @@ class ErrorHandler( xml.sax.ContentHandler ):
         self.CurrentData = tag
 
     def endElement(self, tag):
-        if self.CurrentData == "Code":
+        if tag == "Code":
             print "Error code : " + self.error_code
 
     def characters(self, content):
