@@ -281,11 +281,59 @@ def create_db_instance(DBInstanceIdentifier, DBInstanceClass, Engine,
     }
     return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
 
+def modify_db_instance(DBInstanceIdentifier, **optional_params):
+    valid_optional_params = [
+        'PreferredMaintenanceWindow',
+        'PreferredBackupWindow',
+        'BackupRetentionPeriod',
+        'NewDBInstanceIdentifier'
+    ]
+    mandatory_params = {
+        'Action': 'ModifyDBInstance',
+        'DBInstanceIdentifier': DBInstanceIdentifier,
+    }
+    return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
+
 def delete_db_instance(DBInstanceIdentifier, **optional_params):
     valid_optional_params = ['FinalDBSnapshotIdentifier', 'SkipFinalSnapshot']
     mandatory_params = {
         'Action': 'DeleteDBInstance',
         'DBInstanceIdentifier': DBInstanceIdentifier,
+    }
+    return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
+
+def create_db_snapshot(DBInstanceIdentifier, DBSnapshotIdentifier):
+    valid_optional_params = []
+    mandatory_params = {
+        'Action': 'CreateDBSnapshot',
+        'DBInstanceIdentifier': DBInstanceIdentifier,
+        'DBSnapshotIdentifier': DBSnapshotIdentifier,
+    }
+    return common.do_rds_request(valid_optional_params, None, mandatory_params)
+
+def delete_db_snapshot(DBSnapshotIdentifier):
+    valid_optional_params = []
+    mandatory_params = {
+        'Action': 'DeleteDBSnapshot',
+        'DBSnapshotIdentifier': DBSnapshotIdentifier,
+    }
+    return common.do_rds_request(valid_optional_params, None, mandatory_params)
+
+def describe_db_snapshots(**optional_params):
+    valid_optional_params = ['DBSnapshotIdentifier', 'DBInstanceIdentifier', 'SnapshotType']
+    mandatory_params = {'Action': 'DescribeDBSnapshots'}
+    return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
+
+def restore_db_instance_from_db_snapshot(DBInstanceIdentifier, DBSnapshotIdentifier, **optional_params):
+    valid_optional_params = [
+        'DBInstanceClass',
+        'PreferredMaintenanceWindow',
+        'PreferredBackupWindow',
+        'BackupRetentionPeriod']
+    mandatory_params = {
+        'Action': 'RestoreDBInstanceFromDBSnapshot',
+        'DBInstanceIdentifier': DBInstanceIdentifier,
+        'DBSnapshotIdentifier': DBSnapshotIdentifier,
     }
     return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
 
