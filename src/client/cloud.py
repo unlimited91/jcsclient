@@ -302,22 +302,22 @@ def delete_db_instance(DBInstanceIdentifier, **optional_params):
     }
     return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
 
-def create_db_snapshot(DBInstanceIdentifier, DBSnapshotIdentifier):
+def create_db_snapshot(DBInstanceIdentifier, DBSnapshotIdentifier, **optional_params):
     valid_optional_params = []
     mandatory_params = {
         'Action': 'CreateDBSnapshot',
         'DBInstanceIdentifier': DBInstanceIdentifier,
         'DBSnapshotIdentifier': DBSnapshotIdentifier,
     }
-    return common.do_rds_request(valid_optional_params, None, mandatory_params)
+    return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
 
-def delete_db_snapshot(DBSnapshotIdentifier):
+def delete_db_snapshot(DBSnapshotIdentifier, **optional_params):
     valid_optional_params = []
     mandatory_params = {
         'Action': 'DeleteDBSnapshot',
         'DBSnapshotIdentifier': DBSnapshotIdentifier,
     }
-    return common.do_rds_request(valid_optional_params, None, mandatory_params)
+    return common.do_rds_request(valid_optional_params, optional_params, mandatory_params)
 
 def describe_db_snapshots(**optional_params):
     valid_optional_params = ['DBSnapshotIdentifier', 'DBInstanceIdentifier', 'SnapshotType']
