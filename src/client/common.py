@@ -17,7 +17,7 @@ import exceptions
 
 import yaml
 
-#requests.packages.urllib3.disable_warnings()
+requests.packages.urllib3.disable_warnings()
 global_vars = {
     'access_key': None,
     'secret_key': None,
