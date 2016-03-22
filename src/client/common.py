@@ -198,13 +198,14 @@ def do_request(method, url, headers=None):
 
         if resp.status_code >= 400:
             print 'Exception %s thrown!!! Status code:' % resp.status_code
-            print 'Error content: ', resp.content
+            print 'Error content: ', json.dumps(json.loads(resp.content), indent=4, sort_keys=True)
             if resp.status_code == 400:
                 raise exceptions.HTTP400()
             elif resp.status_code == 404:
                 raise exceptions.HTTP404()
             raise Exception
         response = resp.content
+        print "\'--------------------------------------------------\'"
         try:
             resp_dict = dict()
             if response is not '':
@@ -214,7 +215,8 @@ def do_request(method, url, headers=None):
             resp_dict = dict()
             resp_ordereddict = xmltodict.parse(response)
             resp_dict = yaml.safe_load(json.dumps(resp_ordereddict))
-            print json.dumps(resp_dict)
+            print json.dumps(resp_dict, indent=4, sort_keys=True)
+        print "\n\nRequest successfully executed !"
         return resp_dict
     else:
         raise NotImplementedError
@@ -307,7 +309,7 @@ def _remove_item_keys(response, cli=False):
         Output: {'instances': [{'key1': 'value1'}, {'key2': 'value2'}]}
     """
     if cli:
-        return ""
+        return "--------------------------------------------------"
 
     if type(response) != dict:
         raise Exception
@@ -381,7 +383,7 @@ def curlify(service, req_str, gnucli=False, execute=False, prettyprint=True):
 
         if prettyprint:
             pp = pprint.PrettyPrinter(indent=2)
-            pp.pprint(_remove_item_keys(do_request(verb, request_string)))
+            pp.pprint(_remove_item_keys(do_request(verb, request_string), True))
             return
 
         print _remove_item_keys(do_request(verb, request_string), gnucli)

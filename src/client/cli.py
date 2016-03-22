@@ -22,6 +22,48 @@ from client import common
 from client import dss
 
 
+iam_help = {
+        'CreateUser                   ' : "[--Email <email>] [--Password <password>] --Name <username>                                           ",
+        'DeleteUser                   ' : "[--Id <userid> | --Name <username>]                                                                   ",
+        'ListUsers                    ' : "                                                                                                      ",
+        'UpdateUser                   ' : "[--Id <userid> | --Name <username>] --NewEmail <email> --NewPassword <newpassword>                    ",
+        'GetUser                      ' : "[--Id <userid> | --Name <username>]                                                                   ",
+        'GetUserSummary               ' : "[--Id <userid> | --Name <username>]                                                                   ",
+        'CreateCredential             ' : "[--Id <userid> | --Name <username>]                                                                   ",
+        'DeleteCredential             ' : "[--Id <credentialid> | --AccessKey <accesskey>]                                                       ",
+        'GetUserCredential            ' : "[--Id <userid> | --Name <username>]                                                                   ",
+        'CreateGroup                  ' : "[--Name  <groupname>] --Description <groupdescription>                                                ",
+        'GetGroup                     ' : "[--Id <groupid> | --Name <group>]                                                                     ",
+        'DeleteGroup                  ' : "[--Id <groupid> | --Name <group>]                                                                     ",
+        'ListGroups                   ' : "                                                                                                      ",
+        'AssignUserToGroup            ' : "[--UserId <userid> | --UserName <username>] [--GroupId <groupid> | --GroupName <groupname>]           ",
+        'CheckUserInGroup             ' : "[--UserId <userid> | --UserName <username>] [--GroupId <groupid> | --GroupName <groupname>]           ",
+        'RemoveUserFromGroup          ' : "[--UserId <userid> | --UserName <username>] [--GroupId <groupid> | --GroupName <groupname>]           ",
+        'ListGroupsForUser            ' : "[--Id <userid> | --Name <username>]                                                                   ",
+        'ListUserInGroup              ' : "[--Id <groupid> | --Name <groupname>]                                                                 ",
+        'UpdateGroup                  ' : "[--Id <groupid> | --Name <groupname>] --NewName <newname> --NewDescription <newdescription>           ",
+        'GetGroupSummary              ' : "[--Id <groupid> | --Name <groupname>]                                                                 ",
+        'CreatePolicy                 ' : "[--PolicyDocument <policydocument>]                                                                   ",
+        'GetPolicy                    ' : "[--Id <policyid> | --Name <policyname>]                                                               ",
+        'ListPolicies                 ' : "                                                                                                      ",
+        'DeletePolicy                 ' : "[--Id <policyid> | --Name <policyname>]                                                               ",
+        'UpdatePolicy                 ' : "[--Id <policyid> | --Name <policyname>] --PolicyDocument  <policydocument>                            ",
+        'AttachPolicyToUser           ' : "[--PolicyId <policyid> | --PolicyName <policyname>] [--UserId  <userid> | --UserName  <username>]     ",
+        'DetachPolicyFromUser         ' : "[--PolicyId <policyid> | --PolicyName <policyname>] [--UserId  <userid> | --UserName  <username>]     ",
+        'AttachPolicyToGroup          ' : "[--PolicyId <policyid> | --PolicyName <policyname>] [--GroupId <groupid> | --GroupName <groupname>]   ",
+        'DetachPolicyFromGroup        ' : "[--PolicyId <policyid> | --PolicyName <policyname>] [--GroupId <groupid> | --GroupName <groupname>]   ",
+        'GetPolicySummary             ' : "[--Id <policyid> | --Name <policyname>]                                                               ",
+        'CreateResourceBasedPolicy    ' : "[--PolicyDocument <policydocument>]                                                                   ",
+        'GetResourceBasedPolicy       ' : "[--Id <rbpid> | --Name <rbpname>]                                                                     ",
+        'ListResourceBasedPolicies    ' : "                                                                                                      ",
+        'DeleteResourceBasedPolicy    ' : "[--Id <rbpid> | --Name <rbpname>]                                                                     ",
+        'UpdateResourceBasedPolicy    ' : "[--Id <rbpid> | --Name <rbpname>] --PolicyDocument <policydocument>                                   ",
+        'AttachPolicyToResource       ' : "[--PolicyId <policyid> | --PolicyName <policyname>] --Resource <resource>                             ",
+        'DetachPolicyFromResource     ' : "[--PolicyId <policyid> | --PolicyName <policyname>] --Resource <resource>                             ",
+        'GetResourceBasedPolicySummary' : "[--Id <rbpid> | --Name <rbpname>]                                                                     "
+        }
+
+
 def main(argv=sys.argv):
     """
     Args:
@@ -35,11 +77,13 @@ def main(argv=sys.argv):
         common_cli.generate_cli_output(argv[2:])
         return
 
+    debug = False
+
     if len(argv) < 3 or argv[1] in ['-h', '--help', 'help']:
         print "Example usage: jcs [--curl|--prettyprint] compute Action=DescribeInstances\n"
         print "               jcs [--curl|--prettyprint] compute 'Action=CreateVolume&Size=1'\n"
         print "               jcs [--curl|--prettyprint] dss <command> [<src-path>] <target-path>\n"
-        print "Service argument can be 'compute', 'vpc' or 'dss'"
+        print "Service argument can be 'iam', 'rds', 'compute', 'vpc' or 'dss'"
         print "If '--curl' is specified, only curl request input will be"
         print "produced. No request will be made"
         print "If --prettyprint is specified, response of request made will be"
@@ -53,14 +97,44 @@ def main(argv=sys.argv):
         dss.initiate(argv)
         return 0
 
-    if argv[1] == '--curl' and len(argv) == 4:
-        common.curlify(argv[2], argv[3])
-    elif argv[1] == '--prettyprint' and len(argv) == 4:
-        common.curlify(argv[2], argv[3], False, True, True)
-    elif len(argv) == 3 and '=' in argv[2]:
-        common.curlify(argv[1], argv[2], False, True)
-    elif len(argv) >= 3:
-        common.curlify(argv[1], argv[2:], True, True)
-    else:
-        print "Invalid client request"
+    if '--debug' in argv:
+        argv.remove('--debug')
+        debug = True
+    elif '-d' in argv:
+        argv.remove('-d')
+        debug = True
+
+    if '--help' in argv or '-h' in argv or 'help' in argv:
+        argv.remove(argv[-1])
+        if argv[-1] == 'iam':
+            for row in iam_help:
+                print row, 'jcs iam ' + row.strip() + ' ' + iam_help[row]
+        else:
+            found = False
+            for row in iam_help:
+                if row.strip() == argv[-1]:
+                    found = True
+                    print 'jcs iam ' + row.strip() + ' ' + iam_help[row]
+            if not found:
+                print "Invalid client request. Refer to help using, jcs iam --help"
+        return 0
+
+    try:
+        if argv[1] == '--curl' and len(argv) == 4:
+            common.curlify(argv[2], argv[3])
+        elif argv[1] == '--prettyprint' and len(argv) == 4:
+            common.curlify(argv[2], argv[3], False, True, True)
+        elif len(argv) == 3 and '=' in argv[2]:
+            common.curlify(argv[1], argv[2], False, True)
+        elif len(argv) >= 3:
+            common.curlify(argv[1], argv[2:], True, True)
+        else:
+            print "Invalid client request, refer to, jcs --help"
+    except Exception as e:
+        if debug:
+            raise
+        else:
+            #print("{}: {}".format(type(e).__name__, e))
+            pass
+
     return 0
