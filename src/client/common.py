@@ -15,8 +15,6 @@ import xmltodict
 
 import exceptions
 
-import yaml
-
 requests.packages.urllib3.disable_warnings()
 global_vars = {
     'access_key': None,
@@ -197,8 +195,15 @@ def do_request(method, url, headers=None):
                     verify=global_vars['is_secure'])
 
         if resp.status_code >= 400:
-            print 'Exception %s thrown!!! Status code:' % resp.status_code
-            print 'Error content: ', json.dumps(json.loads(resp.content), indent=4, sort_keys=True)
+            #print resp.content
+            print 'Exception %s thrown! Status code:' % resp.status_code
+            try:
+                print 'Error content: ', json.dumps(json.loads(resp.content),
+                                                    indent=4, sort_keys=True)
+            except:
+                resp_dict = dict()
+                resp_ordereddict = xmltodict.parse(resp.content)
+                print json.dumps(resp_ordereddict, indent=4, sort_keys=True)
             print 'Refer to, jcs --help'
             if resp.status_code == 400:
                 raise exceptions.HTTP400()
@@ -213,10 +218,14 @@ def do_request(method, url, headers=None):
                 resp_dict = json.loads(response)
                 print json.dumps(resp_dict, indent=4, sort_keys=True)
         except:
+            #print response
             resp_dict = dict()
             resp_ordereddict = xmltodict.parse(response)
-            resp_dict = yaml.safe_load(json.dumps(resp_ordereddict))
-            print json.dumps(resp_dict, indent=4, sort_keys=True)
+            resp_json_string = json.dumps(resp_ordereddict, indent=4,
+                                          sort_keys=True)
+            # handle the case of keypair data
+            resp_json_string = resp_json_string.replace("\\n", "\n")
+            print (resp_json_string)
         print "\n\nRequest successfully executed !"
         return resp_dict
     else:
