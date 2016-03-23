@@ -158,7 +158,6 @@ temp_dict = {
 
 def parse_service_related_args(args):
     action = args[0]
-    print action
     if action not in actions:
         print 'Invalid RDS action: %s' % action
         print 'Valid actions: %s' % ' '.join(actions)
