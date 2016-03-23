@@ -106,6 +106,11 @@ You can use CLI to make an API request, or just get the input which you can use 
     
     $ jcs --curl compute Action=DescribeInstances   # Get the curl input URL
 
+    $ jcs iam CreateUser --Name user1 --Password ABcwqe@12q    # Make an api call to create a user
+
+    $ jcs iam --help    # Displays all iam actions and related client requests
+
+    $ jcs iam CreateUser --help    # Displays help related to action CreateUser
 
 Python Client
 =============
