@@ -199,6 +199,7 @@ def do_request(method, url, headers=None):
         if resp.status_code >= 400:
             print 'Exception %s thrown!!! Status code:' % resp.status_code
             print 'Error content: ', json.dumps(json.loads(resp.content), indent=4, sort_keys=True)
+            print 'Refer to, jcs --help'
             if resp.status_code == 400:
                 raise exceptions.HTTP400()
             elif resp.status_code == 404:

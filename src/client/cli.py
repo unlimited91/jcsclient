@@ -83,6 +83,9 @@ def main(argv=sys.argv):
         print "Example usage: jcs [--curl|--prettyprint] compute Action=DescribeInstances\n"
         print "               jcs [--curl|--prettyprint] compute 'Action=CreateVolume&Size=1'\n"
         print "               jcs [--curl|--prettyprint] dss <command> [<src-path>] <target-path>\n"
+        print "               jcs iam ActionName --Param1 <value> --Param2 <value>"
+        print "               jcs iam --help"
+        print "               jcs iam ActionName --help"
         print "Service argument can be 'iam', 'rds', 'compute', 'vpc' or 'dss'"
         print "If '--curl' is specified, only curl request input will be"
         print "produced. No request will be made"
@@ -114,6 +117,7 @@ def main(argv=sys.argv):
             for row in iam_help:
                 if row.strip() == argv[-1]:
                     found = True
+                    print 'Usage:\n'
                     print 'jcs iam ' + row.strip() + ' ' + iam_help[row]
             if not found:
                 print "Invalid client request. Refer to help using, jcs iam --help"
@@ -129,7 +133,11 @@ def main(argv=sys.argv):
         elif len(argv) >= 3:
             common.curlify(argv[1], argv[2:], True, True)
         else:
-            print "Invalid client request, refer to, jcs --help"
+            print "Invalid client request "
+            if argv[1] == 'iam':
+                print "refer to, jcs iam --help"
+            else:
+                print "refer to, jcs --help"
     except Exception as e:
         if debug:
             raise
