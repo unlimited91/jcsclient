@@ -203,8 +203,7 @@ def do_request(method, url, headers=None):
             except:
                 resp_dict = dict()
                 resp_ordereddict = xmltodict.parse(resp.content)
-                resp_dict = yaml.safe_load(json.dumps(resp_ordereddict))
-                print json.dumps(resp_dict, indent=4, sort_keys=True)
+                print json.dumps(resp_ordereddict, indent=4, sort_keys=True)
             print 'Refer to, jcs --help'
             if resp.status_code == 400:
                 raise exceptions.HTTP400()
