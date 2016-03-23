@@ -5,7 +5,7 @@ import requests
 
 
 # Example curl request:
-# curl --insecure -i -H "Content-Type: application/json" -d '{"auth": {"identity": {"methods": ["password"], "password": {"user": {"name": "rds", "account": {"id": "0bc437d91ce3401fa0fc97366a11ba3b" }, "password": "Reliance111@"}}}}}' https://iam.ind-west-1.staging.jiocloudservices.com:5000/v3/auth/tokens
+# curl --insecure -i -H "Content-Type: application/json" -d '{"auth": {"identity": {"methods": ["password"], "password": {"user": {"name": "testuser", "account": {"id": "00000000000000000000123456789012" }, "password": "Abc123d@12"}}}}}' https://iam.ind-west-1.staging.jiocloudservices.com:5000/v3/auth/tokens
 
 def get_token():
     """
