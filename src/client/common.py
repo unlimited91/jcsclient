@@ -271,7 +271,7 @@ def do_rds_request(valid_optional_params, supplied_optional_params,
     request_string = requestify(global_vars['rds_url'], request_dict, verb)
 
     resp_dict = do_request(verb, request_string)
-    return _remove_item_keys(resp_dict)
+    return resp_dict
 
 def _create_valid_request_dictionary(valid_params, supplied_optional_params,
         supplied_mandatory_params):
