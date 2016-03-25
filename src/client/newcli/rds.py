@@ -159,8 +159,10 @@ temp_dict = {
 def parse_service_related_args(args):
     action = args[0]
     if action not in actions:
-        print 'Invalid RDS action: %s' % action
+        if not action in ['help', '-help', '--help', '-h']:
+            print 'Invalid RDS action: %s' % action
         print 'Valid actions: %s' % ' '.join(actions)
+        print 'For help on any action: jcs rds <action> --help'
 
     if action == 'describe-db-instances':
         describe_db_instances(args[1:])

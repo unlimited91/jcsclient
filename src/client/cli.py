@@ -73,8 +73,9 @@ def main(argv=sys.argv):
         jcs newcli rds describe-db-instances --instance-identifier mydb
     """
 
-    if argv[1] == 'newcli':
-        common_cli.generate_cli_output(argv[2:])
+    if argv[1] == 'rds':
+        # args = argv[1:] if len(argv) > 2 else ['--help']
+        common_cli.generate_cli_output(argv[1:] if len(argv) > 2 else ['rds', '--help'])
         return
 
     debug = False
