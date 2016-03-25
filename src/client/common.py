@@ -220,12 +220,13 @@ def do_request(method, url, headers=None):
         except:
             #print response
             resp_dict = dict()
-            resp_dict = xmltodict.parse(response)
-            resp_json_string = json.dumps(resp_dict, indent=4,
+            resp_ordereddict = xmltodict.parse(response)
+            resp_json_string = json.dumps(resp_ordereddict, indent=4,
                                           sort_keys=True)
             # handle the case of keypair data
             resp_json_string = resp_json_string.replace("\\n", "\n")
             print (resp_json_string)
+            resp_dict = json.loads(resp_json_string)
         print "\n\nRequest successfully executed !"
         return resp_dict
     else:
