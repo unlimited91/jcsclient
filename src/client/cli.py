@@ -61,7 +61,27 @@ iam_help = {
         'AttachPolicyToResource       ' : "[--PolicyId <policyid> | --PolicyName <policyname>] --Resource <resource>                             ",
         'DetachPolicyFromResource     ' : "[--PolicyId <policyid> | --PolicyName <policyname>] --Resource <resource>                             ",
         'GetResourceBasedPolicySummary' : "[--Id <rbpid> | --Name <rbpname>]                                                                     "
-        }
+}
+
+compute_help = {
+        'CreateKeyPair                ' : "--KeyName <keyname>",
+        'DeleteKeyPair                ' : "--KeyName <keyname>",
+        'ImportKeyPair                ' : "--KeyName <keyname> --PublicKeyMaterial <base64 encoded public key>",
+        'UpdateDeleteOnTerminationFlag' : "--volumeId <volumeId> --deleteOnTermination <True|False>",
+        'DescribeImages               ' : "[--ImageId.N]                                                                                         ",
+        'DescribeInstanceTypes        ' : "[--InstanceTypeId.N]",
+        'RunInstances                 ' : "--ImageId <imageId> --InstanceTypeId <instanceTypeId> [--BlockDeviceMapping.N <BlockDeviceMapping>] [--InstanceCount <integer>] [--SubnetId <subnetId>] [--PrivateIPAddress <PrivateIPAddress>] [--SecurityGroupId.N <SecurityGroupId>] [--KeyName <KeyName>]                                                                ",
+        'DescribeInstances            ' : "[--InstanceId.N <instanceid> --Filter.N.Name <filtername> --Filter.N.Value <filtervalue>",
+        'StopInstances                ' : "[--InstanceId.N <instanceid>] [--Force <True | False>]",
+        'StartInstances               ' : "[--InstanceId.N <instanceid>]",
+        'RebootInstances              ' : "[--InstanceId.N <instanceid>]",
+        'TerminateInstances           ' : "[--InstanceId.N <instanceid>]",
+        'DescribeKeyPairs             ' : "",
+        'DetachVolume                 ' : "--InstanceId <instance_id> --VolumeId <volume_id> [--Force <True | False>",
+        'ShowDeleteOnTerminationFlag  ' : "--volumeId <volume_id>",
+        'AttachVolume                 ' : "--InstanceId <instance_id> --VolumeId <volume_id> --Device <device>",
+        #'ShowPassword                 ' : "[--Id <userid> | --Name <username>]",
+}
 
 
 def main(argv=sys.argv):
@@ -113,6 +133,9 @@ def main(argv=sys.argv):
         if argv[-1] == 'iam':
             for row in iam_help:
                 print row, 'jcs iam ' + row.strip() + ' ' + iam_help[row]
+        elif argv[-1] == 'compute':
+            for row in compute_help:
+                print row, 'jcs compute ' + row.strip() + ' ' + compute_help[row]
         else:
             found = False
             for row in iam_help:
@@ -120,8 +143,13 @@ def main(argv=sys.argv):
                     found = True
                     print 'Usage:\n'
                     print 'jcs iam ' + row.strip() + ' ' + iam_help[row]
+            for row in compute_help:
+                if row.strip() == argv[-1]:
+                    found = True
+                    print 'Usage:\n'
+                    print 'jcs compute ' + row.strip() + ' ' + compute_help[row]
             if not found:
-                print "Invalid client request. Refer to help using, jcs iam --help"
+                print "Invalid client request. Refer to help using, jcs <service> --help"
         return 0
 
     try:
