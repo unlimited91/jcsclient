@@ -71,7 +71,7 @@ compute_help = {
         'DescribeImages               ' : "[--ImageId.N]                                                                                         ",
         'DescribeInstanceTypes        ' : "[--InstanceTypeId.N]",
         'RunInstances                 ' : "--ImageId <imageId> --InstanceTypeId <instanceTypeId> [--BlockDeviceMapping.N <BlockDeviceMapping>] [--InstanceCount <integer>] [--SubnetId <subnetId>] [--PrivateIPAddress <PrivateIPAddress>] [--SecurityGroupId.N <SecurityGroupId>] [--KeyName <KeyName>]                                                                ",
-        'DescribeInstances            ' : "[--InstanceId.N <instanceid> --Filer.N.Name <filtername> --Filter.N.Value <filtervalue>",
+        'DescribeInstances            ' : "[--InstanceId.N <instanceid> --Filter.N.Name <filtername> --Filter.N.Value <filtervalue>",
         'StopInstances                ' : "[--InstanceId.N <instanceid>] [--Force <True | False>]",
         'StartInstances               ' : "[--InstanceId.N <instanceid>]",
         'RebootInstances              ' : "[--InstanceId.N <instanceid>]",
