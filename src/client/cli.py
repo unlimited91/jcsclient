@@ -87,6 +87,7 @@ def main(argv=sys.argv):
         print "               jcs iam ActionName --Param1 <value> --Param2 <value>"
         print "               jcs iam --help"
         print "               jcs iam ActionName --help"
+        print "               jcs rds --help"
         print "Service argument can be 'iam', 'rds', 'compute', 'vpc' or 'dss'"
         print "If '--curl' is specified, only curl request input will be"
         print "produced. No request will be made"
