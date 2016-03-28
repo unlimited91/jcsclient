@@ -125,8 +125,10 @@ Once you have installed this library in your computer (systemwide or in a virtua
     # Set up client with parameters as sourced environment variables
     common.setup_client_from_env_vars()
     
-    # OR alternatively set up client by passing required parameters
-    #common.setup_client('myaccesskey', 'mysecretkey', 'mycomputeurl', 'myvpcurl')
+    # OR alternatively set up client by passing required parameters. Optional
+    # key-value argument keys are: 'iam_url', 'dss_url' and 'rds_url'
+    common.setup_client('myaccesskey', 'mysecretkey', 'mycomputeurl', 'myvpcurl',
+        iam_url="http://localhost')
     
     print cloud.describe_snapshots()
 
