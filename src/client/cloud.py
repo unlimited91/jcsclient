@@ -13,7 +13,7 @@ def describe_instances(**optional_params):
     mandatory_params = {'Action': 'DescribeInstances'}
     return common.do_compute_request(valid_optional_params, optional_params, mandatory_params)
 
-def run_instances(ImageId, InstanceTypeId, **optional_params):
+def run_instances_base(ImageId, InstanceTypeId, **optional_params):
     """
     Run one or more instances.
 
@@ -25,7 +25,7 @@ def run_instances(ImageId, InstanceTypeId, **optional_params):
         ambiguity.
     """
     # TODO(rushiagr): support for BlockDeviceMapping.N, SecurityGroupId.N
-    valid_optional_params = ['KeyName', 'InstanceCount', 'SubnetId', 'PrivateIPAddress']
+    valid_optional_params = ['KeyName', 'InstanceCount', 'SubnetId', 'SecurityGroupId.1', 'PrivateIPAddress']
 
     mandatory_params = {
         'Action': 'RunInstances',
