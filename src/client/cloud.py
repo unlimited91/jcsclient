@@ -258,6 +258,12 @@ def associate_address(allocation_id, instance_id):
     }
     return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
 
+def describe_addresses(**optional_params):
+    valid_optional_params = ['AllocationId.1']
+    mandatory_params = {'Action': 'DescribeAddresses'}
+    return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
+
+
 # =============== RDS =================
 
 def describe_db_instances(**optional_params):
