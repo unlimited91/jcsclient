@@ -1,5 +1,10 @@
-import base64, time, hmac, os, hashlib
-import six, sys
+import base64
+import time
+import hmac
+import os
+import hashlib
+import six
+import sys
 from six.moves import urllib
 
 import json
@@ -9,7 +14,8 @@ import urllib as ul
 import xmltodict
 
 import exceptions
-import binascii, getpass
+import binascii
+import getpass
 from Crypto.PublicKey import RSA
 import endpoints
 

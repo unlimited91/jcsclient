@@ -2,3 +2,4 @@ requests
 xmltodict
 six
 pyyaml
+Crypto
