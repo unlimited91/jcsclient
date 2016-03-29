@@ -1,19 +1,16 @@
-import base64
-import time
-import hmac
-import os
-import hashlib
-import six
-import sys
+import base64, time, hmac, os, hashlib
+import six, sys
+from six.moves import urllib
 
 import json
 import pprint
 import requests
-from six.moves import urllib
 import urllib as ul
 import xmltodict
 
 import exceptions
+import binascii, getpass
+from Crypto.PublicKey import RSA
 
 #requests.packages.urllib3.disable_warnings()
 global_vars = {
@@ -37,6 +34,59 @@ common_headers = {
     'Content-Type': 'application/json',
     'Accept-Encoding': 'identity',
 }
+
+
+def pkcs1_unpad(text):
+    #From http://kfalck.net/2011/03/07/decoding-pkcs1-padding-in-python
+    if len(text) > 0 and text[0] == '\x02':
+        # Find end of padding marked by nul
+        pos = text.find('\x00')
+        if pos > 0:
+            return text[pos+1:]
+    return None
+
+def long_to_bytes (val, endianness='big'):
+    # From http://stackoverflow.com/questions/8730927/convert-python-long-int-to-fixed-size-byte-array
+
+    # one (1) hex digit per four (4) bits
+    try:
+        #Python < 2.7 doesn't have bit_length =(
+        width = val.bit_length()
+    except:
+        width = len(val.__hex__()[2:-1]) * 4
+
+    # unhexlify wants an even multiple of eight (8) bits, but we don't
+    # want more digits than we need (hence the ternary-ish 'or')
+    width += 8 - ((width % 8) or 8)
+
+    # format width specifier: four (4) bits per hex digit
+    fmt = '%%0%dx' % (width // 4)
+
+    # prepend zero (0) to the width, to zero-pad the output
+    s = binascii.unhexlify(fmt % val)
+
+    if endianness == 'little':
+        # see http://stackoverflow.com/a/931095/309233
+        s = s[::-1]
+
+    return s
+
+def decryptPassword(rsaKey, password):
+    #Undo the whatever-they-do to the ciphertext to get the integer
+    encryptedData = base64.b64decode(base64.b64decode(password))
+    ciphertext = int(binascii.hexlify(encryptedData), 16)
+    #print ("ciphertext = %d" % ciphertext)
+    #Decrypt it
+    plaintext = rsaKey.decrypt(ciphertext)
+
+    #This is the annoying part.  long -> byte array
+    decryptedData = long_to_bytes(plaintext)
+    #Now Unpad it
+    unpaddedData = pkcs1_unpad(decryptedData)
+
+    #Done
+    return unpaddedData
+
 
 def _ensure_global_vars_populated():
     """Raises exception if global vars are not populated."""
@@ -169,7 +219,7 @@ def requestify(host_or_ip, request, verb='GET'):
     request_string = request_string[:-1]  # remove last '&'
     return request_string
 
-def do_request(method, url, headers=None):
+def do_request(method, url, headers=None, to_print=True):
     """
     Performs HTTP request, and returns response as an ordered dict.
 
@@ -226,8 +276,9 @@ def do_request(method, url, headers=None):
             # handle the case of keypair data
             resp_dict = json.loads(resp_json_string)
             resp_json_string = resp_json_string.replace("\\n", "\n")
-            print (resp_json_string)
-        print "\n\nRequest successfully executed !"
+            if to_print:
+                print (resp_json_string)
+                print "\n\nRequest successfully executed !"
         return resp_dict
     else:
         raise NotImplementedError
@@ -360,6 +411,7 @@ def curlify(service, req_str, gnucli=False, execute=False, prettyprint=True):
 
     If execute=True, don't return curl url, but execute it!
     """
+    windowsEncryptedPassword = False
     try:
         setup_client_from_env_vars()
         _ensure_global_vars_populated()
@@ -376,7 +428,29 @@ def curlify(service, req_str, gnucli=False, execute=False, prettyprint=True):
     verb = 'GET'
     if params['Action'] in ['CreateDBInstance', 'DeleteDBInstance', 'ModifyDBInstance', 'CreateDBSnapshot', 'DeleteDBSnapshot', 'RestoreDBInstanceFromDBSnapshot']:
         verb = 'POST'
-
+    if params['Action'] == 'GetPasswordData':
+        windowsEncryptedPassword = True
+        if 'PrivateKeyFile' not in params and 'PrivateKeyString' not in params:
+            print "Please pass the private key file path or base64 encoded private key string"
+            sys.exit()
+        elif params['PrivateKeyFile']:
+            try:
+                keyFile = open(params['PrivateKeyFile'])
+            except:
+                print "Could not find file", params['PrivateKeyFile']
+                sys.exit(-1)
+                #Read file
+            keyLines = keyFile.readlines()
+            params.pop("PrivateKeyFile", None)
+            #Import it
+            try:
+                key = RSA.importKey(keyLines, passphrase=getpass.getpass('Encrypted Key Password (leave blank if none): '))
+            except ValueError, ex:
+                print "Could not import SSH Key (Is it an RSA key? Is it password protected?): %s" % ex
+                sys.exit(-1)
+        elif params['PrivateKeyString']:
+            key = base64.b64decode(params['PrivateKeyString'])
+            params.pop("PrivateKeyString", None)
     global global_vars
     if service == 'compute':
         service_url = global_vars['compute_url']
@@ -391,7 +465,12 @@ def curlify(service, req_str, gnucli=False, execute=False, prettyprint=True):
 
     if execute:
         request_string = requestify(service_url, params, verb)
-
+        if windowsEncryptedPassword:
+            password_json = do_request(verb, request_string, to_print=False)
+            encrypted_pass = password_json['GetPasswordDataResponse']['passwordData']
+            password_json['GetPasswordDataResponse']['passwordData'] = decryptPassword(key, encrypted_pass)
+            print(json.dumps(password_json, indent=4, sort_keys=True))
+            return
         if prettyprint:
             pp = pprint.PrettyPrinter(indent=2)
             pp.pprint(_remove_item_keys(do_request(verb, request_string), True))
