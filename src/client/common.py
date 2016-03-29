@@ -11,6 +11,7 @@ import xmltodict
 import exceptions
 import binascii, getpass
 from Crypto.PublicKey import RSA
+import endpoints
 
 #requests.packages.urllib3.disable_warnings()
 global_vars = {
@@ -114,13 +115,18 @@ def setup_client(access_key, secret_key, compute_url, vpc_url, **other_params):
 
 def setup_client_from_env_vars():
     """Populates client from environment variables."""
-    setup_client(os.environ.get('ACCESS_KEY'),
-                          os.environ.get('SECRET_KEY'),
-                          os.environ.get('COMPUTE_URL'),
-                          os.environ.get('VPC_URL'),
-                          dss_url=os.environ.get('DSS_URL'),
-                          rds_url=os.environ.get('RDS_URL'),
-                          iam_url=os.environ.get('IAM_URL'))
+    # TODO(rushiagr): add logging here when we're using production endpoints?
+    # E.g. "Using default production endpoint <endpoint> for IAM as IAM_URL
+    # environment variable is not specified"
+    # TODO(rushiagr): remove special treatment to compute and vpc urls
+    setup_client(
+        os.environ.get('ACCESS_KEY'),
+        os.environ.get('SECRET_KEY'),
+        os.environ.get('COMPUTE_URL', endpoints.production['COMPUTE_URL']),
+        os.environ.get('VPC_URL', endpoints.production['VPC_URL']),
+        dss_url=os.environ.get('DSS_URL', endpoints.production['DSS_URL']),
+        rds_url=os.environ.get('RDS_URL', endpoints.production['RDS_URL']),
+        iam_url=os.environ.get('IAM_URL', endpoints.production['IAM_URL']))
 
 def _get_utf8_value(value):
     """Get the UTF8-encoded version of a value."""

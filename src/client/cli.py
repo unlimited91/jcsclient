@@ -63,6 +63,39 @@ iam_help = {
         'GetResourceBasedPolicySummary' : "[--Id <rbpid> | --Name <rbpname>]                                                                     "
 }
 
+vpc_help = {
+        'CreateVpc                    ' : "--CidrBlock <cidrBlock>                                                                              ",
+        'DeleteVpc                    ' : "--VpcId <vpcId>                                                                                      ",
+        'DescribeVpcs                 ' : "[--VpcId.N <vpcId>]                                                                                  ",
+        'CreateSubnet                 ' : "--CidrBlock <cidrBlock> --VpcId <vpcId>                                                              ",
+        'DeleteSubnet                 ' : "--SubnetId <subnetId>                                                                                ",
+        'DescribeSubnets              ' : "[--SubnetId.N <subnetId>]                                                                            ",
+        'CreateSecurityGroup          ' : "--VpcId <vpcId> --GroupName <groupName> --GroupDescription <groupDescription>                        ",
+        'AuthorizeSecurityGroupIngress' : "--GroupId <groupId> --IpPermissions.N.IpProtocol <protocol> --IpPermissions.N.ToPort <Port> --IpPermissions.N.FromPort <Port> [--IpPermissions.N.IpRanges.N.CidrIp <cidrIp> | --IpPermissions.N.Groups.1.GroupIp <groupId>]                          ",
+        'AuthorizeSecurityGroupEgress ' : "--GroupId <groupId> --IpPermissions.N.IpProtocol <protocol> --IpPermissions.N.ToPort <Port> --IpPermissions.N.FromPort <Port> [--IpPermissions.N.IpRanges.N.CidrIp <cidrIp> | --IpPermissions.N.Groups.1.GroupIp <groupId>]                          ",
+        'RevokeSecurityGroupIngress   ' : "--GroupId <groupId> --IpPermissions.N.IpProtocol <protocol> --IpPermissions.N.ToPort <Port> --IpPermissions.N.FromPort <Port> [--IpPermissions.N.IpRanges.N.CidrIp <cidrIp> | --IpPermissions.N.Groups.1.GroupIp <groupId>]                          ",
+        'RevokeSecurityGroupEgress    ' : "--GroupId <groupId> --IpPermissions.N.IpProtocol <protocol> --IpPermissions.N.ToPort <Port> --IpPermissions.N.FromPort <Port> [--IpPermissions.N.IpRanges.N.CidrIp <cidrIp> | --IpPermissions.N.Groups.1.GroupIp <groupId>]                          ",
+  
+        'DescribeSecurityGroups       ' : "[--SecurityGroupId.N <securityGroupId>                                                               ",
+        'DeleteSecurityGroup          ' : "--SecurityGroupId <securityGroupId>                                                                  ",
+        'CreateRoute                  ' : "--DestinationCidrBlock <destinationCidrBlock> --RouteTableId <routeTableId> --InstanceId <instanceId> ",
+        'DeleteRoute                  ' : "--DestinationCidrBlock <destinationCidrBlock> --RouteTableId <routeTableId>                          ",
+        'CreateRouteTable             ' : "--VpcId <vpcId>                                                                                      ",
+        'DeleteRouteTable             ' : "--RouteTableId <routeTableId>                                                                        ",
+        'AssociateRouteTable          ' : "--RouteTableId <routeTableId> --SubnetId <subnetId>                                                  ",
+        'DisassociateRouteTable       ' : "--AssociationId <associationId>                                                                      ",
+        'DescribeRouteTables          ' : "[--RouteTableId.N <routeTableId>]                                                                    ",
+        'AllocateAddress            ' : "--Domain <vpc>                                                                                         ",
+        'AssociateAddress           ' : "--AllocationId <allocationId> --InstanceId <instanceId>                                                ",
+        'DisassociateIpAddress        ' : "--AssociationId <associationId>                                                                        ",
+        'ReleaseAddress             ' : "--AllocationId <allocationId>                                                                          ",
+        'DescribeAddresses          ' : "[--AllocationId.N <allocationId>]                                                                      ",
+}
+
+
+
+
+
 compute_help = {
         'CreateKeyPair                ' : "--KeyName <keyname>",
         'DeleteKeyPair                ' : "--KeyName <keyname>",
@@ -107,6 +140,7 @@ def main(argv=sys.argv):
         print "               jcs iam ActionName --Param1 <value> --Param2 <value>"
         print "               jcs iam --help"
         print "               jcs iam ActionName --help"
+        print "               jcs rds --help"
         print "Service argument can be 'iam', 'rds', 'compute', 'vpc' or 'dss'"
         print "If '--curl' is specified, only curl request input will be"
         print "produced. No request will be made"
@@ -136,6 +170,12 @@ def main(argv=sys.argv):
         elif argv[-1] == 'compute':
             for row in compute_help:
                 print row, 'jcs compute ' + row.strip() + ' ' + compute_help[row]
+        
+        elif argv[-1] == 'vpc':
+            for row in vpc_help:
+                print row, 'jcs vpc ' + row.strip() + ' ' + vpc_help[row]
+
+
         else:
             found = False
             for row in iam_help:
