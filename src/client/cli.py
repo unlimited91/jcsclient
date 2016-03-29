@@ -85,11 +85,11 @@ vpc_help = {
         'AssociateRouteTable          ' : "--RouteTableId <routeTableId> --SubnetId <subnetId>                                                  ",
         'DisassociateRouteTable       ' : "--AssociationId <associationId>                                                                      ",
         'DescribeRouteTables          ' : "[--RouteTableId.N <routeTableId>]                                                                    ",
-        'AllocateIpAddress            ' : "--Domain <vpc>                                                                                       ",
-        'AssociateIpAddress           ' : "--AllocationId <allocationId> --InstanceId <instanceId>                                              ",
-        'DisassociateIpAddress        ' : "--AssociationId <associationId>                                                                      ",
-        'ReleaseIpAddress             ' : "--AllocationId <allocationId>                                                                        ",
-        'DescribeIpAddresses          ' : "[--AllocationId.N <allocationId>]                                                                    ",
+        'AllocateAddress            ' : "--Domain <vpc>                                                                                         ",
+        'AssociateAddress           ' : "--AllocationId <allocationId> --InstanceId <instanceId>                                                ",
+        'DisassociateIpAddress        ' : "--AssociationId <associationId>                                                                        ",
+        'ReleaseAddress             ' : "--AllocationId <allocationId>                                                                          ",
+        'DescribeAddresses          ' : "[--AllocationId.N <allocationId>]                                                                      ",
 }
 
 
