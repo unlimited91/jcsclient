@@ -113,7 +113,7 @@ compute_help = {
         'DetachVolume                 ' : "--InstanceId <instance_id> --VolumeId <volume_id> [--Force <True | False>",
         'ShowDeleteOnTerminationFlag  ' : "--volumeId <volume_id>",
         'AttachVolume                 ' : "--InstanceId <instance_id> --VolumeId <volume_id> --Device <device>",
-        #'ShowPassword                 ' : "[--Id <userid> | --Name <username>]",
+        'GetPasswordData              ' : "--InstanceId <instance_id> --PrivateKeyFile <absolute_file_path>",
 }
 
 
