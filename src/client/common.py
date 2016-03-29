@@ -430,10 +430,10 @@ def curlify(service, req_str, gnucli=False, execute=False, prettyprint=True):
         verb = 'POST'
     if params['Action'] == 'GetPasswordData':
         windowsEncryptedPassword = True
-        if 'PrivateKeyFile' not in params and 'PrivateKeyString' not in params:
-            print "Please pass the private key file path or base64 encoded private key string"
+        if 'PrivateKeyFile' not in params:
+            print "Please pass the private key file path"
             sys.exit()
-        elif params['PrivateKeyFile']:
+        else :
             try:
                 keyFile = open(params['PrivateKeyFile'])
             except:
@@ -448,9 +448,6 @@ def curlify(service, req_str, gnucli=False, execute=False, prettyprint=True):
             except ValueError, ex:
                 print "Could not import SSH Key (Is it an RSA key? Is it password protected?): %s" % ex
                 sys.exit(-1)
-        elif params['PrivateKeyString']:
-            key = base64.b64decode(params['PrivateKeyString'])
-            params.pop("PrivateKeyString", None)
     global global_vars
     if service == 'compute':
         service_url = global_vars['compute_url']
