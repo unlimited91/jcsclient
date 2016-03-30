@@ -114,6 +114,13 @@ compute_help = {
         'ShowDeleteOnTerminationFlag  ' : "--volumeId <volume_id>",
         'AttachVolume                 ' : "--InstanceId <instance_id> --VolumeId <volume_id> --Device <device>",
         'GetPasswordData              ' : "--InstanceId <instance_id> --PrivateKeyFile <absolute_file_path>",
+        'DescribeVolumes              ' : "[--VolumeId.N <volume_id>] [--MaxResults <integer>] [--NextToken <volume_id>] [--Detail <True | False>]",
+        'CreateVolume                 ' : "--Size <integer> --SnapshotId <snapshot_id>",
+        'DeleteVolume                 ' : "--VolumeId <volume_id>",
+        'DescribeSnapshots            ' : "[--SnapshotId.N <snapshot_id>] [--MaxResults <integer>] [--NextToken <snapshot_id>] [--Detail <True | False>]",
+        'CreateSnapshot               ' : "--VolumeId <volume_id>",
+        'DeleteSnapshot               ' : "--SnapshotId <snapshot_id>",
+
 }
 
 
