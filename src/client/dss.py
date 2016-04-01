@@ -478,17 +478,17 @@ def make_dss_request():
             filname = dss_info['target']
             resp = download_file(filname, url, headers)
         else:
-            resp = requests.get(url, headers=headers)
+            resp = requests.get(url, headers=headers, verify=common.global_vars['is_secure'])
     elif dss_info['op'] == 'HEAD':
-        resp = requests.head(url, headers=headers)
+        resp = requests.head(url, headers=headers, verify=common.global_vars['is_secure'])
     elif dss_info['op'] == 'DELETE':
-        resp = requests.delete(url, headers=headers)
+        resp = requests.delete(url, headers=headers, verify=common.global_vars['is_secure'])
     elif dss_info['op'] == 'PUT':
         if dss_info['action'] == 'cp':
             data = open(dss_info['src'], 'rb')
-            resp = requests.put(url, headers=headers, data=data)
+            resp = requests.put(url, headers=headers, data=data, verify=common.global_vars['is_secure'])
         if dss_info['action'] == 'mb':
-            resp = requests.put(url, headers=headers)
+            resp = requests.put(url, headers=headers, verify=common.global_vars['is_secure'])
     else:
         print "Unexpected operation!"
         sys.exit(0)
@@ -559,7 +559,7 @@ def make_dss_request():
 
 def download_file(filname, url, headers):
     with open(filname, 'wb') as handle:
-        resp = requests.get(url, headers=headers, stream=True)
+        resp = requests.get(url, headers=headers, stream=True, verify=common.global_vars['is_secure'])
         if not resp.ok:
             print "Error downloading file " + dss_info['object']
             return resp
