@@ -411,6 +411,7 @@ class ErrorHandler( xml.sax.ContentHandler ):
     def __init__(self):
         self.CurrentData = ""
         self.error_code = ""
+        self.error_message = ""
     
     def startElement(self, tag, attributes):
         self.CurrentData = tag
@@ -418,10 +419,14 @@ class ErrorHandler( xml.sax.ContentHandler ):
     def endElement(self, tag):
         if tag == "Code":
             print "Error code : " + self.error_code
+        elif tag == "Message":
+            print "Error message : " + self.error_message
 
     def characters(self, content):
         if self.CurrentData == "Code":
             self.error_code = content
+        elif self.CurrentData == "Message":
+            self.error_message = content
 
 
 
@@ -454,6 +459,10 @@ def make_dss_request():
 
     ## Build URL and send request
     url = common.global_vars['dss_url']
+    # check for a trailing / in url
+    if(url.endswith("/")):
+        url = url[0:len(url) -1]
+
     url += gets_dss_path()
     resp = ''
     whisper("URL : " + url)
@@ -469,17 +478,17 @@ def make_dss_request():
             filname = dss_info['target']
             resp = download_file(filname, url, headers)
         else:
-            resp = requests.get(url, headers=headers, verify=common.global_vars['is_secure'])
+            resp = requests.get(url, headers=headers)
     elif dss_info['op'] == 'HEAD':
-        resp = requests.head(url, headers=headers, verify=common.global_vars['is_secure'])
+        resp = requests.head(url, headers=headers)
     elif dss_info['op'] == 'DELETE':
-        resp = requests.delete(url, headers=headers, verify=common.global_vars['is_secure'])
+        resp = requests.delete(url, headers=headers)
     elif dss_info['op'] == 'PUT':
         if dss_info['action'] == 'cp':
             data = open(dss_info['src'], 'rb')
-            resp = requests.put(url, headers=headers, data=data, verify=common.global_vars['is_secure'])
+            resp = requests.put(url, headers=headers, data=data)
         if dss_info['action'] == 'mb':
-            resp = requests.put(url, headers=headers, verify=common.global_vars['is_secure'])
+            resp = requests.put(url, headers=headers)
     else:
         print "Unexpected operation!"
         sys.exit(0)
@@ -550,7 +559,7 @@ def make_dss_request():
 
 def download_file(filname, url, headers):
     with open(filname, 'wb') as handle:
-        resp = requests.get(url, headers=headers, stream=True, verify=common.global_vars['is_secure'])
+        resp = requests.get(url, headers=headers, stream=True)
         if not resp.ok:
             print "Error downloading file " + dss_info['object']
             return resp
