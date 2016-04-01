@@ -5,12 +5,13 @@
 #      cp openrc.sample openrc
 # and source that file
 #      source openrc
+#
+# You can also specify your custom service URL, if any, in this file. For
+# example:
+#     RDS_URL=https://compute.ind-west-1.staging.jiocloudservices.com
+# will point to staging endpoint if you add this variable here, and source this
+# file
 
-export IS_SECURE=False
-export COMPUTE_URL=https://compute.ind-west-1.staging.jiocloudservices.com/services/Cloud/
-export VPC_URL=https://vpc.ind-west-1.staging.jiocloudservices.com
-export DSS_URL=https://dss.ind-west-1.staging.jiocloudservices.com
-#export IAM_URL=http://127.0.0.1/
-export IAM_URL=https://iam.ind-west-1.staging.jiocloudservices.com/
-export ACCESS_KEY=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-export SECRET_KEY=ssssssssssssssssssssssssssssssss
+# Provide your access and secret keys
+export ACCESS_KEY=
+export SECRET_KEY=
