@@ -411,6 +411,7 @@ class ErrorHandler( xml.sax.ContentHandler ):
     def __init__(self):
         self.CurrentData = ""
         self.error_code = ""
+        self.error_message = ""
     
     def startElement(self, tag, attributes):
         self.CurrentData = tag
@@ -418,10 +419,14 @@ class ErrorHandler( xml.sax.ContentHandler ):
     def endElement(self, tag):
         if tag == "Code":
             print "Error code : " + self.error_code
+        elif tag == "Message":
+            print "Error message : " + self.error_message
 
     def characters(self, content):
         if self.CurrentData == "Code":
             self.error_code = content
+        elif self.CurrentData == "Message":
+            self.error_message = content
 
 
 
@@ -454,6 +459,10 @@ def make_dss_request():
 
     ## Build URL and send request
     url = common.global_vars['dss_url']
+    # check for a trailing / in url
+    if(url.endswith("/")):
+        url = url[0:len(url) -1]
+
     url += gets_dss_path()
     resp = ''
     whisper("URL : " + url)
