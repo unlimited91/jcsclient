@@ -1,0 +1,26 @@
+
+NAME :
+    describe-images
+
+
+DESCRIPTION :
+    Describes images that are currently visible under your JCS
+    account. The images are listed as jmi-xxxxx. By default,
+    this would list all images visible. If you need to describe
+    specific images, you can use the --image-ids option.
+
+
+SYNOPSIS :
+    describe-images
+    [--image-ids <values>]
+
+
+OPTIONS :
+    --image-ids
+    List of ids which need to be described.
+
+
+EXAMPLES :
+    jcs compute describe-images
+
+    jcs compute describe-images --image-ids jmi-123456
