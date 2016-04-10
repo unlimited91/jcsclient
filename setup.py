@@ -74,7 +74,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'jcs = client.cli:main',
+            'jcs = client.clidriver:main',
         ]
     },
     test_suite='client'
