@@ -58,3 +58,20 @@ class UnknownCredentials(Exception):
         self.msg = ("Access/Secret Key not set in the environment. "
                     "Please export the variables as given in readme.")
         super(UnknownCredentials, self).__init__(self.msg)
+
+class UnknownOutputFormat(Exception):
+    """
+    This Exception gets raised when the output coming from an
+    API is an unknown format. So if we are trying to convert
+    the output of request to JSON, and it cant be converted,
+    this error gets thrown.
+
+    This basically means the issue is at the implementation end and
+    has to be seen by service.
+    """
+    def __init__(self):
+        self.msg = ("Unknown Format present in request output. This "
+                    "generally means the server has gone into an " 
+                    "unknown state. Please raise a bug with customer "
+                    "support.")
+        super(UnknownOutputFormat, self).__init__(self.msg)

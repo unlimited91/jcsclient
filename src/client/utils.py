@@ -177,7 +177,7 @@ def push_indexed_params(params, key, vals):
     idx = 1
     for val in vals:
         elements = val
-        key = key + '.' + str(idx)
+        key_index = key + '.' + str(idx)
         idx += 1
         # This is for cases like --filter 'Name=xyz,Values=abc'
         if val.find(',') != -1:
@@ -189,13 +189,13 @@ def push_indexed_params(params, key, vals):
                         msg = 'Unsupported value ' + element + 'given in request.'
                         raise ValueError(msg)
                     element_key, element_val = parts[0], parts[1]
-                    key = key + '.' + element_key
-                    params[element_key] = element_val
+                    updated_key = key_index + '.' + element_key
+                    params[updated_key] = element_val
                 else:
                     msg = 'Bad request syntax. Please see help for valid request.'
                     raise ValueError(msg)
         else:
-            params[key] = elements
+            params[key_index] = elements
 
 def get_protocol_and_host(url):
     """Validate a given url and extract the protocol and
@@ -246,3 +246,26 @@ def get_argument_parser():
     """
     return argparse.ArgumentParser(add_help=False, usage=help.ERROR_STRING,
                              formatter_class=argparse.RawTextHelpFormatter)
+
+def web_response_to_json(response):
+    """
+    Modify the web response output to json format
+
+    param response: response object from requests library
+
+    return: json object representing the response content
+    """
+    try:
+        resp_dict = dict()
+        if response is not '':
+            resp_dict = json.loads(response.content)
+    except:
+        try:
+            resp_dict = dict()
+            resp_ordereddict = xmltodict.parse(response.content)
+            resp_json = json.dumps(resp_ordereddict, indent=4,
+                                   sort_keys=True)
+            resp_dict = json.loads(resp_json)
+            return resp_dict
+        except:
+            raise exception.UnknownOutputFormat()
