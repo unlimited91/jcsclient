@@ -26,6 +26,7 @@ from client.compute_api import image
 from client.compute_api import key_pair
 from client.compute_api import instance
 from client.compute_api import volume
+from client.compute_api import snapshot
 
 class Controller(object):
     """Compute Controller class
@@ -285,12 +286,58 @@ class Controller(object):
 
         The function can take following as optional args -
         1. List of volume ids to be described
-        2. Max number of results to be shown
-        3. Id of last volume seen if max number of results
+        2. MaxResults - Max number of results to be shown
+        3. NextToken - Id of last volume seen if max number of results
            is less than total volumes.
         4. Detail - by default this is true. Set to false to
            suppress detail
         """
         return volume.describe_volumes(self.url, self.verb,
+                                    self.headers, self.version,
+                                    args)
+
+
+
+    def create_snapshot(self, args):
+        """
+        Create a new snapshot from a existing volume.
+
+        param args: Arguments passed to the function
+
+        The function expects either of the following -
+        Volume Id 
+        """
+        return snapshot.create_snapshot(self.url, self.verb,
+                                    self.headers, self.version,
+                                    args)
+
+    def delete_snapshot(self, args):
+        """
+        Delete an existing and completed snapshot. The snapshot
+        should be in 'completed' state to delete.
+
+        param args: Arguments passed to the function
+
+        The function expects snapshot id to be deleted
+        """
+        return snapshot.delete_snapshot(self.url, self.verb,
+                                    self.headers, self.version,
+                                    args)
+
+    def describe_snapshots(self, args):
+        """
+        Get a detailed list of snapshots in your account
+
+        param args: Arguments passed to the function
+
+        The function can take following as optional args -
+        1. List of snapshot ids to be described
+        2. MaxResults - Max number of results to be shown
+        3. NextToken - Id of last snapshot seen if max number of results
+           is less than total volumes.
+        4. Detail - by default this is true. Set to false to
+           suppress detail
+        """
+        return snapshot.describe_snapshots(self.url, self.verb,
                                     self.headers, self.version,
                                     args)
