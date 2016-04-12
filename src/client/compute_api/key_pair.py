@@ -43,7 +43,9 @@ def delete_key_pair(url, verb, headers, version, args):
     parser = utils.get_argument_parser()
     parser.add_argument('--key-name', required=True)
     args= parser.parse_args(args)
+    print args
     utils.populate_params_from_cli_args(params, args)
+    print params
     return requestify.make_request(url, verb, headers, params) 
 
 def describe_key_pairs(url, verb, headers, version, args):
