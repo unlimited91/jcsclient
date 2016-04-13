@@ -34,11 +34,11 @@ def create_sec_group_rule(params,args) :
     parser.add_argument('--group-id',required=True)
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--ip-permissions', nargs='*')
-    group.add_argument('--protocol', dest = 'ip_Permissions.1._protocol')
+    group.add_argument('--protocol', dest = 'ip_Permissions.1._ip_protocol')
 
     group2 = parser.add_mutually_exclusive_group()
-    group2.add_argument('--cidr', dest = 'ip_Permissions.1._ip_ranges.1._cidr_block')
-    group2.add_argument('--source-group')
+    group2.add_argument('--cidr', dest = 'ip_Permissions.1._ip_ranges.1._cidr_ip')
+    group2.add_argument('--source-group', dest='ip_Permissions.1._groups.1._group_id')
 
     parser.add_argument('--port')
 
