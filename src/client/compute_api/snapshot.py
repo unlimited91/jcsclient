@@ -54,7 +54,7 @@ def describe_snapshots(url, verb, headers, version, args):
     args = args[1:]
     parser = utils.get_argument_parser()
     parser.add_argument('--snapshot-ids', nargs='+', required=False)
-    parser.add_argument('--max-reults', type=int, required=False)
+    parser.add_argument('--max-results', type=int, required=False)
     parser.add_argument('--next-token', required=False)
     parser.add_argument('--detail', type=bool, required=False)
     args = parser.parse_args(args)
