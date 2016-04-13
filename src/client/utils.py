@@ -180,9 +180,9 @@ def push_indexed_params(params, key, vals):
 
     idx = 0
     for val in vals:
+        idx += 1
         elements = val
         key_index = key + '.' + str(idx)
-        idx += 1
         # This is for cases like --filter 'Name=xyz,Values=abc'
         if val.find(',') != -1:
             elements = val.split(',')
@@ -193,9 +193,9 @@ def push_indexed_params(params, key, vals):
                         msg = 'Unsupported value ' + element + 'given in request.'
                         raise ValueError(msg)
                     element_key, element_val = parts[0], parts[1]
-                    updated_key = key_index + '.' + element_key
                     if element_key == 'Values':
                         element_key = element_key[:-1] + "." + str(idx)
+                    updated_key = key_index + '.' + element_key
                     params[updated_key] = element_val
                 else:
                     msg = 'Bad request syntax. Please see help for valid request.'
