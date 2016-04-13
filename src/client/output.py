@@ -21,7 +21,6 @@
 #
 
 import json
-import pprint
 import xmltodict
 import requests
 from client.utils import SUCCESS
@@ -35,32 +34,46 @@ class OutputFormat(object):
     output would be displayed. Thus, there is no __init__() function.
     As the cli is enhanced, this section would be made configurable.
     """
-    def display(self, response):
+    def display(self, response, webobject=True):
         resp_json = ""
         try:
-            resp_dict = dict()
-            if response is not '':
-                resp_dict = json.loads(response.content)
+            if response:
+                if webobject:
+                    resp_dict = json.loads(response)
+                else:
+                    resp_dict = response
                 resp_json = json.dumps(resp_dict, indent=4, sort_keys=True)
         except:
             try:
-                resp_dict = dict()
-                resp_ordereddict = xmltodict.parse(response.content)
+                resp_ordereddict = xmltodict.parse(response)
                 resp_json = json.dumps(resp_ordereddict, indent=4,
                                        sort_keys=True)
                 resp_dict = json.loads(resp_json)
                 resp_json = resp_json.replace("\\n", "\n")
                 resp_json = resp_json.replace("\\", "")
-                print(resp_json)
             except:
                 msg = ("Issue with displaying the output. Please raise a"
                       " request for customer support.")
                 raise IOError(msg)
+        print(resp_json)
 
 def format_result(response):
+    """
+    Rational for the branching - In certain APIs, we would have edited
+    the final output to do some processing, like get-password-data
+
+    So, generally, this function expects requests.Response object. But
+    in certain cases, we pass a normal dict or xml to the formatter
+    and thus the conversion can be handled here.
+    """
     output_formatter = OutputFormat()
-    output_formatter.display(response)
-    if response.status_code != 200:
-        response.raise_for_status()
+    if isinstance(response, requests.Response):
+        output_formatter.display(response.content)
+        if response.status_code != 200:
+            response.raise_for_status()
+        else:
+            return SUCCESS
     else:
+        output_formatter.display(response, webobject=False)
         return SUCCESS
+        
