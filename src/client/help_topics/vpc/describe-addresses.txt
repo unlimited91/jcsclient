@@ -1,20 +1,12 @@
 NAME
-      create-vpc - create your own virtual private cloud network
+      describe-addresses - View all IP addresses
 
 SYNOPSIS
-      create-vpc --cidr-block <cidr-value>
-      create-vpc [help]
+      describe-addresses
+      describe-addresses [help]
 
 DESCRIPTION
-       Create vpc allows you to create virtual private cloud
-       as per your need and choice of CIDR/ip-address range.
-
-       Mandatory arguments: --cidr-block
-
-
-OPTIONS :
-       --cidr-block specify cidr block with mask of your choice 
+       You can view the list of all the IP addresses.
 
 EXAMPLES :
-       jcs vpc create-vpc --cidr-block 11.1.1.0/24
-
+       jcs vpc describe-addresses
