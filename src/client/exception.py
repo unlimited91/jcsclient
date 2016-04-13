@@ -62,9 +62,10 @@ class UnknownCredentials(Exception):
 class UnknownOutputFormat(Exception):
     """
     This Exception gets raised when the output coming from an
-    API is an unknown format. So if we are trying to convert
-    the output of request to JSON, and it cant be converted,
-    this error gets thrown.
+    API is an unknown format or syntax. So if we are trying to
+    convert the output of request to JSON, and it cant be
+    converted, this error gets thrown. Or if we get unknown keys
+    in output, this error gets thrown.
 
     This basically means the issue is at the implementation end and
     has to be seen by service.
@@ -75,3 +76,22 @@ class UnknownOutputFormat(Exception):
                     "unknown state. Please raise a bug with customer "
                     "support.")
         super(UnknownOutputFormat, self).__init__(self.msg)
+
+class PrivateKeyNotFound(Exception):
+    """
+    This Exception gets raised if the path given for private key
+    file is invalid.
+    """
+    def __init__(self, path):
+        self.msg = ("No private key file found at path %s." % (path))
+        super(PrivateKeyNotFound, self).__init__(self.msg)
+
+class ImportKeyError(Exception):
+    """
+    This Exception gets raised if any error occurs during importing
+    RSA key (public or private half) encoded in standard form.
+    """
+    def __init__(self, path):
+        self.msg = ("Failed to import private key file %s." % (path))
+        super(ImportKeyError, self).__init__(self.msg)
+

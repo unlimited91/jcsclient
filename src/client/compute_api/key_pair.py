@@ -54,4 +54,17 @@ def describe_key_pairs(url, verb, headers, version, args):
     if len(args):
         msg = "Unexpected input received. Please check help for valid arguments."
         raise KeyError(msg)
+    return requestify.make_request(url, verb, headers, params)
+
+def import_key_pair(url, verb, headers, version, args): 
+    params = {}
+    params['Action'] = utils.dash_to_camelcase(args[0])                    
+    params['Version'] = version
+    args = args[1:]
+    parser = utils.get_argument_parser()
+    parser.add_argument('--key-name', required=True)
+    parser.add_argument('--public-key-material', required=True)
+    args= parser.parse_args(args)
+    utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params) 
+

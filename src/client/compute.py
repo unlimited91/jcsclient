@@ -95,6 +95,20 @@ class Controller(object):
         return key_pair.describe_key_pairs(self.url, self.verb,
                                            self.headers, self.version, args)
  
+    def import_key_pair(self, args):
+        """
+        Import the public key from an RSA keypair that was
+        created using a third-party application
+
+        param args: Arguments passed to the function
+
+        The function expects the following arguments -
+        1. Unique name of Key Pair to import
+        2. Public Key Material in base64 encoded form
+        """
+        return key_pair.import_key_pair(self.url, self.verb, self.headers,
+                                        self.version, args)
+ 
     def describe_instances(self, args):
         """
         Describes instances in your account
@@ -158,6 +172,23 @@ class Controller(object):
         return instance.terminate_instances(self.url, self.verb,
                                             self.headers, self.version,
                                             args)
+ 
+    def get_password_data(self, args):
+        """
+        Get password for instance in your account. You 
+        need to also provide the private key file to 
+        get unencrypted password data.
+
+        param args: Arguments passed to the function
+
+        The function expects the following as input 
+        1. Instance id
+        2. Private key file path (Optional)
+        3. Passphrase (incase one is set for the key file)
+        """
+        return instance.get_password_data(self.url, self.verb,
+                                          self.headers, self.version,
+                                          args)
  
     def describe_instance_types(self, args):
         """

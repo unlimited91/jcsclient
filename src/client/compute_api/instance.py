@@ -20,9 +20,10 @@
 # IN THE SOFTWARE.
 #
 
+import base64
 import binascii
-import getpass
-from Crypto.PublicKey import RSA
+import requests
+from client import exception
 from client import utils
 from client import requestify
 
@@ -33,6 +34,8 @@ def describe_instances(url, verb, headers, version, args):
     args = args[1:]
     parser = utils.get_argument_parser()
     parser.add_argument('--instance-ids', nargs='+', required=False)
+    # Right now filters functionality is broken, it works only
+    # for cases like --filters "Name=abc,Values=def"
     parser.add_argument('--filters', nargs='+', required=False)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
@@ -111,3 +114,44 @@ def run_instances(url, verb, headers, version, args):
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
 
+def decrypt_instance_password(password, private_key_file, passphrase):
+    key = utils.import_ssh_key(private_key_file, passphrase)
+    encrypted_data = base64.b64decode(base64.b64decode(password))
+    ciphertext = int(binascii.hexlify(encrypted_data), 16)
+    plaintext = key.decrypt(ciphertext)
+    decrypted_data = utils.long_to_bytes(plaintext)
+    unpadded_data = utils.pkcs1_unpad(decrypted_data)
+    return unpadded_data 
+
+def get_password_data(url, verb, headers, version, args):
+    params = {}
+    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Version'] = version
+    args = args[1:]
+    parser = utils.get_argument_parser()
+    parser.add_argument('--instance-id', required=True)
+    processed, remaining = parser.parse_known_args(args)
+    utils.populate_params_from_cli_args(params, processed)
+    response = requestify.make_request(url, verb, headers, params)
+    parser = utils.get_argument_parser()
+    parser.add_argument('--private-key-file', required=False, default=None)
+    parser.add_argument('--key-passphrase', required=False, default=None)
+    processed = parser.parse_args(remaining)
+    processed = vars(processed)
+    private_key_file = processed.get('private_key_file')
+    passphrase = processed.get('key_passphrase')
+    response_json = utils.web_response_to_json(response)
+    try:
+        response_body = response_json['GetPasswordDataResponse']
+        encrypted_password = response_body['passwordData']
+        if not private_key_file or not encrypted_password:
+            return response
+        decrypted_password = decrypt_instance_password(encrypted_password,
+                                                       private_key_file,
+                                                       passphrase)
+        response_json['GetPasswordDataResponse']['passwordData'] = \
+                                                  decrypted_password
+        return response_json
+    except KeyError as ke:
+        raise exception.UnknownOutputFormat()
+    

@@ -24,8 +24,12 @@ import os
 import re
 import importlib
 import argparse
+import json
+import binascii
+import xmltodict
 from client import help
 from client import exception
+from Crypto.PublicKey import RSA
 # Set codes for success and failure of APIs.
 # This can be enhanced to return service specific
 # error codes down the line.
@@ -174,7 +178,7 @@ def push_indexed_params(params, key, vals):
     if key[-1] == 's':
         key = key[:-1]
 
-    idx = 1
+    idx = 0
     for val in vals:
         elements = val
         key_index = key + '.' + str(idx)
@@ -190,6 +194,8 @@ def push_indexed_params(params, key, vals):
                         raise ValueError(msg)
                     element_key, element_val = parts[0], parts[1]
                     updated_key = key_index + '.' + element_key
+                    if element_key == 'Values':
+                        element_key = element_key[:-1] + "." + str(idx)
                     params[updated_key] = element_val
                 else:
                     msg = 'Bad request syntax. Please see help for valid request.'
@@ -256,16 +262,56 @@ def web_response_to_json(response):
     return: json object representing the response content
     """
     try:
-        resp_dict = dict()
-        if response is not '':
+        if response:
             resp_dict = json.loads(response.content)
     except:
         try:
-            resp_dict = dict()
             resp_ordereddict = xmltodict.parse(response.content)
             resp_json = json.dumps(resp_ordereddict, indent=4,
                                    sort_keys=True)
             resp_dict = json.loads(resp_json)
-            return resp_dict
         except:
             raise exception.UnknownOutputFormat()
+    return resp_dict
+
+def import_ssh_key(private_key_file, passphrase=None):
+    """
+    Import contents from RSA private key file
+
+    param private_key_file: path to private key file 
+
+    param passphrase: passphrase for the private key, by default
+            None
+
+    return: contents from private key file
+    """
+    key_file_contents = None
+    private_key_file = os.path.abspath(private_key_file)
+    try:
+        with open(private_key_file, 'r') as key_file:
+            key_file_contents = key_file.readlines()
+        return RSA.importKey(key_file_contents, passphrase=passphrase)
+    except IOError as ie:
+        raise exception.PrivateKeyNotFound(private_key_file)
+    except Exception as e:
+        raise exception.ImportKeyError(private_key_file)
+
+def pkcs1_unpad(text):
+    """Helper function for handling pkcs1 standard padding"""
+    if len(text) > 0 and text[0] == '\x02':
+        # Find end of padding marked by nul
+        pos = text.find('\x00')
+        if pos > 0:
+            return text[pos+1:]
+    return None
+
+def long_to_bytes(val):
+    """Helper function for changing raw decrypted password contents"""
+    try:
+        width = val.bit_length()
+    except:
+        width = len(val.__hex__()[2:-1]) * 4
+    width += 8 - ((width % 8) or 8)
+    fmt = '%%0%dx' % (width // 4)
+    s = binascii.unhexlify(fmt % val)
+    return s
