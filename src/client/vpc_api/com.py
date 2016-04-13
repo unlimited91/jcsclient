@@ -20,16 +20,31 @@
 # IN THE SOFTWARE.
 #
 
-import argparse
 from client import utils
 from client import requestify
+from client import exception
+import vpcutils
+import pdb
 
-def createUrl(url, verb, headers, version, args):
-    params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
-    params['Version'] = version
-    args = args[1:]
-    print args
+
+def create_sec_group_rule(params,args) :
+
+
+    parser = utils.get_argument_parser()
+    parser.add_argument('--group-id',required=True)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('--ip-permissions', nargs='*')
+    group.add_argument('--protocol', dest = 'ip_Permissions.1._protocol')
+
+    group2 = parser.add_mutually_exclusive_group()
+    group2.add_argument('--cidr', dest = 'ip_Permissions.1._ip_ranges.1._cidr_block')
+    group2.add_argument('--source-group')
+
+    parser.add_argument('--port')
+
+
+    args = parser.parse_args(args)
+    vpcutils.populate_params_from_cli_args(params, args)
 
 
 def create_vpc(url, verb, headers, version, args):
@@ -41,7 +56,7 @@ def create_vpc(url, verb, headers, version, args):
     parser = utils.get_argument_parser()
     parser.add_argument('--cidr-block',required=True)
     args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    vpcutils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
 
 
@@ -67,11 +82,12 @@ def describe_vpcs(url, verb, headers, version, args):
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
+    print args
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-ids',required=False)
+    parser.add_argument('--vpc-ids', nargs='*', required=False)
     args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
-    print params
+    #pdb.set_trace()
+    vpcutils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
 
 
@@ -107,6 +123,12 @@ def describe_subnets(url, verb, headers, version, args):
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
+    parser = utils.get_argument_parser()
+    parser.add_argument('--subnet-ids', nargs='*', required=False)
+    args = parser.parse_args(args)
+    vpcutils.populate_params_from_cli_args(params, args)
+    return requestify.make_request(url, verb, headers, params)
+
 
 def create_security_group(url, verb, headers, version, args):
 
@@ -117,7 +139,9 @@ def create_security_group(url, verb, headers, version, args):
     parser = utils.get_argument_parser()
     parser.add_argument('--vpc-id',required=True)
     parser.add_argument('--group-name',required=True)
-    parser.add_argument('--group-descri',required=True)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('--description', dest='group_description')
+    group.add_argument('--group-description', dest='group_description')
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -128,6 +152,10 @@ def authorize_security_group_ingress(url, verb, headers, version, args):
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
+    create_sec_group_rule(params,args)
+    return requestify.make_request(url, verb, headers, params)
+
+
 
 def authorize_security_group_egress(url, verb, headers, version, args):
 
@@ -135,6 +163,9 @@ def authorize_security_group_egress(url, verb, headers, version, args):
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
+    create_sec_group_rule(params,args)
+    return requestify.make_request(url, verb, headers, params)
+
 
 def revoke_security_group_ingress(url, verb, headers, version, args):
 
@@ -142,6 +173,9 @@ def revoke_security_group_ingress(url, verb, headers, version, args):
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
+    create_sec_group_rule(params,args)
+    return requestify.make_request(url, verb, headers, params)
+
 
 def revoke_security_group_egress(url, verb, headers, version, args):
 
@@ -149,6 +183,9 @@ def revoke_security_group_egress(url, verb, headers, version, args):
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
+    create_sec_group_rule(params,args)
+    return requestify.make_request(url, verb, headers, params)
+
 
 def describe_security_groups(url, verb, headers, version, args):
 
@@ -156,6 +193,12 @@ def describe_security_groups(url, verb, headers, version, args):
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
+    parser = utils.get_argument_parser()
+    parser.add_argument('--group-ids', nargs='*', required=False)
+    args = parser.parse_args(args)
+    vpcutils.populate_params_from_cli_args(params, args)
+    return requestify.make_request(url, verb, headers, params)
+
 
 def delete_security_group(url, verb, headers, version, args):
 
@@ -164,7 +207,7 @@ def delete_security_group(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-id',required=True)
+    parser.add_argument('--group-id',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -177,7 +220,9 @@ def create_route(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-id',required=True)
+    parser.add_argument('--router-table-id',required=True)
+    parser.add_argument('--destination-cidr-block',required=True)
+    parser.add_argument('--instance-id',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -188,8 +233,9 @@ def delete_route(url, verb, headers, version, args):
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
+    parser.add_argument('--router-table-id',required=True)
+    parser.add_argument('--destination-cidr-block',required=True)
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-id',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -214,7 +260,7 @@ def delete_route_table(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-id',required=True)
+    parser.add_argument('--route-table-id',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -227,7 +273,8 @@ def associate_route_table(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-id',required=True)
+    parser.add_argument('--route-table-id',required=True)
+    parser.add_argument('--subnet-id',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -239,7 +286,7 @@ def disassociate_route_table(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-id',required=True)
+    parser.add_argument('--association-id',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -250,6 +297,11 @@ def describe_route_tables(url, verb, headers, version, args):
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
+    parser = utils.get_argument_parser()
+    parser.add_argument('--route-table-ids', nargs='*', required=False)
+    args = parser.parse_args(args)
+    vpcutils.populate_params_from_cli_args(params, args)
+    return requestify.make_request(url, verb, headers, params)
 
 def allocate_address(url, verb, headers, version, args):
 
@@ -258,7 +310,7 @@ def allocate_address(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-id',required=True)
+    parser.add_argument('--domain',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -270,7 +322,8 @@ def associate_address(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-id',required=True)
+    parser.add_argument('--allocation-id',required=True)
+    parser.add_argument('--instance-id',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -282,7 +335,7 @@ def disassociate_address(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-id',required=True)
+    parser.add_argument('--association-id',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -294,7 +347,7 @@ def release_address(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-id',required=True)
+    parser.add_argument('--allocation-id',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -306,7 +359,7 @@ def describe_addresses(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--vpc-id',required=True)
+    parser.add_argument('--allocation-ids', nargs='*', required=False)
     args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    vpcutils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
