@@ -1,0 +1,82 @@
+Version: JCS CLI 1.0 (31032016.01.00)
+Release Date: 31-Mar-16
+
+Source URL = https://github.com/jiocloudservices/jcsclient.git
+
+---------------------------------
+Set Up JCS CLI
+---------------------------------
+Before you can start using the JCS CLI, you must sign for a JCS account and set up your CLI environment.
+Note The JCS CLI makes API calls to services over HTTPS. Outbound connections on TCP port 443 must be 
+establieshed in oredr to perfrom calls.
+Dependency Packages:
+    python (2.7 +)
+    pip (1.5 +)
+
+
+---------------------------------
+Installation
+---------------------------------
+Installation (If you are trying to setup jcsclient on JCS VM, you need to setup a proxy) 
+
+1) install git (should be able to run "git" from shell) 
+    sudo apt-get install git
+
+2) install python-pip (should be able to run "pip" from shell)
+    sudo apt-get install python-pip
+
+3) Download jcsclient from github
+     git clone https://github.com/jiocloudservices/jcsclient.git
+
+4) Install Jcs Client 
+   cd jcsclient
+   sudo pip install -r requirements.txt
+   sudo python setup.py develop
+
+5) Configure your credentials
+   1). Get your user name, password and access key, secret key from IAM team. 
+   2) cp openrc.sample openrc
+   3) Update openrc now, and add your access/secret keys AND export openrc variables.
+       source openrc
+       This basically sets some environment variables which are used by the cli. See if there is another way to set environment variables in windows.
+         
+6) Now you are all set to use JCS CLI.
+    jcs <servicename> <serviceaction> [--ParameterName1 ParameterValue1 --ParamName2 ParamValue2]
+    Servicename: iam, vpc, compute, dss, rds
+    Serviceaction: Refer API guides for complete service actions. (You can also use --help to get list of service actions)
+    Note: SBS serviceactions are supported via compute servicename
+
+---------------------------------
+Help
+---------------------------------
+Example: (After exporting ACCESS KEY and SECRET KEY)
+    #JCS Help
+     jcs --help 
+
+    #JCS IAM 
+     jcs iam --help 
+     jcs iam CreateUser --Name "Jioclouduser1" --Password "user1@JioCloud" 
+
+    #JCS DSS
+     jcs dss --help 
+     jcs dss ls dss://jiobucket/
+
+    #JCS VPC
+     jcs vpc --help 
+     jcs vpc CreateVpc --CidrBlock 10.0.0.0/16
+     jcs vpc CreateSubnet --VpcId vpc-a123b45c --CidrBlock 10.0.1.0/24
+
+    #JCS COMPUTE
+     jcs compute --help 
+     jcs compute DescribeInstances
+
+    #JCS SBS
+     jcs compute DescribeVolumes
+     jcs compute DescribeSnapshots
+     jcs compute CreateKeypair --KeyName jiopemkey
+     jcs compute RunInstances --ImageId ami-8843cebc --InstanceTypeId c1.small --SubnetId subnet-1ab23cd4 --KeyName jiopemkey --InstanceCount 1
+
+    #JCS RDS
+     jcs rds --help 
+     jcs rds describe-db-instances --instance-identifier myjiodb
+
