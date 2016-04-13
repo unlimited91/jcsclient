@@ -18,5 +18,5 @@ OPTIONS :
     VolumeId from which the snapshot needs to be created
 
 EXAMPLES :
-    jcs compute create-snapshot --snapshot-id b2ba5a18-d8cc-4223-bf62-2a866f5890bf
+    jcs compute create-snapshot --volume-id b2ba5a18-d8cc-4223-bf62-2a866f5890bf
     
