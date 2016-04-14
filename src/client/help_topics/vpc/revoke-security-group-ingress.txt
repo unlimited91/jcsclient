@@ -1,20 +1,42 @@
 NAME
-      create-vpc - create your own virtual private cloud network
+      revoke-security-group-ingress - Removes one or more security-group rule from inbound direction. 
 
 SYNOPSIS
-      create-vpc --cidr-block <cidr-value>
-      create-vpc [help]
+      revoke-security-group-ingress --group-id <group-id> --protocol <tcp|icmp|udp> --port <port-number> --cidr <cidr-block> 
+      revoke-security-group-ingress --group-id <group-id> --protocol <tcp|icmp|udp> --port <port-number> --source-group <source-group-id>
+      revoke-security-group-ingress --group-id <group-id> --ip-permissions <ip permissions list>
+      revoke-security-group-ingress [help]
 
 DESCRIPTION
-       Create vpc allows you to create virtual private cloud
-       as per your need and choice of CIDR/ip-address range.
+      One or more inbound rules will be removed from a specific
+      security group. Values specified in the request must 
+      match an existing rule in specified security group.
 
-       Mandatory arguments: --cidr-block
+      Mandatory arguments: 
+    
+      group-id
+       
 
 
 OPTIONS :
-       --cidr-block specify cidr block with mask of your choice 
+      --group-id specify group id where you want to revoke the rule
+     
+      --ip-permissions List of permissions if you want to remove one or 
+                       more than one rules in a singel request.
+ 
+      --protocol Value of protocol. Valid value are tcp , udp , icmp
 
+      --port If value of protocol is icmp: A single integer representating type and code
+             If value of protocol is tcp/udp: A single integer representating port value
+
+      --cidr source cidr block
+    
+      --source-group ID of source security group. Cannot be used when specifying a cidr address
+         
 EXAMPLES :
-       jcs vpc create-vpc --cidr-block 11.1.1.0/24
+       
+      revoke-security-group-ingress --group-id sg-123456 --protocol tcp --port 80 --cidr 10.0.0.0/24  
 
+      revoke-security-group-ingress --group-id sg-123456 --protocol udp --port 80 --source-group sg-987456        
+
+      revoke-security-group-ingress --group-id sg-123456 --ip-permissions '[{"IpProtocol": "icmp", "FromPort": 10, "ToPort": 11, "IpRanges": [{"      CidrIp": "0.0.0.0/0"}]}]' '[{"IpProtocol": "tcp", "FromPort": 22, "ToPort": 22, "IpRanges": [{"CidrIp": "10.0.0.0/0"}, {"CidrIp": "20.0.0.      0/0"}]}]'
