@@ -18,5 +18,5 @@ OPTIONS :
        --allocation-id The allocation ID
 
 EXAMPLES :
-       jcs vpc associate-address --instance-id i-4fd2431a --allocation-id eipalloc-5723d13e
+       jcs vpc associate-address --instance-id i-4fd243321 --allocation-id eipalloc-5723fe12
 
