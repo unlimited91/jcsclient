@@ -1,0 +1,27 @@
+
+NAME :
+    describe-instance-types
+
+DESCRIPTION :
+    Describe instance types that are currently available to be
+    used as appropriate instance types. The instance types are
+    categorized on basis of processing and memory requirement 
+    of your application. Thus there are instances with more
+    number of virtual CPUs or memory in GB.
+
+SYNOPSIS :
+    describe-instance-types
+    [--instance-type-ids <values>]
+
+
+OPTIONS :
+    --instance-type-ids
+    List of instance type ids which need to be described.
+
+EXAMPLES :
+    jcs compute describe-instance-types
+
+    jcs compute describe-instance-types --instance-type-ids c1.small c1.medium
+
+    jcs compute describs-instance-types --filters "[{"Name" : "xyz",
+                                                     "Values": ["abc"]}]"

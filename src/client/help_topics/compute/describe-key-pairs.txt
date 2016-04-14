@@ -1,0 +1,18 @@
+
+NAME :
+    describe-key-pairs
+
+DESCRIPTION :
+    Describes all key-pairs in your JCS account. Please note
+    that only the key finger print and the key name are sent
+    as response elements.
+
+SYNOPSIS :
+    describe-key-pairs
+
+OPTIONS :
+    None. This is one of the APIs which functions on no input
+    arguments from cli.
+
+EXAMPLES :
+    jcs compute describe-key-pairs

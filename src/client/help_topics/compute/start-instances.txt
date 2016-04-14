@@ -1,0 +1,20 @@
+
+NAME :
+    start-instances
+
+DESCRIPTION :
+    Using this api, instances which are stopped in your JCS account
+    can be started. Please note that only instances which are in
+    stopped state can be started. Multiple instances can be started
+    at once with the call.
+
+SYNOPSIS :
+    start-instances
+    --instance-ids <values>
+
+OPTIONS :
+    --instance-ids
+    List of instance ids to be started.
+
+EXAMPLES :
+    jcs compute start-instances --instance-ids i-123456 i-abcdef
