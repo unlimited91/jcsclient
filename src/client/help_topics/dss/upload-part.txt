@@ -1,0 +1,33 @@
+Name
+    upload-part
+
+Description
+    Uploads a part in a multipart upload.
+
+
+Synopsis
+    upload-part
+    --body <value>
+    --bucket <value>
+    --key <value>
+    --part-number <value>
+    --upload-id <value>
+      
+Options
+    --body (blob) Object data.
+
+    --bucket (string) Name of the bucket to which the multipart upload was initiated.
+
+    --key (string) Object key for which the multipart upload was initiated.
+
+    --part-number (integer) Part number of part being uploaded. 
+
+    --upload-id (string) Upload ID identifying the multipart upload whose part is being uploaded.
+
+
+Examples
+    The following command uploads the first part in a multipart upload initiated with the create-multipart-upload
+    command:
+
+    jcs dss upload-part --bucket mybucket --key mp1 --part-number 1 --body part --upload-id
+    "dGYkZjwfijlpgtNBtPURBrjxI5gkk5OQ5l"

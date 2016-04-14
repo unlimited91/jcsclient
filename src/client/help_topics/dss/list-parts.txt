@@ -1,0 +1,25 @@
+Name
+    list-parts
+
+Description
+    Lists the parts that have been uploaded for a specific multipart upload.
+
+Synopsis
+    list-parts
+    --bucket <value>
+    --key <value>
+    --upload-id <value>
+      
+Options
+    --bucket (string)
+
+    --key (string)
+
+    --upload-id (string) Upload ID identifying the multipart upload whose parts are being listed.
+
+Examples
+    The following command lists all of the parts that have been uploaded for a multipart upload with key mp1
+    in the bucket mybucket:
+
+    jcs dss list-parts --bucket mybucket --key 'mp1' --upload-id
+    bkOyypJJx2iGklFYxhX7f2v4oHVYjxc
