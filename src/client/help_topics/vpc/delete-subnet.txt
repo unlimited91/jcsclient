@@ -9,7 +9,7 @@ SYNOPSIS
 DESCRIPTION
 	You can delete subnets which are not in use using
 	delete-subnet action. That is, you can delete a
-        subnet if there are no JCS Compute instances inside it.
+    subnet if there are no JCS Compute instances inside it.
 
 	Mandatory arguments: --subnet-id 
 
