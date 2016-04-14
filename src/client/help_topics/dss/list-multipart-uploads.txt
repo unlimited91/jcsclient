@@ -1,0 +1,19 @@
+Name
+    list-multipart-uploads
+
+Description
+    This operation lists in-progress multipart uploads.
+
+Synopsis
+    list-multipart-uploads
+    --bucket <value>
+      
+Options
+    --bucket (string)
+
+Examples
+    The following command lists all of the active multipart uploads for a bucket named mybucket:
+
+    jcs dss  list-multipart-uploads --bucket mybucket
+
+

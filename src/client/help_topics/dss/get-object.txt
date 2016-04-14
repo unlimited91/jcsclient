@@ -1,0 +1,23 @@
+Name
+    get-object
+    
+Description
+    Retrieves objects from dss
+
+Synopsis
+    get-object
+    --bucket <value>
+    --key <value>
+    [--outfile <value>]
+  
+Options
+    --bucket (string)
+
+    --key (string)
+
+    --outfile (string) if this option is not provided, object is downloaded in the current working directory with the same name as key.
+
+Examples
+    The following example uses the get-object command to download an object from dss:
+
+    jcs dss get-object --bucket text-content --key obj1 local_file 

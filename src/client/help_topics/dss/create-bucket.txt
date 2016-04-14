@@ -1,0 +1,17 @@
+Name
+    create-bucket
+
+Description
+    Creates a new bucket
+
+Synopsis
+    create-bucket
+    --bucket <value>
+
+Options
+    --bucket (string) 
+
+Example
+    The following command creates a bucket named bucket1:
+    
+    jcs dss create-bucket --bucket bucket1

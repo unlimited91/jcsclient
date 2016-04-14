@@ -66,14 +66,21 @@ def format_result(response):
     in certain cases, we pass a normal dict or xml to the formatter
     and thus the conversion can be handled here.
     """
-    output_formatter = OutputFormat()
-    if isinstance(response, requests.Response):
-        output_formatter.display(response.content)
-        if response.status_code != 200:
-            response.raise_for_status()
-        else:
-            return SUCCESS
-    else:
-        output_formatter.display(response, webobject=False)
-        return SUCCESS
-        
+    if response is not None:
+        try:
+            output_formatter = OutputFormat()
+            if isinstance(response, requests.Response):
+                output_formatter.display(response.content)
+                if response.status_code != 200:
+                    response.raise_for_status()
+                else:
+                    return SUCCESS
+            else:
+                output_formatter.display(response, webobject=False)
+                return SUCCESS
+        except RuntimeError as e:
+            if str(e) == 'The content for this response was already consumed':
+                pass
+            else:
+                raise
+    return SUCCESS

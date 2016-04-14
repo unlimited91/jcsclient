@@ -1,0 +1,25 @@
+Name
+    abort-multipart-upload
+
+Description
+    Aborts a multipart upload.
+
+
+Synopsis
+    abort-multipart-upload
+    --bucket <value>
+    --key <value>
+    --upload-id <value>
+      
+Options
+    --bucket (string)
+
+    --key (string)
+
+    --upload-id (string)
+
+Examples
+    The following command aborts a multipart upload for the key mp1 in the bucket mybucket:
+
+    jcs dss  abort-multipart-upload --bucket mybucket --key 'mp1' --upload-id
+    Y0WCH3CWbROyypTJx25YklFYw6GWS2

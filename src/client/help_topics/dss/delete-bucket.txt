@@ -1,0 +1,19 @@
+Name
+    delete-bucket
+
+Description
+    Deletes the bucket. The bucket must be empty before 
+    the bucket itself can be deleted.
+
+Synopsis
+    delete-bucket
+    --bucket <value>
+      
+Options
+    --bucket (string)
+
+
+Examples
+    The following command deletes a bucket named bucket1:
+
+    jcs dss delete-bucket --bucket bucket1 
