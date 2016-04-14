@@ -1,29 +1,22 @@
 NAME
-
-DeleteSubnet - Deletes the specified subnet.
+	delete-subnet - Deletes the specified subnet.
 
 SYNOPSIS
-
-DeleteSubnet --SubnetId <Specified Subnet id>
-
-DeleteSubnet [help]
+	delete-subnet --subnet-id <Subnet id>
+	delete-subnet [help]
 
 
 DESCRIPTION
+	You can delete subnets which are not in use using
+	delete-subnet action. That is, you can delete a
+        subnet if there are no JCS Compute instances inside it.
 
-
-You can delete subnets whose subnet IP addresses are unallocated using the
-DeleteSubnet action. That is, you can delete a subnet if there are no JCS Compute
-instances inside it.
-
-Mandatory arguments: --SubnetId 
+	Mandatory arguments: --subnet-id 
 
 
 OPTIONS :
-
---SubnetId  <The unique identifier of the Subnet to be delete>
+	--subnet-id  The unique identifier of the Subnet to be delete
 
 EXAMPLES :
-
-jcs vpc DeleteSubnet --SubnetId subnet-9d4a7b6c
+	jcs vpc delete-subnet --subnet-id subnet-9d4a7b6c
 

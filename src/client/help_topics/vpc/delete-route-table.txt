@@ -1,28 +1,20 @@
 NAME
-
-DeleteRouteTable - Delete Route table.
+	delete-route-table - Delete Route table.
 
 SYNOPSIS
-
-DeleteRouteTable --RouteTableId <Route Table Id>
-
-DeleteRouteTable [help]
+	delete-route-table --route-table-id <Route Table Id>
+	delete-route-table [help]
 
 
 DESCRIPTION
-
-
-You can You can delete a disassociated route table by running the DeleteRouteTable action
-
-Mandatory arguments: ----RouteTableId
-
+	delete a disassociated route table by running the delete-route-table action
+	
+	Mandatory arguments: --route-table-id
 
 OPTIONS :
-
---RouteTableId  <The unique identifier of the route table>
+	--route-table-id  The unique identifier of the route table
 
 
 EXAMPLES :
-
-jcs vpc DeleteRouteTable --RouteTableId rtb-e4ad488d
+	jcs vpc delete-route-table --route-table-id rtb-e4ad488d
 
