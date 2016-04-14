@@ -1,20 +1,28 @@
 NAME
-      create-vpc - create your own virtual private cloud network
+
+DeleteRouteTable - Delete Route table.
 
 SYNOPSIS
-      create-vpc --cidr-block <cidr-value>
-      create-vpc [help]
+
+DeleteRouteTable --RouteTableId <Route Table Id>
+
+DeleteRouteTable [help]
+
 
 DESCRIPTION
-       Create vpc allows you to create virtual private cloud
-       as per your need and choice of CIDR/ip-address range.
 
-       Mandatory arguments: --cidr-block
+
+You can You can delete a disassociated route table by running the DeleteRouteTable action
+
+Mandatory arguments: ----RouteTableId
 
 
 OPTIONS :
-       --cidr-block specify cidr block with mask of your choice 
+
+--RouteTableId  <The unique identifier of the route table>
+
 
 EXAMPLES :
-       jcs vpc create-vpc --cidr-block 11.1.1.0/24
+
+jcs vpc DeleteRouteTable --RouteTableId rtb-e4ad488d
 
