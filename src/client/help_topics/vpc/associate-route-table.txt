@@ -1,20 +1,19 @@
 NAME
-      create-vpc - create your own virtual private cloud network
+      associate-route-table - Associate Route Table
 
 SYNOPSIS
-      create-vpc --cidr-block <cidr-value>
-      create-vpc [help]
+      associate-route-table --route-table-id <route-table-id> --subnet-id <subnet-id>
+      associate-route-table [help]
 
 DESCRIPTION
-       Create vpc allows you to create virtual private cloud
-       as per your need and choice of CIDR/ip-address range.
+       You can associate a subnet with an existing route.
+       Make sure to specify a subnet that is in the VPC where the route table was created.
 
-       Mandatory arguments: --cidr-block
-
+       Mandatory arguments: --route-table-id --subnet-id
 
 OPTIONS :
-       --cidr-block specify cidr block with mask of your choice 
+       --route-table-id The unique identifier of the route table.
+       --subnet-id The unique identifier of the subnet.
 
 EXAMPLES :
-       jcs vpc create-vpc --cidr-block 11.1.1.0/24
-
+       jcs vpc associate-route-table --route-table-id rtb-a427c8d6 --subnet-id subnet-4db4d08a

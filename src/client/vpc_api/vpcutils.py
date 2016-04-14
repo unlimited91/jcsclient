@@ -4,7 +4,6 @@ from client import utils
 from client import help
 import ast
 
-
 def populate_params_from_cli_args(params, args):
     """After the argparser has processed args, populate the
        params dict, processing the given args.
@@ -19,7 +18,7 @@ def populate_params_from_cli_args(params, args):
         args = vars(args)
     for arg in args:
         key = utils.underscore_to_camelcase(arg)
-        if arg == 'port' :
+        if arg == 'port' and args[arg] :
             params['IpPermissions.1.FromPort'] = args[arg]
             params['IpPermissions.1.ToPort'] = args[arg]
         elif isinstance(args[arg], list):
