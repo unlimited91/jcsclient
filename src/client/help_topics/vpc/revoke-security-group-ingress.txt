@@ -1,15 +1,15 @@
 NAME
-      create-vpc - create your own virtual private cloud network
+      revoke-security-group-ingress - Remove a rule from a security group
 
 SYNOPSIS
-      create-vpc --cidr-block <cidr-value>
-      create-vpc [help]
+      revoke-security-group-ingress --group-id string
+      --ip-permission string
 
 DESCRIPTION
        Create vpc allows you to create virtual private cloud
        as per your need and choice of CIDR/ip-address range.
 
-       Mandatory arguments: --cidr-block
+       Mandatory arguments: --group-id o
 
 
 OPTIONS :
