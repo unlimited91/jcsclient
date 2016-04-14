@@ -40,6 +40,7 @@ endpoints = {
     'dss'    : 'https://dss.ind-west-1.jiocloudservices.com/',
     'compute': 'https://compute.ind-west-1.jiocloudservices.com/',
 }
+
 config_handler = None
 
 def setup_config_handler(args):
@@ -107,7 +108,7 @@ class ConfigHandler(object):
     """
     def __init__(self, args=None):
         self.endpoints = endpoints
-        self.secure = False
+        self.secure = True
         self.debug = False
         self.access_key = os.environ.get('ACCESS_KEY')
         self.secret_key = os.environ.get('SECRET_KEY')
@@ -136,7 +137,7 @@ class ConfigHandler(object):
     def process_cli_specific_args(self, args):
         parser = argparse.ArgumentParser()
         parser.add_argument('--debug', action='store_true')
-        parser.add_argument('--secure', action='store_true')
+        parser.add_argument('--insecure', action='store_true')
         processed_args, args_left = parser.parse_known_args(args)
         processed_args = vars(processed_args)
         del args[:]
@@ -144,6 +145,6 @@ class ConfigHandler(object):
             args.append(arg)
         if processed_args.get('debug'):
             self.debug = True
-        if processed_args.get('secure'):
-            self.secure = True
+        if processed_args.get('insecure') == True:
+            self.secure = False
 

@@ -184,24 +184,24 @@ def push_indexed_params(params, key, vals):
         elements = val
         key_index = key + '.' + str(idx)
         # This is for cases like --filter 'Name=xyz,Values=abc'
-        if val.find(',') != -1:
-            elements = val.split(',')
-            for element in elements:
-                if element.find('=') != -1:
-                    parts = element.split('=')
-                    if len(parts) != 2:
-                        msg = 'Unsupported value ' + element + 'given in request.'
-                        raise ValueError(msg)
-                    element_key, element_val = parts[0], parts[1]
-                    if element_key == 'Values':
-                        element_key = element_key[:-1] + "." + str(idx)
-                    updated_key = key_index + '.' + element_key
-                    params[updated_key] = element_val
-                else:
-                    msg = 'Bad request syntax. Please see help for valid request.'
+        elements = val.split(',')
+        if len(elements) == 1 and val.find('=') == -1:
+            params[key_index] = val
+            continue
+        for element in elements:
+            if element.find('=') != -1:
+                parts = element.split('=')
+                if len(parts) != 2:
+                    msg = 'Unsupported value ' + element + 'given in request.'
                     raise ValueError(msg)
-        else:
-            params[key_index] = elements
+                element_key, element_val = parts[0], parts[1]
+                if element_key == 'Values':
+                    element_key = element_key[:-1] + "." + str(idx)
+                updated_key = key_index + '.' + element_key
+                params[updated_key] = element_val
+            else:
+                msg = 'Bad request syntax. Please see help for valid request.'
+                raise ValueError(msg)
 
 def get_protocol_and_host(url):
     """Validate a given url and extract the protocol and
@@ -315,3 +315,16 @@ def long_to_bytes(val):
     fmt = '%%0%dx' % (width // 4)
     s = binascii.unhexlify(fmt % val)
     return s
+
+def requestid_in_response(response):
+    """Helper function for returning request id from response of API"""
+    for keys in response:
+        if keys.lower() == 'requestid':
+            request_id = response.get(keys)
+            response.pop(keys)
+            return request_id
+        elif isinstance(response.get(keys), dict):
+            request_id = requestid_in_response(response.get(keys))
+            if request_id:
+                return request_id
+    return None

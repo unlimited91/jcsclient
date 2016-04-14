@@ -1,11 +1,11 @@
 
 NAME :
-    reboot-instances
+    terminate-instances
 
 DESCRIPTION :
     Using this api, instances in your JCS account which are no longer
-    required can be rebooted. Multiple instances can be rebooted
-    at once with the call. 
+    required can be terminated. Multiple instances can be terminated
+    at once with the call.
 
     Depending on the deleteOnTermination flag status of the attached
     volumes, the volumes would either be retained or deleted.
