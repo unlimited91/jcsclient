@@ -1,0 +1,35 @@
+NAME :
+    dss 
+
+
+DESCRIPTION :
+    JCS dss manages handling of your buckets and objects, everything from
+    creating, uploading, downloading, copying, deleting. Using JCS dss one
+    can drop the storage costs and be able to work on developing and 
+    deploying your applications faster.
+
+
+AVAILABLE COMMANDS :
+
+    create-bucket
+    copy-object
+    delete-bucket
+    delete-object
+    get-object
+    head-bucket
+    head-object
+    list-buckets
+    list-objects
+    put-object
+    get-presigned-url
+    create-multipart-upload
+    upload-part
+    list-parts
+    complete-multipart-upload
+    abort-multipart-upload
+    list-multipart-uploads
+
+
+To see detailed help for any command, type
+    jcs dss <command> help
+

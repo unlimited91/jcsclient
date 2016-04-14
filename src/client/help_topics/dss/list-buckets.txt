@@ -1,0 +1,13 @@
+Name
+    list-buckets
+
+Description
+    Returns a list of all buckets owned by the user.
+
+Synopsis
+    list-buckets
+
+Examples
+    The following command uses the list-buckets command to display the names of all your dss buckets
+
+    jcs dss list-buckets 

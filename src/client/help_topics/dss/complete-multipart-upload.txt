@@ -1,0 +1,27 @@
+Name
+    complete-multipart-upload
+
+Description
+    Completes a multipart upload
+
+Synopsis
+    complete-multipart-upload
+    --bucket <value>
+    --key <value>
+    --multipart-upload <value>
+    --upload-id <value>
+      
+Options
+    --bucket (string)
+
+    --key (string)
+
+    --multipart-upload (string) file containing xml for the different parts
+      
+    --upload-id (string) Upload ID identifying the multipart upload whose parts are being listed.
+
+Examples
+    The following command completes a multipart upload for the key mp1 in the bucket mybucket:
+
+    jcs dss  complete-multipart-upload --multipart-upload mp.xml --bucket mybucket --key 'mp1'
+    --upload-id RDUWCcH33WbROcCpJvuiGk

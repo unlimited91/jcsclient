@@ -1,0 +1,21 @@
+Name
+    delete-object
+
+Description
+    Deletes an object
+
+Synopsis
+    delete-object
+    --bucket <value>
+    --key <value>
+      
+Options
+    --bucket (string)
+
+    --key (string)
+
+
+Examples
+    The following command deletes an object named myobj from a bucket named bucket1:
+
+    jcs dss delete-object --bucket bucket1 --key myobj
