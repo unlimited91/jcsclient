@@ -1,20 +1,22 @@
 NAME
-      create-vpc - create your own virtual private cloud network
+      associate-address - To associate an RJIL routable IP address to an instance
 
 SYNOPSIS
-      create-vpc --cidr-block <cidr-value>
-      create-vpc [help]
+      associate-address --instance-id <instance-id-value> --allocation-id <allocation-id-value>
+      associate-address [help]
 
 DESCRIPTION
-       Create vpc allows you to create virtual private cloud
-       as per your need and choice of CIDR/ip-address range.
 
-       Mandatory arguments: --cidr-block
+       Associates an IP address to an instance
 
+       Mandatory arguments: --instance-id --allocation-id
 
 OPTIONS :
-       --cidr-block specify cidr block with mask of your choice 
+
+       --instance-id The Instance ID to which the RJIL routable IP address has to be associated
+
+       --allocation-id The allocation ID
 
 EXAMPLES :
-       jcs vpc create-vpc --cidr-block 11.1.1.0/24
+       jcs vpc associate-address --instance-id i-4fd243321 --allocation-id eipalloc-5723fe12
 

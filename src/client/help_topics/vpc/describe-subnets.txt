@@ -1,20 +1,19 @@
 NAME
-      create-vpc - create your own virtual private cloud network
+      describe-subnets - describe one or more subnets
 
 SYNOPSIS
-      create-vpc --cidr-block <cidr-value>
-      create-vpc [help]
+      describe-subnets --subnet-ids <value> 
+      describe-subnets help 
 
 DESCRIPTION
-       Create vpc allows you to create virtual private cloud
-       as per your need and choice of CIDR/ip-address range.
+       Describes one or more of your subnets.
 
-       Mandatory arguments: --cidr-block
+       Mandatory arguments: --subnet-ids (string)
 
 
 OPTIONS :
-       --cidr-block specify cidr block with mask of your choice 
+       --subnet-ids specify subnet-id to be displayed 
 
 EXAMPLES :
-       jcs vpc create-vpc --cidr-block 11.1.1.0/24
+       jcs vpc describe-subnets --subnet-ids subnet-11112222
 

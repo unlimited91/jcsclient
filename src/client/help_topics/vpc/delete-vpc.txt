@@ -1,20 +1,18 @@
 NAME
-      create-vpc - create your own virtual private cloud network
+      delete-vpc - Delete your own virtual private cloud network
 
 SYNOPSIS
-      create-vpc --cidr-block <cidr-value>
-      create-vpc [help]
+      delete-vpc --vpc-id <vpc-id-value>
+      delete-vpc [help]
 
 DESCRIPTION
-       Create vpc allows you to create virtual private cloud
-       as per your need and choice of CIDR/ip-address range.
+       Deletes the specified VPC.
 
-       Mandatory arguments: --cidr-block
-
+       Mandatory arguments: --vpc-id
 
 OPTIONS :
-       --cidr-block specify cidr block with mask of your choice 
+       --vpc-id The unique identifier of the VPC to delete.
 
 EXAMPLES :
-       jcs vpc create-vpc --cidr-block 11.1.1.0/24
+       jcs vpc delete-vpc --vpc-id vpc-894beq21
 

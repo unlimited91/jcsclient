@@ -1,4 +1,5 @@
 NAME
+<<<<<<< HEAD
       revoke-security-group-ingress - Removes one or more security-group rule from inbound direction. 
 
 SYNOPSIS
@@ -6,16 +7,27 @@ SYNOPSIS
       revoke-security-group-ingress --group-id <group-id> --protocol <tcp|icmp|udp> --port <port-number> --source-group <source-group-id>
       revoke-security-group-ingress --group-id <group-id> --ip-permissions <ip permissions list>
       revoke-security-group-ingress [help]
+=======
+      revoke-security-group-ingress - Remove a rule from a security group
+
+SYNOPSIS
+      revoke-security-group-ingress --group-id string
+      --ip-permission string
+>>>>>>> 1936664ec1cf94f1f477b3a462de0f45a453b136
 
 DESCRIPTION
       One or more inbound rules will be removed from a specific
       security group. Values specified in the request must 
       match an existing rule in specified security group.
 
+<<<<<<< HEAD
       Mandatory arguments: 
     
       group-id
        
+=======
+       Mandatory arguments: --group-id o
+>>>>>>> 1936664ec1cf94f1f477b3a462de0f45a453b136
 
 
 OPTIONS :
