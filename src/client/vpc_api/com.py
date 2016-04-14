@@ -24,8 +24,6 @@ from client import utils
 from client import requestify
 from client import exception
 import vpcutils
-import pdb
-
 
 def create_sec_group_rule(params,args) :
 
@@ -82,11 +80,9 @@ def describe_vpcs(url, verb, headers, version, args):
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
-    print args
     parser = utils.get_argument_parser()
     parser.add_argument('--vpc-ids', nargs='*', required=False)
     args = parser.parse_args(args)
-    #pdb.set_trace()
     vpcutils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
 
