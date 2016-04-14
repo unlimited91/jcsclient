@@ -22,6 +22,8 @@
 
 import utils
 
+VERSION = 'JCS cli 1.0 (April 15 2016)\n'
+
 ERROR_STRING = (
     "jcs <service> <API> [parameters]\n"
     "To see help text, you can run:\n"
@@ -40,12 +42,12 @@ class Helper(object):
         self.help_dir = utils.join_path(curr_path, HELP_TOPICS_DIRNAME)
 
     def process_help_file(self, help_file):
+        print(VERSION)
         try:
             with open(help_file, 'r') as f:
                 print(f.read())
         except IOError as e:
-            msg = 'help file not found for given command. Please check for valid inputs given.'
-            raise e(msg)
+            print(ERROR_STRING)
 
     def show(self, args):
         """

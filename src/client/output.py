@@ -23,6 +23,8 @@
 import json
 import xmltodict
 import requests
+from client import exception
+from client import utils
 from client.utils import SUCCESS
 
 class OutputFormat(object):
@@ -34,9 +36,14 @@ class OutputFormat(object):
     output would be displayed. Thus, there is no __init__() function.
     As the cli is enhanced, this section would be made configurable.
     """
-    def display(self, response, webobject=True):
+    def display(self, response, headers, webobject=True):
         resp_json = ""
+        request_id = None
         try:
+            if headers and headers.get('x-jcs-request-id'):
+                request_id = headers.get('x-jcs-request-id')
+            elif headers and headers.get('request-id'):
+                request_id = headers.get('request-id')
             if response:
                 if webobject:
                     resp_dict = json.loads(response)
@@ -49,13 +56,20 @@ class OutputFormat(object):
                 resp_json = json.dumps(resp_ordereddict, indent=4,
                                        sort_keys=True)
                 resp_dict = json.loads(resp_json)
+                if not request_id:
+                    request_id = utils.requestid_in_response(resp_dict)
+                resp_json = json.dumps(resp_dict, indent=4, sort_keys=True)
                 resp_json = resp_json.replace("\\n", "\n")
                 resp_json = resp_json.replace("\\", "")
-            except:
-                msg = ("Issue with displaying the output. Please raise a"
-                      " request for customer support.")
-                raise IOError(msg)
-        print(resp_json)
+            except Exception as e:
+                raise e
+                #raise exception.UnknownOutputFormat()
+        # Handle request-id displaying
+        if not request_id:
+            raise exception.UnknownOutputFormat()
+        output_msg = resp_json
+        output_msg += "\nRequest-Id: " + request_id
+        print(output_msg)
 
 def format_result(response):
     """
@@ -70,13 +84,16 @@ def format_result(response):
         try:
             output_formatter = OutputFormat()
             if isinstance(response, requests.Response):
-                output_formatter.display(response.content)
-                if response.status_code != 200:
+                output_formatter.display(response.content, 
+                                         headers=response.headers)
+                status = response.status_code
+                if status != 200 and status != 204:
                     response.raise_for_status()
                 else:
                     return SUCCESS
             else:
-                output_formatter.display(response, webobject=False)
+                output_formatter.display(response, headers=None,
+                                         webobject=False)
                 return SUCCESS
         except RuntimeError as e:
             if str(e) == 'The content for this response was already consumed':
