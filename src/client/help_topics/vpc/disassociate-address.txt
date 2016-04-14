@@ -8,7 +8,7 @@ SYNOPSIS
 
 DESCRIPTION
 	You can disassociate an IP address from an instance, run the disassociate-address action.
-         Disaasociated ip will go in the pool of allocated ips
+    Disaasociated ip will go in the pool of allocated ips
 
 	Mandatory arguments: --association-id
 
