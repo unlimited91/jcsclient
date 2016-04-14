@@ -8,9 +8,9 @@ SYNOPSIS
 
 DESCRIPTION
 	You can view the list of available route tables by running
-        the describe-route-tables action.
+    the describe-route-tables action.
 	
-        Mandatory action: None
+    Mandatory action: None
 
 
 OPTIONS :
