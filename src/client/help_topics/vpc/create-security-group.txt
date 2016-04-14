@@ -1,20 +1,23 @@
 NAME
-      create-vpc - create your own virtual private cloud network
+      create-security-group - Creates a security group with the provided name.
 
 SYNOPSIS
-      create-vpc --cidr-block <cidr-value>
-      create-vpc [help]
+      create-security-group --group-name <group-name-value> --group-description <group-description-value> --vpc-id <vpc-id-value>
+      create-security-group [help]
 
 DESCRIPTION
-       Create vpc allows you to create virtual private cloud
-       as per your need and choice of CIDR/ip-address range.
+      Creates a security group with the provided name.
 
-       Mandatory arguments: --cidr-block
+      Mandatory arguments: --group-name --group-description --vpc-id
 
 
 OPTIONS :
-       --cidr-block specify cidr block with mask of your choice 
+       --group-name Specify a unique name for the security group.
+ 
+       --group-description A short description for the security group.
+
+       --vpc-id The unique identifier of the VPC.
 
 EXAMPLES :
-       jcs vpc create-vpc --cidr-block 11.1.1.0/24
+       jcs vpc create-security-group --group-name WebServerSG --group-description Web-Servers --vpc-id vpc-3325caf2
 
