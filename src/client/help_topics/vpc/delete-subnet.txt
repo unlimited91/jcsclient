@@ -1,20 +1,22 @@
 NAME
-      create-vpc - create your own virtual private cloud network
+	delete-subnet - Deletes the specified subnet.
 
 SYNOPSIS
-      create-vpc --cidr-block <cidr-value>
-      create-vpc [help]
+	delete-subnet --subnet-id <Subnet id>
+	delete-subnet [help]
+
 
 DESCRIPTION
-       Create vpc allows you to create virtual private cloud
-       as per your need and choice of CIDR/ip-address range.
+	You can delete subnets which are not in use using
+	delete-subnet action. That is, you can delete a
+    subnet if there are no JCS Compute instances inside it.
 
-       Mandatory arguments: --cidr-block
+	Mandatory arguments: --subnet-id 
 
 
 OPTIONS :
-       --cidr-block specify cidr block with mask of your choice 
+	--subnet-id  The unique identifier of the Subnet to be delete
 
 EXAMPLES :
-       jcs vpc create-vpc --cidr-block 11.1.1.0/24
+	jcs vpc delete-subnet --subnet-id subnet-9d4a7b6c
 
