@@ -1,0 +1,17 @@
+NAME
+      release-address - Release IP Address
+
+SYNOPSIS
+      release-address --allocation-id <allocation-id>
+      release-address [help]
+
+DESCRIPTION
+       To release an unused IP address back to the pool.
+
+       Mandatory arguments: --allocation-id
+
+OPTIONS :
+       --allocation-id Specify the unique identifier representing the allocation of the IP address.
+
+EXAMPLES :
+       jcs vpc release-address --allocation-id eipalloc-5723d13e

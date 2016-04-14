@@ -1,0 +1,19 @@
+NAME
+      create-route-table - Create Route Table
+
+SYNOPSIS
+      create-route-table --vpc-id <vpc-id>
+      create-route-table [help]
+
+DESCRIPTION
+       To create a route table for the specified VPC.
+       After you create a route table, you can add routes and associate the route table 
+       with any subnets inside the VPC.
+
+       Mandatory arguments: --vpc-id
+
+OPTIONS :
+       --vpc-id The unique identifier of the VPC.
+
+EXAMPLES :
+       jcs vpc create-route-table --vpc-id vpc-fb198377

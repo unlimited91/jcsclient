@@ -1,0 +1,19 @@
+NAME
+      associate-route-table - Associate Route Table
+
+SYNOPSIS
+      associate-route-table --route-table-id <route-table-id> --subnet-id <subnet-id>
+      associate-route-table [help]
+
+DESCRIPTION
+       You can associate a subnet with an existing route.
+       Make sure to specify a subnet that is in the VPC where the route table was created.
+
+       Mandatory arguments: --route-table-id --subnet-id
+
+OPTIONS :
+       --route-table-id The unique identifier of the route table.
+       --subnet-id The unique identifier of the subnet.
+
+EXAMPLES :
+       jcs vpc associate-route-table --route-table-id rtb-a427c8d6 --subnet-id subnet-4db4d08a

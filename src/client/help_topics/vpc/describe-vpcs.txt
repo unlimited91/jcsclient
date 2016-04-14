@@ -1,0 +1,20 @@
+NAME
+      describe-vpcs - Describes one or more of your VPCs
+
+SYNOPSIS
+      describe-vpcs [--vpc-id <value>]
+      create-vpc [help]
+
+DESCRIPTION
+       Describe all VPC in your account or specify single VPC by
+       providing vpc-id.
+
+       Mandatory arguments: None
+
+
+OPTIONS :
+       --vpc-id specify vpc id to be be described
+
+EXAMPLES :
+       jcs vpc describe-vpc --vpc-id vpc-11112222
+
