@@ -1,0 +1,21 @@
+NAME
+	describe-route-tables - you can View available route tables.
+
+SYNOPSIS
+	describe-route-tables [--route-tables-ids <route-table-id> <route-table-id>]
+	describe-route-tables [help]
+
+
+DESCRIPTION
+	You can view the list of available route tables by running
+    the describe-route-tables action.
+	
+    Mandatory action: None
+
+
+OPTIONS :
+	--route-tables-ids List of route table ids
+
+EXAMPLES :
+	jcs vpc describe-route-tables --route-tables-ids rtb-34rfsa35 rtb-hgf45678
+

@@ -1,0 +1,12 @@
+NAME
+      describe-addresses - View all IP addresses
+
+SYNOPSIS
+      describe-addresses
+      describe-addresses [help]
+
+DESCRIPTION
+       You can view the list of all the IP addresses.
+
+EXAMPLES :
+       jcs vpc describe-addresses

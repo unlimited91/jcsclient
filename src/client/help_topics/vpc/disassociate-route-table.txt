@@ -1,0 +1,18 @@
+NAME
+      disassociate-route-table - Disassociates a subnet from a route table
+
+SYNOPSIS
+      disassociate-route-table --association-id <association-id-value>
+      disassociate-route-table [help]
+
+DESCRIPTION
+      Disassociates a subnet from a route table
+
+      Mandatory arguments: --association-id
+
+OPTIONS :
+      --association-id The unique identifier of the existing association. 
+
+EXAMPLES :
+       jcs vpc disassociate-route-table --association-id rtbassoc-4db4d08a
+

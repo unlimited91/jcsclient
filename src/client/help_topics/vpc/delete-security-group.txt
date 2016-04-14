@@ -1,0 +1,22 @@
+NAME
+      delete-security-group - delete a specific security-group
+
+SYNOPSIS
+      delete-security-group [--group-name <value>] [--group-id <value>]
+      delete-security-group help
+
+DESCRIPTION
+      Deletes a security group.
+
+      If you attempt to delete a security group that is associated with an
+      instance, or is referenced by another security group, the operation fails
+
+      Mandatory arguments: None
+
+OPTIONS :
+       --group-name  specify the security group name
+       --group-id    specify the security group id
+
+EXAMPLES :
+       jcs vpc delete-security-group --group-id sg-903004f8
+
