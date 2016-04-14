@@ -7,7 +7,8 @@ SYNOPSIS
 
 DESCRIPTION
 
-       Allocate RJIL routable IP address and Specify the domain as vpc to allocate the address for use with instances in a VPC
+       Allocate RJIL routable IP address and Specify the domain as vpc to 
+       allocate the address for use with instances in a VPC
 
        Mandatory arguments: --domain
 
