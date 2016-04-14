@@ -1,0 +1,28 @@
+
+NAME :
+    update-delete-on-termination-flag
+
+DESCRIPTION :
+    This API provides the ability to update the DeleteOnTermination
+    flag to either true or False. If true, this volume gets deleted
+    once the particular instance to which the volume was attached is
+    terminated.
+
+    This parameter for a volume only makes sense when the volumes are
+    attached to some instance.
+
+SYNOPSIS :
+    update-delete-on-termination-flag
+    --volume-id <value>
+    --delete-on-termination <value>
+
+OPTIONS :
+    --volume-id <value>
+    Particular volume id to be updated for DeleteOnTermination flag.
+
+    --delete-on-termination <value>
+    Boolean value for the DeleteOnTermination flag    
+
+EXAMPLES :
+    jcs compute update-delete-on-termination-flag --volume-id abc
+                                --delete-on-termination True

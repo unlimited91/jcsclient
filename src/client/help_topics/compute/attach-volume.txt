@@ -1,0 +1,34 @@
+
+NAME :
+    attach-volume
+
+DESCRIPTION :
+    Attaches a volume to the specified JCS compute instance.
+    To attach a volume you must specify both the volume ID
+    and the instance ID. Along with these, the device name
+    to be used by the instance for this volume needs to be
+    given.
+
+    Please note that only the volumes currently in available
+    state can be attached to a JCS compute instance.
+
+SYNOPSIS :
+    attach-volume
+    --volume-id <value>
+    --instance-id <value>
+    --device <value>
+
+OPTIONS :
+    --volume-id
+    Unique identifier for Volume to be attached
+
+    --instance-id
+    Unique identifier for instance where volume needs to be
+    attached
+
+    --device
+    The device name to expose to the instance. (/dev/vdb - /dev/vdz)
+
+EXAMPLES :
+    jcs compute attach-volume --volume-id abc --instance-id i-xxxx
+                                        --device /dev/vdb

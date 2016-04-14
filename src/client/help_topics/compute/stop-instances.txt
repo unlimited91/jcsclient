@@ -1,0 +1,20 @@
+
+NAME :
+    stop-instances
+
+DESCRIPTION :
+    Using this api, running instances in your JCS account can be
+    stopped. Please note that only instances which are in
+    stopped state can be started. Multiple instances can be stopped
+    at once with the call.
+
+SYNOPSIS :
+    stop-instances
+    --instance-ids <values>
+
+OPTIONS :
+    --instance-ids
+    List of instance ids to be stopped.
+
+EXAMPLES :
+    jcs compute stop-instances --instance-ids i-123456 i-abcdef
