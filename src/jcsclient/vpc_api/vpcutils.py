@@ -1,7 +1,7 @@
 
-from client import exception
-from client import utils
-from client import help
+from jcsclient import exception
+from jcsclient import utils
+from jcsclient import help
 import ast
 
 def populate_params_from_cli_args(params, args):

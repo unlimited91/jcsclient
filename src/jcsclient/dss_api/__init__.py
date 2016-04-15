@@ -24,4 +24,4 @@
 Implementation for DSS related APIs
 """
 
-from client.dss_api import *
+from jcsclient.dss_api import *

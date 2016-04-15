@@ -21,8 +21,8 @@
 #
 
 import config
-from client import help
-from client.dss_api.dss_main import DSS
+from jcsclient import help
+from jcsclient.dss_api.dss_main import DSS
 
 class Controller(object):
     """DSS Controller class

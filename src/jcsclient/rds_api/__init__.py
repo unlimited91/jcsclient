@@ -24,4 +24,4 @@
 Implementation for compute related APIs
 """
 
-from client.rds_api import *
+from jcsclient.rds_api import *

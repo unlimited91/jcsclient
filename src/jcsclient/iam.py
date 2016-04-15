@@ -21,9 +21,9 @@
 
 import config
 import argparse
-from client import help
-from client import utils
-from client import requestify
+from jcsclient import help
+from jcsclient import utils
+from jcsclient import requestify
 
 
 def utility(args):

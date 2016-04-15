@@ -20,51 +20,44 @@
 # IN THE SOFTWARE.
 #
 
-import argparse
-from client import utils
-from client import requestify
+from jcsclient import utils
+from jcsclient import requestify
 
-def create_key_pair(url, verb, headers, version, args):
+
+def create_snapshot(url, verb, headers, version, args):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])                    
+    params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--key-name', required=True)
+    parser.add_argument('--volume-id', required=True)
+    parser.add_argument('--size',type=int, required=False)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
-    return requestify.make_request(url, verb, headers, params) 
-
-def delete_key_pair(url, verb, headers, version, args):
-    params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])                    
-    params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--key-name', required=True)
-    args= parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
-    return requestify.make_request(url, verb, headers, params) 
-
-def describe_key_pairs(url, verb, headers, version, args):
-    params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])                    
-    params['Version'] = version
-    args = args[1:]
-    if len(args):
-        msg = "Unexpected input received. Please check help for valid arguments."
-        raise KeyError(msg)
     return requestify.make_request(url, verb, headers, params)
 
-def import_key_pair(url, verb, headers, version, args): 
+def delete_snapshot(url, verb, headers, version, args):
     params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])                    
+    params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--key-name', required=True)
-    parser.add_argument('--public-key-material', required=True)
-    args= parser.parse_args(args)
+    parser.add_argument('--snapshot-id', required=True)
+    args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
-    return requestify.make_request(url, verb, headers, params) 
+    return requestify.make_request(url, verb, headers, params)
+
+def describe_snapshots(url, verb, headers, version, args):
+    params = {}
+    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Version'] = version
+    args = args[1:]
+    parser = utils.get_argument_parser()
+    parser.add_argument('--snapshot-ids', nargs='+', required=False)
+    parser.add_argument('--max-results', type=int, required=False)
+    parser.add_argument('--next-token', required=False)
+    parser.add_argument('--detail', type=bool, required=False)
+    args = parser.parse_args(args)
+    utils.populate_params_from_cli_args(params, args)
+    return requestify.make_request(url, verb, headers, params)
 

@@ -23,9 +23,9 @@
 import json
 import xmltodict
 import requests
-from client import exception
-from client import utils
-from client.utils import SUCCESS
+from jcsclient import exception
+from jcsclient import utils
+from jcsclient.utils import SUCCESS
 
 class OutputFormat(object):
     """

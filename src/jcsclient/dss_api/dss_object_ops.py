@@ -22,7 +22,7 @@
 
 from dss_op import *
 from dss_auth import *
-from client import utils
+from jcsclient import utils
 import os
 import sys
 import time

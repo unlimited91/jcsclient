@@ -20,8 +20,8 @@
 # IN THE SOFTWARE.
 #
 
-from client import utils
-from client import requestify
+from jcsclient import utils
+from jcsclient import requestify
 
 def create_db_instance(url, verb, headers, version, args):
     params = {}

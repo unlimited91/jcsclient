@@ -22,8 +22,8 @@
 
 import sys
 import requests
-from client import config
-from client import auth_handler
+from jcsclient import config
+from jcsclient import auth_handler
 
 common_headers = {
     'Content-Type': 'application/json',

@@ -24,4 +24,4 @@
 Implementation for vpc related APIs
 """
 
-from client.vpc_api import *
+from jcsclient.vpc_api import *

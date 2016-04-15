@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 #
 
-from client.help import ERROR_STRING
+from jcsclient.help import ERROR_STRING
 
 class ServiceNotFound(ImportError):
     """Exception raised when incorrect service keyword used"""
@@ -55,8 +55,8 @@ class UnknownCredentials(Exception):
     for the user are not set in the environment
     """
     def __init__(self):
-        self.msg = ("Access/Secret Key not set in the environment. "
-                    "Please export the variables as given in readme.")
+        self.msg = ("ACCESS_KEY or SECRET_KEY not set in the environment."
+                    "Please export the variables as given in README.rst.")
         super(UnknownCredentials, self).__init__(self.msg)
 
 class UnknownOutputFormat(Exception):

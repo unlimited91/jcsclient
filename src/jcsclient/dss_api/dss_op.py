@@ -22,7 +22,7 @@
 
 
 from abc import ABCMeta, abstractmethod
-from client import config
+from jcsclient import config
 import json
 import requests
 from dss_auth import *

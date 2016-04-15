@@ -20,44 +20,18 @@
 # IN THE SOFTWARE.
 #
 
-from client import utils
-from client import requestify
+import argparse
+from jcsclient import utils
+from jcsclient import requestify
 
-
-def create_snapshot(url, verb, headers, version, args):
+def describe_images(url, verb, headers, version, args):
     params = {}
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--volume-id', required=True)
-    parser.add_argument('--size',type=int, required=False)
+    parser.add_argument('--image-ids', nargs='+', required=False)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
-    return requestify.make_request(url, verb, headers, params)
-
-def delete_snapshot(url, verb, headers, version, args):
-    params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
-    params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--snapshot-id', required=True)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
-    return requestify.make_request(url, verb, headers, params)
-
-def describe_snapshots(url, verb, headers, version, args):
-    params = {}
-    params['Action'] = utils.dash_to_camelcase(args[0])
-    params['Version'] = version
-    args = args[1:]
-    parser = utils.get_argument_parser()
-    parser.add_argument('--snapshot-ids', nargs='+', required=False)
-    parser.add_argument('--max-results', type=int, required=False)
-    parser.add_argument('--next-token', required=False)
-    parser.add_argument('--detail', type=bool, required=False)
-    args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
-    return requestify.make_request(url, verb, headers, params)
-
+    return requestify.make_request(url, verb, headers, params) 
+    

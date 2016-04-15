@@ -21,10 +21,8 @@
 #
 
 import config
-from client import help
+from jcsclient import help
 from vpc_api import com
-#from client.compute_api import image
-#from client.compute_api import key_pair
 
 class Controller(object):
     """Vpc Controller class
