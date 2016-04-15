@@ -21,8 +21,8 @@
 #
 
 import config
-from client import help
-from client.rds_api import rds
+from jcsclient import help
+from jcsclient.rds_api import rds
 
 class Controller(object):
     """RDS Controller class

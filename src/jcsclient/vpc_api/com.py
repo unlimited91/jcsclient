@@ -20,9 +20,9 @@
 # IN THE SOFTWARE.
 #
 
-from client import utils
-from client import requestify
-from client import exception
+from jcsclient import utils
+from jcsclient import requestify
+from jcsclient import exception
 import vpcutils
 
 def create_sec_group_rule(params,args) :

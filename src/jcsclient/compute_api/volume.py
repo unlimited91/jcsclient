@@ -20,8 +20,8 @@
 # IN THE SOFTWARE.
 #
 
-from client import utils
-from client import requestify
+from jcsclient import utils
+from jcsclient import requestify
 
 def attach_volume(url, verb, headers, version, args):
     params = {}

@@ -24,4 +24,4 @@
 Implementation for compute related APIs
 """
 
-from client.compute_api import *
+from jcsclient.compute_api import *

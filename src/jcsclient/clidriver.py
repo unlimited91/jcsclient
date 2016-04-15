@@ -21,14 +21,14 @@
 #
 
 import sys
-from client import utils
-from client.utils import SUCCESS
-from client.utils import FAILURE
-from client import help
-from client import exception
-from client import config
-from client.help import ERROR_STRING
-from client import output
+from jcsclient import utils
+from jcsclient.utils import SUCCESS
+from jcsclient.utils import FAILURE
+from jcsclient import help
+from jcsclient import exception
+from jcsclient import config
+from jcsclient.help import ERROR_STRING
+from jcsclient import output
 
 def main(args = sys.argv):
     """
