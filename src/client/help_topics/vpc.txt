@@ -11,10 +11,7 @@ DESCRIPTION :
 
 AVAILABLE COMMANDS :
 
-
-
-
-te-vpc
+    create-vpc
 
     delete-vpc
 
