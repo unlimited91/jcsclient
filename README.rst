@@ -100,6 +100,7 @@ You can use CLI to make an API request, or just get the input which you can use 
 First argument is service name (one of 'compute', 'vpc', 'dss', 'iam' and 'rds'). To get help on a service, execute:
 
 ::
+
     jcs <service> --help
 
 To get helptext for a particular command, execute:
