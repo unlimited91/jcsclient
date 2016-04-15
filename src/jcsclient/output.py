@@ -104,7 +104,8 @@ def format_result(response):
             """
             if str(e) == 'The content for this response was already consumed':
                 if response.headers and response.headers.get('x-jcs-request-id'):
-                    print "\nRequest-Id: " + response.headers.get('x-jcs-request-id')
+                    output_msg = "\nRequest-Id: " + response.headers.get('x-jcs-request-id')
+                    print(output_msg)
                 pass
             else:
                 raise
