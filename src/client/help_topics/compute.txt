@@ -12,49 +12,36 @@ DESCRIPTION :
 
 AVAILABLE COMMANDS :
 
-    create-key-pair
-
-    delete-key-pair
-
-    import-key-pair
-
-    describe-key-pairs
-
     describe-images
-
-    run-instances
-
-    describe-instances
-
-    stop-instances
-
-    start-instances
-
-    reboot-instances
-
-    terminate-instances
-
-    get-password-data
-
     describe-instance-types
 
+    create-key-pair
+    describe-key-pairs
+    import-key-pair
+    delete-key-pair
+
+    run-instances
+    describe-instances
+    start-instances
+    stop-instances
+    reboot-instances
+    terminate-instances
+
     attach-volume
-
-    detach-volume
-
     create-volume
-
+    describe-volumes
+    detach-volume
     delete-volume
 
-    describe-volumes
-
     create-snapshot
-
+    describe-snapshots
     delete-snapshot
 
-    describe-snapshots
-
     show-delete-on-termination-flag
-
     update-delete-on-termination-flag
  
+    get-password-data
+
+To see detailed help for any command, type
+    jcs compute <command> help
+
