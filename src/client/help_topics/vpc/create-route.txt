@@ -1,20 +1,24 @@
 NAME
-      create-vpc - create your own virtual private cloud network
+      create-route - Add a route entry in specified route-table
 
 SYNOPSIS
-      create-vpc --cidr-block <cidr-value>
-      create-vpc [help]
+      create-route --route-table-id <route-table-id> --destination-cidr-block <cidr-block> --instance-id <instance-id>
+      create-route [help]
 
 DESCRIPTION
-       Create vpc allows you to create virtual private cloud
-       as per your need and choice of CIDR/ip-address range.
+       Create route allows you to add a route in specified 
+       route rable for your choice of destination cidr block
 
-       Mandatory arguments: --cidr-block
+       Mandatory arguments: --route-table-id
+       --destination-cider-block
+       --instance-id
 
 
 OPTIONS :
-       --cidr-block specify cidr block with mask of your choice 
+       --route-table-id Id of route table which needs modification
+       --destination-cidr-block Destination Cidr Block
+       --instance-id Instance id which will be next hop for routes towards Destination Cidr Block
 
 EXAMPLES :
-       jcs vpc create-vpc --cidr-block 11.1.1.0/24
+       jcs vpc --route-table-id rtb-g8ff4ea2 --destination-cidr-block 100.0.0.100/32 --instance-id i-we2354rf
 
