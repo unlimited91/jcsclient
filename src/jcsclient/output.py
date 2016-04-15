@@ -98,7 +98,13 @@ def format_result(response):
                                          webobject=False)
                 return SUCCESS
         except RuntimeError as e:
+            """this a special case when the content has already been consumed
+            for example, get-object api of dss
+            dump request id here
+            """
             if str(e) == 'The content for this response was already consumed':
+                if response.headers and response.headers.get('x-jcs-request-id'):
+                    print "\nRequest-Id: " + response.headers.get('x-jcs-request-id')
                 pass
             else:
                 raise
