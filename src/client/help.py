@@ -22,12 +22,13 @@
 
 import utils
 
-VERSION = 'JCS cli 1.0 (April 15 2016)\n'
+VERSION = '\nJCS cli 1.0 (April 15 2016)'
 
 ERROR_STRING = (
     "jcs <service> <API> [parameters]\n"
-    "To see help text, you can run:\n"
+    " Available Services: compute, dss, vpc, iam, rds\n"
     "\n"
+    " To see help text, you can run:\n"
     "  jcs help\n"
     "  jcs <service> help\n"
     "  jcs <service> <API> help\n"

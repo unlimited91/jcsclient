@@ -9,13 +9,13 @@ DESCRIPTION :
 
 
 USAGE :
-    jcs command subcommand
+    jcs <service> <API> [parameters]
 
-    To get help for any command or subcommand, use the following syntax.
+    To get help for any <service> or <API>, use the following syntax.
 
-    jcs command help
+    jcs <service> help
 
-    jcs command subcommand help
+    jcs <service> <API> help
 
     Example:
         jcs compute help
@@ -26,11 +26,7 @@ USAGE :
 AVAILABLE SERVICES :
 
     compute
-
     dss
-
     iam
-
-    rds
-
     vpc
+    rds
