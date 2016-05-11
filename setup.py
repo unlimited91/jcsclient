@@ -22,8 +22,8 @@ def read(*names, **kwargs):
 
 
 setup(
-    name='client',
-    version='0.1.0',
+    name='python-jcsclient',
+    version='1.0',
     license='BSD',
     description='Client library for JCS',
     long_description='%s\n%s' % (
@@ -32,7 +32,7 @@ setup(
     ),
     author='Reliance Jio Cloud Services',
     author_email='RDS.Team@ril.com',
-    url='https://github.com/jiocloudservices/client',
+    url='https://github.com/jiocloudservices/jcsclient',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
@@ -65,7 +65,7 @@ setup(
     ],
     install_requires=[
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
-        'requests', 'xmltodict', 'six', 'pyyaml', 'Crypto', 'pycrypto'
+        'requests', 'xmltodict', 'six', 'pyyaml', 'pycrypto'
     ],
     extras_require={
         # eg:
@@ -74,7 +74,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'jcs = client.cli:main',
+            'jcs = jcsclient.clidriver:main',
         ]
     },
     test_suite='client'

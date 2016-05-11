@@ -1,0 +1,18 @@
+NAME
+      delete-vpc - Delete your own virtual private cloud network
+
+SYNOPSIS
+      delete-vpc --vpc-id <vpc-id-value>
+      delete-vpc [help]
+
+DESCRIPTION
+       Deletes the specified VPC.
+
+       Mandatory arguments: --vpc-id
+
+OPTIONS :
+       --vpc-id The unique identifier of the VPC to delete.
+
+EXAMPLES :
+       jcs vpc delete-vpc --vpc-id vpc-894beq21
+

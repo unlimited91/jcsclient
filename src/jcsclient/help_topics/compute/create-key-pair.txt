@@ -1,0 +1,23 @@
+
+NAME :
+    create-key-pair
+
+DESCRIPTION :
+    Creates a new 2048 bit RSA key pair which registers the public key
+    part and returns the private key. The private key can be saved in
+    a .pem file and this can be used during instance creation to
+    finally access the instance once launched.
+
+    Please note that JCS doesnt keep any copy of private key. Thus, if
+    lost, it cannot be restored back.
+
+SYNOPSIS :
+    create-key-pair
+    --key-name <value>
+
+OPTIONS :
+    --key-name:
+    Unique name for the key pair being created.
+
+EXAMPLES :
+    jcs compute create-key-pair --key-name abc

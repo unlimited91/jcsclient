@@ -1,0 +1,28 @@
+
+NAME :
+    import-key-pair
+
+DESCRIPTION :
+    This API allows to import the public key from an RSA keypair
+    that was created using some third party application.
+
+    For this, the base64 encoded contents of the public keypair
+    part need to be given. The private key never gets shared or
+    sent over the wire to the server.
+
+SYNOPSIS :
+    import-key-pair
+    --key-name <unique name of keypair>
+    --public-key-material <value>
+
+OPTIONS :
+    --key-name
+    A unique name for the keyPair
+
+    --public-key-material
+    The public key contents. If not base64 encoded the public key
+    material import would fail
+
+EXAMPLES :
+   jcs compute import-key-pair --key-name <uuid for key name>
+        --public-key-material <base64 encoded material> 

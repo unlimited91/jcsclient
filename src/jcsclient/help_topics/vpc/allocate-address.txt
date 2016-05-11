@@ -1,0 +1,20 @@
+NAME
+      allocate-address - Allocate RJIL routable IP address
+
+SYNOPSIS
+      allocate-address --domain <domain-value>
+      allocate-address [help]
+
+DESCRIPTION
+
+       Allocate RJIL routable IP address and Specify the domain as vpc to 
+       allocate the address for use with instances in a VPC
+
+       Mandatory arguments: --domain
+
+OPTIONS :
+       --domain 
+
+EXAMPLES :
+       jcs vpc allocate-address --domain vpc
+

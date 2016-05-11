@@ -1,0 +1,20 @@
+Name
+    create-multipart-upload
+
+Description
+    Initiates a multipart upload and returns an upload ID.
+
+Synopsis
+    create-multipart-upload
+    --bucket <value>
+    --key <value>
+      
+Options
+    --bucket (string)
+
+    --key (string)
+
+Examples
+    The following command creates a multipart upload in the bucket my-bucket with the key mp1:
+
+    jcs dss  create-multipart-upload --bucket my-bucket --key 'mp1'

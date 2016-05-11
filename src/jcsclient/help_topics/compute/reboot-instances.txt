@@ -1,0 +1,21 @@
+
+NAME :
+    reboot-instances
+
+DESCRIPTION :
+    Using this api, instances in running state in your JCS account
+    can be rebooted. Please note that only instances which are in
+    running state can be rebooted. Multiple instances can be rebooted
+    at once with the call.
+
+SYNOPSIS :
+    reboot-instances
+    --instance-ids <values>
+
+OPTIONS :
+    --instance-ids
+    List of instance ids to be rebooted.
+
+EXAMPLES :
+    jcs compute reboot-instances --instance-ids i-123456 i-abcdef
+

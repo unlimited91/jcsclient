@@ -1,0 +1,22 @@
+
+NAME :
+    delete-key-pair
+
+DESCRIPTION :
+    Deletes the specified KeyPair by deregistering from your JCS
+    account.
+
+    Please note that deleting the KeyPair doesnt impact instances
+    already associated with that KeyPair as long as the private
+    half exists.
+
+SYNOPSIS :
+    delete-key-pair
+    --key-name <value>
+
+OPTIONS :
+    --key-name:
+    Unique name for the key pair to be deleted.
+
+EXAMPLES :
+    jcs compute delete-key-pair --key-name abc

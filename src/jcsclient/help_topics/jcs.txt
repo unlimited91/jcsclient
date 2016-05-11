@@ -1,0 +1,32 @@
+NAME :
+    jcs
+
+
+DESCRIPTION :
+    The JCS cli enables you to manage all JCS services using command
+    line. By setting your credentials properly, you can use simple
+    cli commands to interact with all components of JCS.
+
+
+USAGE :
+    jcs <service> <API> [parameters]
+
+    To get help for any <service> or <API>, use the following syntax.
+
+    jcs <service> help
+
+    jcs <service> <API> help
+
+    Example:
+        jcs compute help
+
+        jcs vpc create-vpc help
+
+
+AVAILABLE SERVICES :
+
+    compute
+    dss
+    iam
+    vpc
+    rds

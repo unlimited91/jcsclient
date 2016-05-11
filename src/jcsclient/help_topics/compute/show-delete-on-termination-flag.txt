@@ -1,0 +1,25 @@
+
+NAME :
+    show-delete-on-termination-flag
+
+DESCRIPTION :
+    This API provides the status of whether the DeleteOnTermination
+    flag has been set or unset for a particular volume. If true, this
+    volume gets deleted once the particular instance to which the 
+    volume was attached is terminated.
+
+    This parameter for a volume only makes sense when the volumes are
+    attached to some instance. If not attached, an exception gets
+    thrown if this API is checked for the flag.
+
+SYNOPSIS :
+    show-delete-on-termination-flag
+    --volume-id <value>
+
+OPTIONS :
+    --volume-id
+    Particular volume id to be checked for the DeleteOnTermination
+    flag.
+
+EXAMPLES :
+    jcs compute show-delete-on-termination-flag --volume-id abc

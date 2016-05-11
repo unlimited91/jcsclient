@@ -1,0 +1,28 @@
+NAME
+      create-subnet - Create a subnet inside a VPC
+
+SYNOPSIS
+      create-subnet --vpc-id <vpc-id> --cidr-block <cidr-value>
+      create-subnet [help]
+
+DESCRIPTION
+		When you create a subnet you must mention the VPC ID along with the CIDR block inside
+		which you want to create your subnet. After you specify a CIDR block for your VPC and
+		subnet, you cannot resize the CIDR block. To create a single subnet within your VPC,
+		you can mention the VPC CIDR block. Alternatively, you can create multiple subnets by
+		specifying subsets of the VPC's CIDR block.
+		If you create more than one subnet in your VPC, the subnet's CIDR block must not
+		overlap.
+		For example, you cannot create the following two subnets with a VPC's CIDR block of
+		10.0.0.0/16
+		* 10.0.1.0/28
+		* 10.0.1.0/24
+
+       Mandatory arguments: --vpc-id --cidr-block
+
+OPTIONS :
+       --vpc-id The unique identifier of the VPC where the subnet is created.
+       --cidr-block The network range for the subnet in CIDR notation.
+
+EXAMPLES :
+       jcs vpc create-subnet --vpc-id vpc-894bd94e --cidr-block 11.1.1.0/24
