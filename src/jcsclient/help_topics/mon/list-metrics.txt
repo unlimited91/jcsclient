@@ -1,0 +1,40 @@
+
+NAME :
+    list-metrics
+
+
+DESCRIPTION :
+    list metrics that are currently visible under your JCS
+    account.
+
+    The metrics can be listed on basis of metric name, namespace
+    or on the basis of certain dimensions which returns
+    metrics returned by those dimensions. For complete list of 
+    metrics, refer to monitoring help guide for APIs.
+
+
+SYNOPSIS :
+    list-metrics
+    [--metric-name <values>]
+    [--namespace <values>]
+    [--dimensions <values>]
+
+
+OPTIONS :
+    --metric-name
+    name of the metric which need to be listed
+
+    --namespace
+    the namespace of the metric
+
+    --dimensions
+    One or more filters to apply to list of metrics returned from
+    list-metrics
+
+
+EXAMPLES :
+    jcs mon list-metrics
+
+    jcs mon list-metrics --metric-name CPUUtilization
+
+    jcs mon list-metrics --dimensions "[{"Name":"xyz", "Value":"abc"}]"

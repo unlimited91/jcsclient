@@ -58,8 +58,9 @@ def make_request(url, verb, headers, params, path=None, data=None):
     for key, val in params.items():
         request_string += str(key) + '=' + str(val) + '&'
     request_string = request_string[:-1]
+    print request_string
     global common_headers
     headers.update(common_headers)
-    return requests.request(verb, request_string, data=data, 
-                            verify=config.check_secure(),
-                            headers=headers)
+    #return requests.request(verb, request_string, data=data, 
+    #                        verify=config.check_secure(),
+    #                        headers=headers)
