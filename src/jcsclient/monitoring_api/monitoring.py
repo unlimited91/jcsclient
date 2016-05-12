@@ -35,10 +35,7 @@ def list_metrics(url, verb, headers, version, args):
     parser.add_argument('--namespace', nargs='?', required=False)
     parser.add_argument('--dimensions', nargs='+', required=False)
     args = parser.parse_args(args)
-    import pprint
-    pprint.pprint(args)
     utils.populate_monitoring_params_from_args(params, args)
-    pprint.pprint(params)
     return requestify.make_request(url, verb, headers, params)
 
 def list_metric_statistics(url, verb, headers, version, args):
