@@ -15,26 +15,33 @@ DESCRIPTION :
 
 SYNOPSIS :
     list-metrics
-    [--metric-name <values>]
-    [--namespace <values>]
-    [--dimensions <values>]
-
+    [--namespace <value>]
+    [--metric-name <value>]
+    [--dimensions <value>]
+    [--starting-token <value>]
+    [--max-items <value>]
 
 OPTIONS :
-    --metric-name
-    name of the metric which need to be listed
+    --namespace (string)
+    The namespace to filter against.
 
-    --namespace
-    the namespace of the metric
+    --metric-name (string)
+    The name of the metric to filter against.
 
-    --dimensions
-    One or more filters to apply to list of metrics returned from
-    list-metrics
+    --dimensions (list)
+    A list of dimensions to filter against.
+    Shorthand Syntax:
+    Name=string,Value=string ...
 
+    --starting-token (string)
+    A token to specify where to start paginating. This is the next-token from a previously truncated response.
+
+    --max-items (integer)
+    The total number of items to return. If the total number of items available is more than the value specified in max-items then a next-token will be provided in the output that you can use to resume pagination. This next-token response element should not be used directly outside of the JCS CLI.
 
 EXAMPLES :
     jcs mon list-metrics
 
     jcs mon list-metrics --metric-name CPUUtilization
 
-    jcs mon list-metrics --dimensions "[{"Name":"xyz", "Value":"abc"}]"
+    jcs mon list-metrics --dimensions Name=xyz,Value=abc Name=pqr,Value=tuv

@@ -31,20 +31,39 @@ def list_metrics(url, verb, headers, version, args):
     args = args[1:]
     parser = utils.get_argument_parser()
     parser.add_argument('--metric-name', nargs='?', required=False)
-    parser.add_argument('--next-token', nargs='?', required=False)
+    parser.add_argument('--starting-token', nargs='?', required=False)
+    parser.add_argument('--max-items', nargs='?', type=int, required=False)
     parser.add_argument('--namespace', nargs='?', required=False)
     parser.add_argument('--dimensions', nargs='+', required=False)
     args = parser.parse_args(args)
     utils.populate_monitoring_params_from_args(params, args)
     return requestify.make_request(url, verb, headers, params)
 
-def list_metric_statistics(url, verb, headers, version, args):
+def get_metric_statistics(url, verb, headers, version, args):
     params = {}
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--dimensions.member', nargs='+', required=False)
+    parser.add_argument('--metric-name', nargs='?', required=True)
+    parser.add_argument('--namespace', nargs='?', required=True)
+    parser.add_argument('--start-time', nargs='?', required=True)
+    parser.add_argument('--end-time', nargs='?', required=True)
+    parser.add_argument('--period', nargs='?', type=int, required=True)
+    parser.add_argument('--units', nargs='?',
+                        choices=['Seconds', 'Microseconds', 'Milliseconds',
+                        'Bytes', 'Kilobytes', 'Megabytes', 'Gigabytes',
+                        'Terabytes', 'Bits', 'Kilobits', 'Megabits',
+                        'Gigabits', 'Terabits', 'Percent', 'Count',
+                        'Bytes/Second', 'Kilobytes/Second', 'Megabytes/Second',
+                        'Gigabytes/Second', 'Terabytes/Second', 'Bits/Second',
+                        'Kilobits/Second', 'Megabits/Second',
+                        'Gigabits/Second', 'Terabits/Second', 'Count/Second',
+                        'None'], required=False)
+    parser.add_argument('--statistics', nargs='+',
+                        choices=['SampleCount', 'Average', 'Sum',
+                                 'Minimum', 'Maximum'], required=True)
+    parser.add_argument('--dimensions', nargs='+', required=False)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
