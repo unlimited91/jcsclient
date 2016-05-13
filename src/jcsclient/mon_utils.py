@@ -61,6 +61,9 @@ def push_monitoring_indexed_params(params, key, vals):
         key_index = key + '.member.' + str(idx)
         # This is for cases like --dimensions 'Name=xyz,Values=abc'
         elements = val.split(',')
+        if len(elements) == 1 and val.find('=') == -1:
+            params[key_index] = val
+            continue
         for element in elements:
             if element.find('=') != -1:
                 parts = element.split('=')
