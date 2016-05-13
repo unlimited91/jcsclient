@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 #
 
-import config
+from jcsclient import config
 from jcsclient import help
 from jcsclient.monitoring_api import monitoring
 
@@ -49,11 +49,11 @@ class Controller(object):
 
         param args: Arguments passed to the function
 
-        The function expects either no input or a list of 
+        The function expects either no input or a list of
         specific images to describe
         """
         return monitoring.list_metrics(self.url, self.verb, self.headers,
-                                     self.version, args)
+                                       self.version, args)
 
     def get_metric_statistics(self, args):
         """
@@ -65,5 +65,6 @@ class Controller(object):
         The function expects a key-name as necessary
         input
         """
-        return monitoring.get_metric_statistics(self.url, self.verb, self.headers,
-                                        self.version, args)
+        return monitoring.get_metric_statistics(self.url, self.verb,
+                                                self.headers, self.version,
+                                                args)

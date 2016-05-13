@@ -22,6 +22,7 @@
 
 import argparse
 from jcsclient import utils
+from jcsclient import mon_utils
 from jcsclient import requestify
 
 def list_metrics(url, verb, headers, version, args):
@@ -36,7 +37,7 @@ def list_metrics(url, verb, headers, version, args):
     parser.add_argument('--namespace', nargs='?', required=False)
     parser.add_argument('--dimensions', nargs='+', required=False)
     args = parser.parse_args(args)
-    utils.populate_monitoring_params_from_args(params, args)
+    mon_utils.populate_monitoring_params_from_args(params, args)
     return requestify.make_request(url, verb, headers, params)
 
 def get_metric_statistics(url, verb, headers, version, args):
@@ -65,5 +66,5 @@ def get_metric_statistics(url, verb, headers, version, args):
                                  'Minimum', 'Maximum'], required=True)
     parser.add_argument('--dimensions', nargs='+', required=False)
     args = parser.parse_args(args)
-    utils.populate_params_from_cli_args(params, args)
+    mon_utils.populate_monitoring_params_from_args(params, args)
     return requestify.make_request(url, verb, headers, params)
