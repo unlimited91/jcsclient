@@ -32,7 +32,8 @@ def list_metrics(url, verb, headers, version, args):
     args = args[1:]
     parser = utils.get_argument_parser()
     parser.add_argument('--metric-name', nargs='?', required=False)
-    parser.add_argument('--starting-token', nargs='?', required=False)
+    parser.add_argument('--starting-token', nargs='?', required=False,
+                        dest='next_token')
     parser.add_argument('--max-items', nargs='?', type=int, required=False)
     parser.add_argument('--namespace', nargs='?', required=False)
     parser.add_argument('--dimensions', nargs='+', required=False)
