@@ -258,6 +258,16 @@ def associate_address(allocation_id, instance_id):
     }
     return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
 
+def disassociate_address(association_id):
+    """DisassociateAddress API wrapper."""
+    valid_optional_params = []
+    optional_params = {}
+    mandatory_params = {
+        'Action': 'DisassociateAddress',
+        'AssociationId': association_id,
+    }
+    return common.do_vpc_request(valid_optional_params, optional_params, mandatory_params)
+
 # =============== RDS =================
 
 def describe_db_instances(**optional_params):
