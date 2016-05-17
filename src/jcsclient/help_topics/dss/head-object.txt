@@ -1,0 +1,21 @@
+Name
+    head-object
+
+Description
+    The HEAD operation retrieves metadata from an object without returning the object itself. This operation is useful
+    if you're only interested in an object's metadata. To use HEAD, you must have READ access to the object.
+
+Synopsis
+    head-object
+    --bucket <value>
+    --key <value>
+        
+Options
+    --bucket (string)
+
+    --key (string)
+
+Examples
+    The following command retrieves metadata for an object in a bucket named bucket1:
+
+    jcs dss  head-object --bucket bucket1 --key myobj

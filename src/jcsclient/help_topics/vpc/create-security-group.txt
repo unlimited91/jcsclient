@@ -1,0 +1,23 @@
+NAME
+      create-security-group - Creates a security group with the provided name.
+
+SYNOPSIS
+      create-security-group --group-name <group-name-value> --group-description <group-description-value> --vpc-id <vpc-id-value>
+      create-security-group [help]
+
+DESCRIPTION
+      Creates a security group with the provided name.
+
+      Mandatory arguments: --group-name --group-description --vpc-id
+
+
+OPTIONS :
+       --group-name Specify a unique name for the security group.
+ 
+       --group-description A short description for the security group.
+
+       --vpc-id The unique identifier of the VPC.
+
+EXAMPLES :
+       jcs vpc create-security-group --group-name WebServerSG --group-description Web-Servers --vpc-id vpc-3325caf2
+

@@ -1,0 +1,68 @@
+
+NAME :
+
+    iam
+
+
+DESCRIPTION :
+
+    Jio Cloud Services Identity and Access Management (JCS IAM) service provides
+    authentication and authorization that enables users to securely access Jio Cloud Services
+    (JCS) resources in a controlled manner. Using IAM, you can create and manage users and
+    groups, and use permissions to allow and deny access to JCS resources. By default, every
+    user in JCS starts with no permissions. To use JCS services, a user needs to be explicitly
+    provisioned with permissions on JCS resources.
+    JCS IAM enables specific controls on who can do what in the root JCS account by creating
+    users, assigning users to groups, and provisioning the users and groups with fine grained
+    access controls known as policies within a JCS root account.
+
+
+AVAILABLE COMMANDS:
+
+    list-users
+    create-user
+    update-user
+    delete-user
+    get-user
+    get-user-summary
+
+    create-credential
+    delete-credential
+    get-user-credential
+
+    list-groups
+    create-group
+    get-group
+    delete-group
+
+    assign-user-to-group
+    check-user-in-group
+    remove-user-from-group
+    list-groups-for-user
+    list-user-in-group
+    update-group
+    get-group-summary
+
+    create-policy
+    get-policy
+    list-policies
+    delete-policy
+    update-policy
+
+    attach-policy-to-user
+    detach-policy-from-user
+    attach-policy-to-group
+    detach-policy-from-group
+    get-policy-summary
+
+    create-resource-based-policy
+    get-resource-based-policy
+    list-resource-based-policies
+    delete-resource-based-policy
+    update-resource-based-policy
+    attach-policy-to-resource
+    detach-policy-from-resource
+    get-resource-based-policy-summary
+
+To see detailed help for any command, type
+    jcs iam <command> help
