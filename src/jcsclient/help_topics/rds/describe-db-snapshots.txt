@@ -28,6 +28,8 @@ OPTIONS :
         Specify the type of backup to be returned.
         Valid value: manual, automated.
         Manual: Lists all DB instance snapshots that were taken manually using your JCS Account.
+        Automated: Lists all database snapshots that were automatically taken by JCS RDS for your account.
+        For more information on how to set up automated backups, see documentation for BackupRetentionPeriod.
 
 
 EXAMPLES :
