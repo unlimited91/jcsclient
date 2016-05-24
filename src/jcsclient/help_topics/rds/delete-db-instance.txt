@@ -9,7 +9,7 @@ DESCRIPTION :
 SYNOPSIS :
     delete-db-instance 
     --db-instance-identifier <string>
-    --final-db-snapshot-identifier <string>
+    [--final-db-snapshot-identifier <string>]
     [--skip-final-snapshot <boolean>]
 
 OPTIONS :
@@ -18,7 +18,7 @@ OPTIONS :
     --db-instance-identifier <string> 
         The DB instance identifier.
 
-    --final-db-snapshot-identifier <string>
+    [--final-db-snapshot-identifier <string>]
         Specify a unique identifier for the snapshot that RDS takes before deleting the DB instance.
 
     [--skip-final-snapshot <boolean>]
