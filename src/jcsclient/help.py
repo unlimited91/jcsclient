@@ -22,7 +22,7 @@
 
 import utils
 
-VERSION = '\nJCS cli 1.0 (April 15 2016)'
+VERSION = '\nJCS cli 1.1 (May 25 2016)'
 
 ERROR_STRING = (
     "jcs <service> <API> [parameters]\n"
