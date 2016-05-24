@@ -1,0 +1,33 @@
+
+NAME :
+    describe-db-snapshots 
+
+
+DESCRIPTION :
+    Lists the detailed information of all the snapshots.
+    To get all the snapshots associated with a specific DB Instance, specify the DBInstanceIdentifier.
+
+SYNOPSIS :
+    describe-db-snapshots 
+    [--db-instance-identifier <string>]
+    [--db-snapshot-identifier <string>]
+    [--snapshot-type <manual|automated>]
+
+OPTIONS :
+    [] => optional parameters
+
+    [--db-instance-identifier <string>] 
+        To describe all the backups associated with an instance, specify the corresponding DBInstanceIdentifier.
+        You cannot use this parameter along with DBSnapshotIdentifier.
+
+    [--db-snapshot-identifier <string>]
+        Specify the unique identifier of the DB snapshot to describe a specific backup.
+        You cannot use this parameter along with DBInstanceIdentifier.
+
+    [--snapshot-type <manual|automated>]
+        Specify the type of backup to be returned.
+        Valid value: manual, automated.
+        Manual: Lists all DB instance snapshots that were taken manually using your JCS Account.
+
+
+EXAMPLES :
