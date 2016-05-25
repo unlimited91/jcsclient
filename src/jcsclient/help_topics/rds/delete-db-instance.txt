@@ -28,7 +28,7 @@ OPTIONS :
         
 
 EXAMPLES :
-    jcs rds delete-db-instance --db-instance-identifier jcs-cli --final-db-snapshot-identifier test-mysql-snapshot
+    jcs rds delete-db-instance --db-instance-identifier jcs-cli --final-db-snapshot-identifier mysql-snapshot
 
 
 SAMPLE OUTPUT :

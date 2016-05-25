@@ -36,7 +36,7 @@ EXAMPLES :
     jcs rds describe-db-snapshots
     jcs rds describe-db-snapshots --db-instance-identifier jcs-cli
     jcs rds describe-db-snapshots --snapshot-type manual
-    jcs rds describe-db-snapshots --db-snapshot-identifier test-mysql-snapshot
+    jcs rds describe-db-snapshots --db-snapshot-identifier mysql-snapshot
 
 
 SAMPLE OUTPUT:
@@ -63,7 +63,7 @@ SAMPLE OUTPUT:
                         {
                             "AllocatedStorage": "20", 
                             "BackupRetentionPeriod": "1", 
-                            "DBSnapshotIdentifier": "test-mysql-snapshot", 
+                            "DBSnapshotIdentifier": "mysql-snapshot", 
                             "Engine": "mysql", 
                             "EngineVersion": "5.6.26", 
                             "LicenseModel": "general-public-license", 
