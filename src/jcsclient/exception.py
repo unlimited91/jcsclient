@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 #
 
-from jcsclient.help import ERROR_STRING
+from jcsclient.constants import ERROR_STRING
 
 class ServiceNotFound(ImportError):
     """Exception raised when incorrect service keyword used"""

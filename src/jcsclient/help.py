@@ -21,19 +21,7 @@
 #
 
 import utils
-
-VERSION = '\nJCS cli 1.1 (May 25 2016)'
-
-ERROR_STRING = (
-    "jcs <service> <API> [parameters]\n"
-    " Available Services: compute, dss, vpc, iam, rds\n"
-    "\n"
-    " To see help text, you can run:\n"
-    "  jcs help\n"
-    "  jcs <service> help\n"
-    "  jcs <service> <API> help\n"
-    " \n"
-)
+import constants
 
 HELP_TOPICS_DIRNAME = "help_topics"
 
@@ -43,12 +31,12 @@ class Helper(object):
         self.help_dir = utils.join_path(curr_path, HELP_TOPICS_DIRNAME)
 
     def process_help_file(self, help_file):
-        print(VERSION)
+        print(constants.VERSION)
         try:
             with open(help_file, 'r') as f:
                 print(f.read())
         except IOError as e:
-            print(ERROR_STRING)
+            print(constants.ERROR_STRING)
 
     def show(self, args):
         """
