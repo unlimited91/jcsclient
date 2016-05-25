@@ -25,3 +25,39 @@ OPTIONS :
 
 
 EXAMPLES :
+    jcs rds describe-db-instances
+    jcs rds describe-db-instances --db-instance-identifier jcs-cli
+
+
+SAMPLE OUTPUT:
+    {
+        "DescribeDBInstancesResponse": {
+            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
+            "DescribeDBInstancesResult": {
+                "DBInstances": {
+                    "DBInstance": {
+                        "AllocatedStorage": "20", 
+                        "BackupRetentionPeriod": "1", 
+                        "DBInstanceClass": "c1.small", 
+                        "DBInstanceIdentifier": "jcs-cli", 
+                        "DBInstanceStatus": "available", 
+                        "Endpoint": {
+                            "Address": "10.140.216.75", 
+                            "Port": "3306"
+                        }, 
+                        "Engine": "mysql", 
+                        "EngineVersion": "5.6.26", 
+                        "InstanceCreateTime": "2016-05-25 03:20:40.566000", 
+                        "LicenseModel": "general-public-license", 
+                        "MasterUsername": "master", 
+                        "PreferredBackupWindow": "13:12-13:42", 
+                        "PreferredMaintenanceWindow": "WED:11:26-WED:11:56", 
+                        "PubliclyAccessible": "false"
+                    }
+                }
+            }, 
+            "ResponseMetadata": {}
+        }
+    }
+    Request-Id: 05fee2a0-2228-11e6-98bd-38eaa7117c80
+

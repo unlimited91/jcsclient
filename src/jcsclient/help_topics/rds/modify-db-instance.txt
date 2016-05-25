@@ -4,7 +4,8 @@ NAME :
 
 
 DESCRIPTION :
-    Create Database instance in your JCS account.
+    Modify DB instance configuration for a DB instance. 
+    You can specify the configuration settings as parameters in the request. 
 
 
 SYNOPSIS :
@@ -43,3 +44,38 @@ OPTIONS :
         
 
 EXAMPLES :
+    jcs rds modify-db-instance --db-instance-identifier jcs-cli-2 --backup-retention-period 2
+
+    jcs rds modify-db-instance --db-instance-identifier jcs-cli-2 --new-db-instance-identifier jcs-cli-changed-2 --backup-retention-period 2 --preferred-backup-window 20:12-20:42 --preferred-maintenance-window SUN:21:26-SUN:21:56
+
+
+SAMPLE OUTPUT:
+    {
+        "ModifyDBInstanceResponse": {
+            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
+            "ModifyDBInstanceResult": {
+                "DBInstance": {
+                    "AllocatedStorage": "20", 
+                    "BackupRetentionPeriod": "2", 
+                    "DBInstanceClass": "c1.small", 
+                    "DBInstanceIdentifier": "jcs-cli-2", 
+                    "DBInstanceStatus": "available", 
+                    "Endpoint": {
+                        "Address": "10.140.216.75", 
+                        "Port": "3306"
+                    }, 
+                    "Engine": "mysql", 
+                    "EngineVersion": "5.6.26", 
+                    "InstanceCreateTime": "2016-05-25 03:48:25.104000", 
+                    "LicenseModel": "general-public-license", 
+                    "MasterUsername": "master", 
+                    "PreferredBackupWindow": "23:12-23:42", 
+                    "PreferredMaintenanceWindow": "SAT:21:26-SAT:21:56", 
+                    "PubliclyAccessible": "false"
+                }
+            }, 
+            "ResponseMetadata": {}
+        }
+    }
+    Request-Id: 0854bd96-222c-11e6-98bd-38eaa7117c80
+

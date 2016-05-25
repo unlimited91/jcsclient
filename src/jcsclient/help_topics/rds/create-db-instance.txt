@@ -68,3 +68,36 @@ OPTIONS :
         
 
 EXAMPLES :
+    jcs rds create-db-instance --db-instance-identifier jcs-cli --db-instance-class c1.small --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass
+
+    jcs rds create-db-instance --db-instance-identifier jcs-cli-2 --db-instance-class c1.small --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass --preferred-maintenance-window SAT:21:26-SAT:21:56 --backup-retention-period 5 --preferred-backup-window 23:12-23:42
+
+
+SAMPLE OUTPUT:
+    {
+        "CreateDBInstanceResponse": {
+            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
+            "CreateDBInstanceResult": {
+                "DBInstance": {
+                    "AllocatedStorage": "20", 
+                    "BackupRetentionPeriod": "1", 
+                    "DBInstanceClass": "c1.small", 
+                    "DBInstanceIdentifier": "jcs-cli", 
+                    "DBInstanceStatus": "creating", 
+                    "Endpoint": {
+                        "Port": "3306"
+                    }, 
+                    "Engine": "mysql", 
+                    "EngineVersion": "5.6.26", 
+                    "LicenseModel": "general-public-license", 
+                    "MasterUsername": "master", 
+                    "PreferredBackupWindow": "23:12-23:42", 
+                    "PreferredMaintenanceWindow": "WED:21:26-WED:21:56", 
+                    "PubliclyAccessible": "false"
+                }
+            }, 
+            "ResponseMetadata": {}
+        }
+    }
+    Request-Id: c16c37e6-2227-11e6-98bd-38eaa7117c80
+
