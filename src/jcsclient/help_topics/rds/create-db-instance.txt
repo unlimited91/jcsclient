@@ -31,7 +31,7 @@ OPTIONS :
         Specify the instance class that represents a specific compute and memory capacity for the DB instance.
 
     --engine <string>
-        Specify the name of the database engine. The currently supported db engine is MySQL.
+        Specify the name of the database engine. 
 
     --allocated-storage <integer>
         Specify the allocated storage size in GB.
