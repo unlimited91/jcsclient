@@ -24,7 +24,7 @@ OPTIONS :
     [--skip-final-snapshot]
         Specify whether to create a final snapshot before deleting the DB instance.
         To skip creating a final snapshot, pass this variable.
-        Default = False, which needs value for --final-db-snapshot-identifier 
+        Default = False, needs value for --final-db-snapshot-identifier 
         
 
 EXAMPLES :
