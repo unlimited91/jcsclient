@@ -53,7 +53,7 @@ OPTIONS :
  
 
 EXAMPLES :
-    jcs rds restore-db-instance-from-db-snapshot --db-instance-identifier restored-cli-inst --db-snapshot-identifier test-mysql-snapshot --db-instance-class c1.small 
+    jcs rds restore-db-instance-from-db-snapshot --db-instance-identifier restored-cli-inst --db-snapshot-identifier mysql-snapshot --db-instance-class c1.small 
 
 
 SAMPLE OUTPUT:
