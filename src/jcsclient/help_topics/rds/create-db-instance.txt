@@ -29,10 +29,9 @@ OPTIONS :
 
     --db-instance-class <string>
         Specify the instance class that represents a specific compute and memory capacity for the DB instance.
-        Valid values: c1.small | c1.medium | c1.large | c1.xlarge
 
     --engine <string>
-        Specify the name of the database engine. The currently supported db engine is MySQL.
+        Specify name of a supported database engine. 
 
     --allocated-storage <integer>
         Specify the allocated storage size in GB.
@@ -45,8 +44,7 @@ OPTIONS :
         Note: Your password should be at least 8 to 41 characters long.
 
     [--engine-version <string>]
-        The latest preferred version
-        of the MySQL engine that JCS supports. The supported MySQL version is 5.6.
+        The preferred version of the database engine that JCS supports.
 
     [--preferred-maintenance-window <string>]
         The weekly time period during which system maintenance can
@@ -70,34 +68,5 @@ OPTIONS :
 EXAMPLES :
     jcs rds create-db-instance --db-instance-identifier jcs-cli --db-instance-class c1.small --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass
 
-    jcs rds create-db-instance --db-instance-identifier jcs-cli-2 --db-instance-class c1.small --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass --preferred-maintenance-window SAT:21:26-SAT:21:56 --backup-retention-period 5 --preferred-backup-window 23:12-23:42
-
-
-SAMPLE OUTPUT:
-    {
-        "CreateDBInstanceResponse": {
-            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
-            "CreateDBInstanceResult": {
-                "DBInstance": {
-                    "AllocatedStorage": "20", 
-                    "BackupRetentionPeriod": "1", 
-                    "DBInstanceClass": "c1.small", 
-                    "DBInstanceIdentifier": "jcs-cli", 
-                    "DBInstanceStatus": "creating", 
-                    "Endpoint": {
-                        "Port": "3306"
-                    }, 
-                    "Engine": "mysql", 
-                    "EngineVersion": "5.6.26", 
-                    "LicenseModel": "general-public-license", 
-                    "MasterUsername": "master", 
-                    "PreferredBackupWindow": "23:12-23:42", 
-                    "PreferredMaintenanceWindow": "WED:21:26-WED:21:56", 
-                    "PubliclyAccessible": "false"
-                }
-            }, 
-            "ResponseMetadata": {}
-        }
-    }
-    Request-Id: c16c37e6-2227-11e6-98bd-38eaa7117c80
+    jcs rds create-db-instance --db-instance-identifier jcs-cli-2 --db-instance-class c1.medium --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass --preferred-maintenance-window SAT:21:26-SAT:21:56 --backup-retention-period 5 --preferred-backup-window 23:12-23:42
 

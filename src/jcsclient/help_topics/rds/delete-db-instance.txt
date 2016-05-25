@@ -21,43 +21,13 @@ OPTIONS :
     [--final-db-snapshot-identifier <string>]
         Specify a unique identifier for the snapshot that RDS takes before deleting the DB instance.
 
-    [--skip-final-snapshot <boolean>]
+    [--skip-final-snapshot]
         Specify whether to create a final snapshot before deleting the DB instance.
-        To skip creating a final snapshot, set this to true.
-        Default = False.
+        To skip creating a final snapshot, pass this variable.
+        Default = False, needs value for --final-db-snapshot-identifier 
         
 
 EXAMPLES :
     jcs rds delete-db-instance --db-instance-identifier jcs-cli --final-db-snapshot-identifier mysql-snapshot
 
-
-SAMPLE OUTPUT :
-    {
-        "DeleteDBInstanceResponse": {
-            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
-            "DeleteDBInstanceResult": {
-                "DBInstance": {
-                    "AllocatedStorage": "20", 
-                    "BackupRetentionPeriod": "1", 
-                    "DBInstanceClass": "c1.small", 
-                    "DBInstanceIdentifier": "jcs-cli", 
-                    "DBInstanceStatus": "deleting", 
-                    "Endpoint": {
-                        "Address": "10.140.216.75", 
-                        "Port": "3306"
-                    }, 
-                    "Engine": "mysql", 
-                    "EngineVersion": "5.6.26", 
-                    "InstanceCreateTime": "2016-05-25 03:20:40.566000", 
-                    "LicenseModel": "general-public-license", 
-                    "MasterUsername": "master", 
-                    "PreferredBackupWindow": "13:12-13:42", 
-                    "PreferredMaintenanceWindow": "WED:11:26-WED:11:56", 
-                    "PubliclyAccessible": "false"
-                }
-            }, 
-            "ResponseMetadata": {}
-        }
-    }
-    Request-Id: d0867d84-2229-11e6-98bd-38eaa7117c80
-
+    jcs rds delete-db-instance --db-instance-identifier jcs-cli --skip-final-snapshot 

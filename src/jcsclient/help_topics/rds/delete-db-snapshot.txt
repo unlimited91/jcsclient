@@ -26,28 +26,3 @@ EXAMPLES :
     jcs rds delete-db-snapshot --db-snapshot-identifier cli-manual-today
 
 
-SAMPLE OUTPUT:
-    {
-        "DeleteDBSnapshotResponse": {
-            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
-            "DeleteDBSnapshotResult": {
-                "DBSnapshot": {
-                    "AllocatedStorage": "20", 
-                    "BackupRetentionPeriod": "2", 
-                    "DBInstanceIdentifier": "jcs-cli-changed-2", 
-                    "DBSnapshotIdentifier": "cli-manual-today", 
-                    "Engine": "mysql", 
-                    "EngineVersion": "5.6.26", 
-                    "InstanceCreateTime": "2016-05-25 03:48:25.104000", 
-                    "LicenseModel": "general-public-license", 
-                    "MasterUsername": "master", 
-                    "Port": "3306", 
-                    "SnapshotType": "MANUAL", 
-                    "Status": "deleting"
-                }
-            }, 
-            "ResponseMetadata": {}
-        }
-    }
-    Request-Id: 62a81f6a-222f-11e6-98bd-38eaa7117c80
-
