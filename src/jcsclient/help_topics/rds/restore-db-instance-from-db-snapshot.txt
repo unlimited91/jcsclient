@@ -31,7 +31,6 @@ OPTIONS :
     [--db-instance-class <string>]
         The instance class that represents a specific compute and memory capacity of the JCS DB instance.
         If unspecified, RDS uses the instance class specification of the DB instance from which the snapshot was obtained.
-        Valid values: c1.small | c1.medium | c1.large | c1.xlarge
 
     [--preferred-maintenance-window <string>]
         The weekly time period during which system maintenance can
@@ -55,32 +54,5 @@ OPTIONS :
 EXAMPLES :
     jcs rds restore-db-instance-from-db-snapshot --db-instance-identifier restored-cli-inst --db-snapshot-identifier mysql-snapshot --db-instance-class c1.small 
 
-
-SAMPLE OUTPUT:
-    {
-        "RestoreDBInstanceFromDBSnapshotResponse": {
-            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
-            "ResponseMetadata": {}, 
-            "RestoreDBInstanceFromDBSnapshotResult": {
-                "DBInstance": {
-                    "AllocatedStorage": "20", 
-                    "BackupRetentionPeriod": "1", 
-                    "DBInstanceClass": "c1.small", 
-                    "DBInstanceIdentifier": "restored-cli-inst", 
-                    "DBInstanceStatus": "restoring", 
-                    "Endpoint": {
-                        "Port": "3306"
-                    }, 
-                    "Engine": "mysql", 
-                    "EngineVersion": "5.6.26", 
-                    "LicenseModel": "general-public-license", 
-                    "MasterUsername": "master", 
-                    "PreferredBackupWindow": "13:12-13:42", 
-                    "PreferredMaintenanceWindow": "WED:11:26-WED:11:56", 
-                    "PubliclyAccessible": "false"
-                }
-            }
-        }
-    }
-    Request-Id: bc9314ea-222e-11e6-98bd-38eaa7117c80
+    jcs rds restore-db-instance-from-db-snapshot --db-instance-identifier restored-cli-inst --db-snapshot-identifier mysql-snapshot --db-instance-class c1.large
 
