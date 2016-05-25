@@ -1,0 +1,86 @@
+
+NAME :
+    restore-db-instance-from-db-snapshot 
+
+
+DESCRIPTION :
+    To restore a DB instance from an existing DB Instance snapshot, use the RestoreDBInstanceFromDBSnapshot action.
+    Until RDS completes the restore, you cannot perform any action on the snapshot.
+    When the restoration is complete, the snapshot returns to the available state.
+
+
+SYNOPSIS :
+    restore-db-instance-from-db-snapshot 
+    --db-instance-identifier <string>
+    --db-snapshot-identifier <string>
+    [--db-instance-class <string>]
+    [--preferred-maintenance-window <string>]
+    [--preferred-backup-window <string>]
+    [--backup-retention-period <integer>]
+
+
+OPTIONS :
+    [] => optional parameters
+
+    --db-instance-identifier <string> 
+        The DB instance identifier.
+
+    --db-snapshot-identifier <string>
+        The identifier of the DB snapshot.
+        
+    [--db-instance-class <string>]
+        The instance class that represents a specific compute and memory capacity of the JCS DB instance.
+        If unspecified, RDS uses the instance class specification of the DB instance from which the snapshot was obtained.
+        Valid values: c1.small | c1.medium | c1.large | c1.xlarge
+
+    [--preferred-maintenance-window <string>]
+        The weekly time period during which system maintenance can
+        occur. This period might result in a brief outage.
+        Format: ddd:hh24:mi- ddd:hh24:mi
+        Default: A random 30 minute window chosen during the night (10:00 pm - 6:00 am).
+
+    [--preferred-backup-window <string>]
+        Specify the daily time range during which JCS runs the automated backup tasks, provided BackupRetentionPeriod is greater
+        than 0. Make sure to select a time period when you expect the least amount of DB instance access to maximize performance.
+        Format: hh24:mi- hh24:mi
+        Default: A random 30 minute window chosen during the night (10:00 pm - 6:00 am).
+
+    [--backup-retention-period <integer>]
+        Specify a value greater than 0 (in days) to enable Automated backups. JCS RDS retains
+        the automated DB snapshot backups till the specified period.
+        Any automated backups exceeding the cut-off days are deleted.
+        Maximum days to retain: 35.
+ 
+
+EXAMPLES :
+    jcs rds restore-db-instance-from-db-snapshot --db-instance-identifier restored-cli-inst --db-snapshot-identifier mysql-snapshot --db-instance-class c1.small 
+
+
+SAMPLE OUTPUT:
+    {
+        "RestoreDBInstanceFromDBSnapshotResponse": {
+            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
+            "ResponseMetadata": {}, 
+            "RestoreDBInstanceFromDBSnapshotResult": {
+                "DBInstance": {
+                    "AllocatedStorage": "20", 
+                    "BackupRetentionPeriod": "1", 
+                    "DBInstanceClass": "c1.small", 
+                    "DBInstanceIdentifier": "restored-cli-inst", 
+                    "DBInstanceStatus": "restoring", 
+                    "Endpoint": {
+                        "Port": "3306"
+                    }, 
+                    "Engine": "mysql", 
+                    "EngineVersion": "5.6.26", 
+                    "LicenseModel": "general-public-license", 
+                    "MasterUsername": "master", 
+                    "PreferredBackupWindow": "13:12-13:42", 
+                    "PreferredMaintenanceWindow": "WED:11:26-WED:11:56", 
+                    "PubliclyAccessible": "false"
+                }
+            }
+        }
+    }
+    Request-Id: bc9314ea-222e-11e6-98bd-38eaa7117c80
+
