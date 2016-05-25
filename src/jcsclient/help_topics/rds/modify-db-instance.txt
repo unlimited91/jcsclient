@@ -1,0 +1,81 @@
+
+NAME :
+    modify-db-instance 
+
+
+DESCRIPTION :
+    Modify DB instance configuration for a DB instance. 
+    You can specify the configuration settings as parameters in the request. 
+
+
+SYNOPSIS :
+    modify-db-instance 
+    --db-instance-identifier <string>
+    [--new-db-instance-identifier <string>]
+    [--backup-retention-period <integer>]
+    [--preferred-backup-window <string>]
+    [--preferred-maintenance-window <string>]
+
+
+OPTIONS :
+    [] => optional parameters
+
+    --db-instance-identifier <string> 
+        The DB instance identifier.
+
+    [--new-db-instance-identifier <string>]
+        Specify a new identifier for the DB instance. You can use this parameter to change the DB instance identifier.
+
+    [--backup-retention-period <integer>]
+        Specify a value greater than 0 (in days) to enable Automated backups. JCS RDS retains
+        the automated DB snapshot backups till the specified period.
+        Any automated backups exceeding the cut-off days are deleted.
+        Maximum days to retain: 35.
+
+    [--preferred-maintenance-window <string>]
+        The weekly time period during which system maintenance can
+        occur. This period might result in a brief outage.
+        Format: ddd:hh24:mi- ddd:hh24:mi
+    
+    [--preferred-backup-window <string>]
+        Specify the daily time range during which JCS runs the automated backup tasks, provided BackupRetentionPeriod is greater
+        than 0. Make sure to select a time period when you expect the least amount of DB instance access to maximize performance.
+        Format: hh24:mi- hh24:mi
+        
+
+EXAMPLES :
+    jcs rds modify-db-instance --db-instance-identifier jcs-cli-2 --backup-retention-period 2
+
+    jcs rds modify-db-instance --db-instance-identifier jcs-cli-2 --new-db-instance-identifier jcs-cli-changed-2 --backup-retention-period 2 --preferred-backup-window 20:12-20:42 --preferred-maintenance-window SUN:21:26-SUN:21:56
+
+
+SAMPLE OUTPUT:
+    {
+        "ModifyDBInstanceResponse": {
+            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
+            "ModifyDBInstanceResult": {
+                "DBInstance": {
+                    "AllocatedStorage": "20", 
+                    "BackupRetentionPeriod": "2", 
+                    "DBInstanceClass": "c1.small", 
+                    "DBInstanceIdentifier": "jcs-cli-2", 
+                    "DBInstanceStatus": "available", 
+                    "Endpoint": {
+                        "Address": "10.140.216.75", 
+                        "Port": "3306"
+                    }, 
+                    "Engine": "mysql", 
+                    "EngineVersion": "5.6.26", 
+                    "InstanceCreateTime": "2016-05-25 03:48:25.104000", 
+                    "LicenseModel": "general-public-license", 
+                    "MasterUsername": "master", 
+                    "PreferredBackupWindow": "23:12-23:42", 
+                    "PreferredMaintenanceWindow": "SAT:21:26-SAT:21:56", 
+                    "PubliclyAccessible": "false"
+                }
+            }, 
+            "ResponseMetadata": {}
+        }
+    }
+    Request-Id: 0854bd96-222c-11e6-98bd-38eaa7117c80
+
