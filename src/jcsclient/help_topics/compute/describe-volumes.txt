@@ -20,17 +20,17 @@ SYNOPSIS :
 
 OPTIONS :
     [--volume-ids <values>]
-    List of ids which need to be described.
+    List of ids that need to be described.
 
     [--max-results <integer>]
-    Max number of results to be shown in response.
+    Maximum number of results to be shown in response.
     
     [--next-token <volume_id>]
-    NextToken - Id of last volume seen if max number of results
-    is less than total volumes.
+    NextToken - Id of last volume seen if maximum number of results
+    is less than total number of volumes.
 
     [--detail <True | False>]
-    Detail - by default this is true. Set to false to will supress 
+    Detail - by default this is true. Set to false to supress 
     detailed response
 
  
