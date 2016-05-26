@@ -230,7 +230,7 @@ def delete_route(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--router-table-id',required=True)
+    parser.add_argument('--route-table-id',required=True)
     parser.add_argument('--destination-cidr-block',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
