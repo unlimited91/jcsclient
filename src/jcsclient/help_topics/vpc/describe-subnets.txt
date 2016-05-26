@@ -8,7 +8,7 @@ SYNOPSIS
 DESCRIPTION
        Describes one or more of your subnets.
 
-       Mandatory arguments: --subnet-ids (string)
+       Mandatory arguments: None
 
 
 OPTIONS :

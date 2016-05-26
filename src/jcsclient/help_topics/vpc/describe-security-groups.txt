@@ -11,7 +11,7 @@ DESCRIPTION
        security groups, you need to mention them as list with
        group id argument.
 
-       Mandatory arguments: 
+       Mandatory arguments: None 
 
 
 OPTIONS :
