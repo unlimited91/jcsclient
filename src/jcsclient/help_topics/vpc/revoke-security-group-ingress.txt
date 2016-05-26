@@ -29,7 +29,7 @@ OPTIONS :
       --port If value of protocol is icmp: A single integer representating type and code
              If value of protocol is tcp/udp: A single integer representating port value
 
-      --cidr destination cidr block
+      --cidr source cidr block
     
       --source-group ID of source security group. Cannot be used when specifying a cidr address
          
