@@ -27,19 +27,18 @@ OPTIONS :
         Specify a new identifier for the DB instance. You can use this parameter to change the DB instance identifier.
 
     [--backup-retention-period <integer>]
-        Specify a value greater than 0 (in days) to enable Automated backups. JCS RDS retains
-        the automated DB snapshot backups till the specified period.
+        Specify a value greater than 0 (in days) to enable Automated backups. 
+        JCS RDS retains the automated DB snapshot backups till the specified period.
         Any automated backups exceeding the cut-off days are deleted.
         Maximum days to retain: 35.
 
     [--preferred-maintenance-window <string>]
-        The weekly time period during which system maintenance can
-        occur. This period might result in a brief outage.
+        The weekly time period during which system maintenance can occur. This period might result in a brief outage.
         Format: ddd:hh24:mi- ddd:hh24:mi
     
     [--preferred-backup-window <string>]
-        Specify the daily time range during which JCS runs the automated backup tasks, provided BackupRetentionPeriod is greater
-        than 0. Make sure to select a time period when you expect the least amount of DB instance access to maximize performance.
+        Specify the daily time range during which JCS runs the automated backup tasks, provided BackupRetentionPeriod is greater than 0.
+        Make sure to select a time period when you expect the least amount of DB instance access to maximize performance.
         Format: hh24:mi- hh24:mi
         
 
