@@ -51,6 +51,7 @@ class ObjectOp(DSSOp):
         self.bucket_name = args_dict['bucket']
         self.object_name = args_dict['key']
         self.dss_op_path = '/' + self.bucket_name + '/' + self.object_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
 
 
     def validate_args(self):
@@ -115,6 +116,7 @@ class PutObjectOp(ObjectOp):
         self.object_name = args_dict['key']
         self.local_file_name = args_dict['body'] 
         self.dss_op_path = '/' + self.bucket_name + '/' + self.object_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
 
 
     def validate_args(self):
@@ -175,6 +177,7 @@ class GetObjectOp(ObjectOp):
         else:
             self.local_file_name = self.object_name
         self.dss_op_path = '/' + self.bucket_name + '/' + self.object_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
 
 
     def validate_args(self):
@@ -237,6 +240,7 @@ class GetPresignedURLOp(ObjectOp):
         self.object_name = args_dict['key']
         self.validity = args_dict['expiry'] 
         self.dss_op_path = '/' + self.bucket_name + '/' + self.object_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
 
 
     def validate_args(self):
@@ -247,10 +251,11 @@ class GetPresignedURLOp(ObjectOp):
         expiry_time  = int(time.time()) + int(self.validity)
         auth = DSSAuth(self.http_method, self.access_key, self.secret_key, self.dss_op_path, use_time_in_seconds = True, expiry_time = expiry_time)
         signature = auth.get_signature()
+        # url encode the signature 
 
         # construct url
         request_url = self.dss_url + self.dss_op_path
-        request_url = request_url + '?JCSAccessKeyId=' + self.access_key + '&Expires=' + str(expiry_time) + '&Signature=' + signature
+        request_url = request_url + '?JCSAccessKeyId=' + self.access_key + '&Expires=' + str(expiry_time) + '&Signature=' + urllib2.quote(signature.encode("utf8"))
         response_json = '{"DownloadUrl": "' + request_url + '"}'
         self.pretty_print_json_str(response_json)
         resp = None
@@ -282,6 +287,7 @@ class CopyObjectOp(ObjectOp):
         self.object_name = args_dict['key']
         self.copy_source = args_dict['copy_source'] 
         self.dss_op_path = '/' + self.bucket_name + '/' + self.object_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
 
 
     def validate_args(self):
@@ -332,6 +338,7 @@ class CancelMPUploadOp(ObjectOp):
         self.object_name = args_dict['key']
         self.upload_id = args_dict['upload_id']
         self.dss_op_path = '/' + self.bucket_name + '/' + self.object_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
         self.dss_query_str = 'uploadId=' + self.upload_id
         self.dss_query_str_for_signature = 'uploadId=' + self.upload_id
 
@@ -356,6 +363,7 @@ class ListPartsOp(ObjectOp):
         self.object_name = args_dict['key']
         self.upload_id = args_dict['upload_id']
         self.dss_op_path = '/' + self.bucket_name + '/' + self.object_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
         self.dss_query_str = 'uploadId=' + self.upload_id
         self.dss_query_str_for_signature = 'uploadId=' + self.upload_id
 
@@ -388,6 +396,7 @@ class UploadPartOp(ObjectOp):
         self.part_number = args_dict['part_number']
         self.local_file_name = args_dict['body']
         self.dss_op_path = '/' + self.bucket_name + '/' + self.object_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
         self.dss_query_str = 'partNumber=' + self.part_number + '&uploadId=' + self.upload_id
         self.dss_query_str_for_signature = 'partNumber=' + self.part_number + '&uploadId=' + self.upload_id
 
@@ -404,7 +413,7 @@ class UploadPartOp(ObjectOp):
         self.http_headers['Content-Type'] = 'application/octet-stream'
 
         # construct request
-        request_url = self.dss_url + self.dss_op_path 
+        request_url = self.dss_url + self.dss_op_path
         if(self.dss_query_str is not None):
             request_url += '?' + self.dss_query_str  
         data = open(self.local_file_name, 'rb')
@@ -448,6 +457,7 @@ class CompleteMPUploadOp(ObjectOp):
         self.upload_id = args_dict['upload_id']
         self.local_file_name = args_dict['multipart_upload']
         self.dss_op_path = '/' + self.bucket_name + '/' + self.object_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
         self.dss_query_str = 'uploadId=' + self.upload_id
         self.dss_query_str_for_signature = 'uploadId=' + self.upload_id
 
@@ -463,7 +473,7 @@ class CompleteMPUploadOp(ObjectOp):
         self.http_headers['Content-Type'] = 'text/xml'
 
         # construct request
-        request_url = self.dss_url + self.dss_op_path 
+        request_url = self.dss_url + self.dss_op_path
         if(self.dss_query_str is not None):
             request_url += '?' + self.dss_query_str  
         data = open(self.local_file_name, 'rb')
