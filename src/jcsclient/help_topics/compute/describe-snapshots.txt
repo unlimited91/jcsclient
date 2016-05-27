@@ -5,7 +5,7 @@ NAME :
 
 DESCRIPTION :
     Describes snapshots that are currently visible under your JCS account. By default,
-    all snapshots in your account are listed. If you need to describe specific snapshot,
+    all snapshots in your account are listed. If you need to describe specific snapshots,
     you can use the --snapshot-ids option.
 
 

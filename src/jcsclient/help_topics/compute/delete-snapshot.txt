@@ -4,7 +4,7 @@ NAME :
 
 
 DESCRIPTION :
-    Delete Snapshot that are currently visible under your JCS account.
+    Deletes specified Snapshot that is currently visible under your JCS account.
 
 
 SYNOPSIS :
