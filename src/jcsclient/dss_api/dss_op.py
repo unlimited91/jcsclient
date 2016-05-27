@@ -80,7 +80,8 @@ class DSSOp(object):
         self.http_headers['Date'] = formatdate(usegmt=True)
 
         # construct request
-        request_url = self.dss_url + self.dss_op_path 
+        request_url = self.dss_url + self.dss_op_path
+
         if(self.dss_query_str is not None):
             request_url += '?' + self.dss_query_str  
         # make request
