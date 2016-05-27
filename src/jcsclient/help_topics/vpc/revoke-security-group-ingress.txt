@@ -1,5 +1,4 @@
 NAME
-<<<<<<< HEAD
       revoke-security-group-ingress - Removes one or more security-group rule from inbound direction. 
 
 SYNOPSIS
@@ -7,27 +6,16 @@ SYNOPSIS
       revoke-security-group-ingress --group-id <group-id> --protocol <tcp|icmp|udp> --port <port-number> --source-group <source-group-id>
       revoke-security-group-ingress --group-id <group-id> --ip-permissions <ip permissions list>
       revoke-security-group-ingress [help]
-=======
-      revoke-security-group-ingress - Remove a rule from a security group
-
-SYNOPSIS
-      revoke-security-group-ingress --group-id string
-      --ip-permission string
->>>>>>> 1936664ec1cf94f1f477b3a462de0f45a453b136
 
 DESCRIPTION
       One or more inbound rules will be removed from a specific
       security group. Values specified in the request must 
       match an existing rule in specified security group.
 
-<<<<<<< HEAD
       Mandatory arguments: 
     
       group-id
        
-=======
-       Mandatory arguments: --group-id o
->>>>>>> 1936664ec1cf94f1f477b3a462de0f45a453b136
 
 
 OPTIONS :
@@ -47,8 +35,8 @@ OPTIONS :
          
 EXAMPLES :
        
-      revoke-security-group-ingress --group-id sg-123456 --protocol tcp --port 80 --cidr 10.0.0.0/24  
+      jcs vpc revoke-security-group-ingress --group-id sg-123456 --protocol tcp --port 80 --cidr 10.0.0.0/24  
 
-      revoke-security-group-ingress --group-id sg-123456 --protocol udp --port 80 --source-group sg-987456        
+      jcs vpc revoke-security-group-ingress --group-id sg-123456 --protocol udp --port 80 --source-group sg-987456        
 
-      revoke-security-group-ingress --group-id sg-123456 --ip-permissions '[{"IpProtocol": "icmp", "FromPort": 10, "ToPort": 11, "IpRanges": [{"      CidrIp": "0.0.0.0/0"}]}]' '[{"IpProtocol": "tcp", "FromPort": 22, "ToPort": 22, "IpRanges": [{"CidrIp": "10.0.0.0/0"}, {"CidrIp": "20.0.0.      0/0"}]}]'
+      jcs vpc revoke-security-group-ingress --group-id sg-123456 --ip-permissions '[{"IpProtocol": "icmp", "FromPort": 10, "ToPort": 11, "IpRanges": [{            "CidrIp": "0.0.0.0/0"}]}]' '[{"IpProtocol": "tcp", "FromPort": 22, "ToPort": 22, "IpRanges": [{"CidrIp": "10.0.0.0/0"}, {"CidrIp": "20.0.0.             0/0"}]}]'

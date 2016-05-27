@@ -35,8 +35,8 @@ OPTIONS :
          
 EXAMPLES :
        
-      authorize-security-group-ingress --group-id sg-123456 --protocol tcp --port 80 --cidr 10.0.0.0/24  
+      jcs vpc authorize-security-group-ingress --group-id sg-123456 --protocol tcp --port 80 --cidr 10.0.0.0/24  
 
-      authorize-security-group-ingress --group-id sg-123456 --protocol udp --port 80 --source-group sg-987456        
+      jcs vpc authorize-security-group-ingress --group-id sg-123456 --protocol udp --port 80 --source-group sg-987456        
 
-      authorize-security-group-ingress --group-id sg-123456 --ip-permissions '[{"IpProtocol": "icmp", "FromPort": 10, "ToPort": 11, "IpRanges":      [{"CidrIp": "0.0.0.0/0"}]}]' '[{"IpProtocol": "tcp", "FromPort": 22, "ToPort": 22, "IpRanges": [{"CidrIp": "10.0.0.0/0"}, {"CidrIp": "20.      0.0.0/0"}]}]'
+      jcs vpc authorize-security-group-ingress --group-id sg-123456 --ip-permissions '[{"IpProtocol": "icmp", "FromPort": 10, "ToPort": 11, "IpRanges":              [{"CidrIp": "0.0.0.0/0"}]}]' '[{"IpProtocol": "tcp", "FromPort": 22, "ToPort": 22, "IpRanges": [{"CidrIp": "10.0.0.0/0"}, {"CidrIp": "20.              0.0.0/0"}]}]'

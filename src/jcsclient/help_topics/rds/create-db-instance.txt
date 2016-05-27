@@ -1,0 +1,72 @@
+
+NAME :
+    create-db-instance 
+
+
+DESCRIPTION :
+    Create Database instance in your JCS account.
+
+
+SYNOPSIS :
+    create-db-instance 
+    --db-instance-identifier <string>
+    --db-instance-class <string>
+    --engine <string>
+    --allocated-storage <integer>
+    --master-username <string>
+    --master-user-password <string>
+    [--engine-version <string>]
+    [--preferred-maintenance-window <string>]
+    [--preferred-backup-window <string>]
+    [--backup-retention-period <integer>]
+
+
+OPTIONS :
+    [] => optional parameters
+
+    --db-instance-identifier <string> 
+        The DB instance identifier.
+
+    --db-instance-class <string>
+        Specify the instance class that represents a specific compute and memory capacity for the DB instance.
+
+    --engine <string>
+        Specify name of a supported database engine. 
+
+    --allocated-storage <integer>
+        Specify the allocated storage size in GB.
+
+    --master-username <string>
+        Specify the master user name for the DB instance. Must be 1 to 16 alphanumeric characters.
+
+    --master-user-password <string>
+        Specify the password for the master database user. Can be any printable ASCII character except "/", """, or "@".
+        Note: Your password should be at least 8 to 41 characters long.
+
+    [--engine-version <string>]
+        The preferred version of the database engine that JCS supports.
+
+    [--preferred-maintenance-window <string>]
+        The weekly time period during which system maintenance can
+        occur. This period might result in a brief outage.
+        Format: ddd:hh24:mi- ddd:hh24:mi
+        Default: A random 30 minute window chosen during the night (10:00 pm - 6:00 am).
+    
+    [--preferred-backup-window <string>]
+        Specify the daily time range during which JCS runs the automated backup tasks, provided BackupRetentionPeriod is greater than 0.
+        Make sure to select a time period when you expect the least amount of DB instance access to maximize performance.
+        Format: hh24:mi- hh24:mi
+        Default: A random 30 minute window chosen during the night (10:00 pm - 6:00 am).
+    
+    [--backup-retention-period <integer>]
+        Specify a value greater than 0 (in days) to enable Automated backups.
+        JCS RDS retains the automated DB snapshot backups till the specified period.
+        Any automated backups exceeding the cut-off days are deleted.
+        Maximum days to retain: 35.
+        
+
+EXAMPLES :
+    jcs rds create-db-instance --db-instance-identifier jcs-cli --db-instance-class c1.small --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass
+
+    jcs rds create-db-instance --db-instance-identifier jcs-cli-2 --db-instance-class c1.medium --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass --preferred-maintenance-window SAT:21:26-SAT:21:56 --backup-retention-period 5 --preferred-backup-window 23:12-23:42
+

@@ -1,0 +1,28 @@
+
+NAME :
+    delete-db-snapshot 
+
+
+DESCRIPTION :
+    Use the CreateDBSnapshot action to create a snapshot of the database instance.
+    The DB Instance must be in available state. 
+    When you initiate a create snapshot request,the DB instance goes in to backup state until the snapshot is taken.
+    You cannot perform any action on the DB instance while the DB instance is in backup state.
+
+
+SYNOPSIS :
+    delete-db-snapshot 
+    --db-snapshot-identifier <string>
+
+
+OPTIONS :
+    [] => optional parameters
+
+    --db-snapshot-identifier <string>
+        The identifier of the DB snapshot.
+        
+
+EXAMPLES :
+    jcs rds delete-db-snapshot --db-snapshot-identifier cli-manual-today
+
+

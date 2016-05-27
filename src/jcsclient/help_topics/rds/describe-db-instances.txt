@@ -1,0 +1,30 @@
+
+NAME :
+    describe-db-instances 
+
+
+DESCRIPTION :
+    Lists the detailed information of a particular database instance if a database instance identifier is specified.
+    Otherwise, RDS lists the information of all the database instances in your account.
+    You can also get the status of any specific DB Instance by running this query API.
+    The possible DB Instance states are:
+    (1) available, (2) backing-up, (3) creating, (4) deleting, (5) maintenance, (6) modifying, (7) restoring, (8) restore-error, and (9) failed.
+
+
+SYNOPSIS :
+    describe-db-instances 
+    [--db-instance-identifier] <string>
+
+
+OPTIONS :
+    [] => optional parameters
+
+    [--db-instance-identifier] <string> 
+        The unique identifier of the DB instance.
+
+
+EXAMPLES :
+    jcs rds describe-db-instances
+    jcs rds describe-db-instances --db-instance-identifier jcs-cli
+
+

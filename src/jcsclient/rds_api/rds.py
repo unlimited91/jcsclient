@@ -35,6 +35,10 @@ def create_db_instance(url, verb, headers, version, args):
     parser.add_argument('--allocated-storage', required=True)
     parser.add_argument('--master-username', required=True)
     parser.add_argument('--master-user-password', required=True)
+    parser.add_argument('--engine-version', required=False)
+    parser.add_argument('--preferred-maintenance-window', required=False)
+    parser.add_argument('--preferred-backup-window', required=False)
+    parser.add_argument('--backup-retention-period', required=False)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -45,7 +49,7 @@ def describe_db_instances(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--instance-identifier', required=False, help='server name')
+    parser.add_argument('--db-instance-identifier', required=False, help='server name')
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)

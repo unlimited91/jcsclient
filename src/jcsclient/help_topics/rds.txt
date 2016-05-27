@@ -1,1 +1,33 @@
-Work In Progress
+
+NAME :
+
+    rds 
+
+
+DESCRIPTION :
+    JCS Relational Database Service (RDS) is a fully managed service that ensures that you can easily set up, operate, and scale a Relational Database in the cloud. With RDS service you are completely saved from performing time-consuming database administration tasks and hence you can focus on building your application. Being built on top of JCS IaaS, RDS is Secure, Durable and Highly Available, by default.
+
+    There is no need to invest hours in setting up your database. Just enter bare minimum information and we will spin up a fully managed database for you. Do not worry about taking backups, scheduling maintenance and updating database engines. RDS takes away administration out of your database by automating everything for you.
+
+AVAILABLE COMMANDS :
+
+    create-db-instance 
+    
+    create-db-snapshot
+
+    delete-db-instance
+
+    delete-db-snapshot
+
+    describe-db-instances
+    
+    describe-db-snapshots
+
+    modify-db-instance
+
+    restore-db-instance-from-db-snapshot
+
+
+To see detailed help for any command, type
+    jcs rds <command> help
+
