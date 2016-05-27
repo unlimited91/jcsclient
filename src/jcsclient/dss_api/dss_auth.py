@@ -76,7 +76,7 @@ class DSSAuth(object):
         return auth
 
     def get_path_for_cannonical_str(self):
-        path = urllib2.quote(self.path.encode("utf8"))
+        path = self.path
         if(self.query_str is not None):
             path += '?' + self.query_str
         return str(path)
