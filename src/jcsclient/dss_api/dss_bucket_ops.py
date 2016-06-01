@@ -31,7 +31,6 @@ import json
 import base64
 import requests
 import exceptions
-from email.utils import formatdate
 import xml.sax
 
 class BucketOp(DSSOp):
