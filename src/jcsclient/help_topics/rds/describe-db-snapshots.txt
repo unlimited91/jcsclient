@@ -1,0 +1,82 @@
+
+NAME :
+    describe-db-snapshots 
+
+
+DESCRIPTION :
+    Lists the detailed information of all the snapshots.
+    To get all the snapshots associated with a specific DB Instance, specify the DBInstanceIdentifier.
+
+SYNOPSIS :
+    describe-db-snapshots 
+    [--db-instance-identifier <string>]
+    [--db-snapshot-identifier <string>]
+    [--snapshot-type <manual|automated>]
+
+OPTIONS :
+    [] => optional parameters
+
+    [--db-instance-identifier <string>] 
+        To describe all the backups associated with an instance, specify the corresponding DBInstanceIdentifier.
+        You cannot use this parameter along with DBSnapshotIdentifier.
+
+    [--db-snapshot-identifier <string>]
+        Specify the unique identifier of the DB snapshot to describe a specific backup.
+        You cannot use this parameter along with DBInstanceIdentifier.
+
+    [--snapshot-type <manual|automated>]
+        Specify the type of backup to be returned.
+        Valid value: manual, automated.
+        Manual: Lists all DB instance snapshots that were taken manually using your JCS Account.
+        Automated: Lists all database snapshots that were automatically taken by JCS RDS for your account.
+        For more information on how to set up automated backups, see documentation for BackupRetentionPeriod.
+
+
+EXAMPLES :
+    jcs rds describe-db-snapshots
+    jcs rds describe-db-snapshots --db-instance-identifier jcs-cli
+    jcs rds describe-db-snapshots --snapshot-type manual
+    jcs rds describe-db-snapshots --db-snapshot-identifier mysql-snapshot
+
+
+SAMPLE OUTPUT:
+    {
+        "DescribeDBSnapshotsResponse": {
+            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
+            "DescribeDBSnapshotsResult": {
+                "DBSnapshots": {
+                    "DBSnapshot": [
+                        {
+                            "AllocatedStorage": "20", 
+                            "BackupRetentionPeriod": "2", 
+                            "DBInstanceIdentifier": "jcs-cli-changed-2", 
+                            "DBSnapshotIdentifier": "cli-manual-today", 
+                            "Engine": "mysql", 
+                            "EngineVersion": "5.6.26", 
+                            "InstanceCreateTime": "2016-05-25 03:48:25.104000", 
+                            "LicenseModel": "general-public-license", 
+                            "MasterUsername": "master", 
+                            "Port": "3306", 
+                            "SnapshotType": "MANUAL", 
+                            "Status": "available"
+                        }, 
+                        {
+                            "AllocatedStorage": "20", 
+                            "BackupRetentionPeriod": "1", 
+                            "DBSnapshotIdentifier": "mysql-snapshot", 
+                            "Engine": "mysql", 
+                            "EngineVersion": "5.6.26", 
+                            "LicenseModel": "general-public-license", 
+                            "MasterUsername": "master", 
+                            "Port": "3306", 
+                            "SnapshotType": "MANUAL", 
+                            "Status": "available"
+                        }
+                    ]
+                }
+            }, 
+            "ResponseMetadata": {}
+        }
+    }
+    Request-Id: d3a8db48-222d-11e6-98bd-38eaa7117c80
+

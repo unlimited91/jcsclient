@@ -1,0 +1,103 @@
+
+NAME :
+    create-db-instance 
+
+
+DESCRIPTION :
+    Create Database instance in your JCS account.
+
+
+SYNOPSIS :
+    create-db-instance 
+    --db-instance-identifier <string>
+    --db-instance-class <string>
+    --engine <string>
+    --allocated-storage <integer>
+    --master-username <string>
+    --master-user-password <string>
+    [--engine-version <string>]
+    [--preferred-maintenance-window <string>]
+    [--preferred-backup-window <string>]
+    [--backup-retention-period <integer>]
+
+
+OPTIONS :
+    [] => optional parameters
+
+    --db-instance-identifier <string> 
+        The DB instance identifier.
+
+    --db-instance-class <string>
+        Specify the instance class that represents a specific compute and memory capacity for the DB instance.
+        Valid values: c1.small | c1.medium | c1.large | c1.xlarge
+
+    --engine <string>
+        Specify the name of the database engine. The currently supported db engine is MySQL.
+
+    --allocated-storage <integer>
+        Specify the allocated storage size in GB.
+
+    --master-username <string>
+        Specify the master user name for the DB instance. Must be 1 to 16 alphanumeric characters.
+
+    --master-user-password <string>
+        Specify the password for the master database user. Can be any printable ASCII character except "/", """, or "@".
+        Note: Your password should be at least 8 to 41 characters long.
+
+    [--engine-version <string>]
+        The latest preferred version
+        of the MySQL engine that JCS supports. The supported MySQL version is 5.6.
+
+    [--preferred-maintenance-window <string>]
+        The weekly time period during which system maintenance can
+        occur. This period might result in a brief outage.
+        Format: ddd:hh24:mi- ddd:hh24:mi
+        Default: A random 30 minute window chosen during the night (10:00 pm - 6:00 am).
+    
+    [--preferred-backup-window <string>]
+        Specify the daily time range during which JCS runs the automated backup tasks, provided BackupRetentionPeriod is greater
+        than 0. Make sure to select a time period when you expect the least amount of DB instance access to maximize performance.
+        Format: hh24:mi- hh24:mi
+        Default: A random 30 minute window chosen during the night (10:00 pm - 6:00 am).
+    
+    [--backup-retention-period <integer>]
+        Specify a value greater than 0 (in days) to enable Automated backups. JCS RDS retains
+        the automated DB snapshot backups till the specified period.
+        Any automated backups exceeding the cut-off days are deleted.
+        Maximum days to retain: 35.
+        
+
+EXAMPLES :
+    jcs rds create-db-instance --db-instance-identifier jcs-cli --db-instance-class c1.small --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass
+
+    jcs rds create-db-instance --db-instance-identifier jcs-cli-2 --db-instance-class c1.small --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass --preferred-maintenance-window SAT:21:26-SAT:21:56 --backup-retention-period 5 --preferred-backup-window 23:12-23:42
+
+
+SAMPLE OUTPUT:
+    {
+        "CreateDBInstanceResponse": {
+            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
+            "CreateDBInstanceResult": {
+                "DBInstance": {
+                    "AllocatedStorage": "20", 
+                    "BackupRetentionPeriod": "1", 
+                    "DBInstanceClass": "c1.small", 
+                    "DBInstanceIdentifier": "jcs-cli", 
+                    "DBInstanceStatus": "creating", 
+                    "Endpoint": {
+                        "Port": "3306"
+                    }, 
+                    "Engine": "mysql", 
+                    "EngineVersion": "5.6.26", 
+                    "LicenseModel": "general-public-license", 
+                    "MasterUsername": "master", 
+                    "PreferredBackupWindow": "23:12-23:42", 
+                    "PreferredMaintenanceWindow": "WED:21:26-WED:21:56", 
+                    "PubliclyAccessible": "false"
+                }
+            }, 
+            "ResponseMetadata": {}
+        }
+    }
+    Request-Id: c16c37e6-2227-11e6-98bd-38eaa7117c80
+

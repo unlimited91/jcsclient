@@ -1,0 +1,57 @@
+
+NAME :
+    create-db-snapshot 
+
+
+DESCRIPTION :
+    Use the CreateDBSnapshot action to create a snapshot of the database instance.
+    The DB Instance must be in available state. When you initiate a create snapshot request,
+    the DB instance goes in to backup state until the snapshot is taken.
+    You cannot perform any action on the DB instance while the DB instance is in backup state.
+
+
+SYNOPSIS :
+    create-db-snapshot 
+    --db-instance-identifier <string>
+    --db-snapshot-identifier <string>
+
+
+OPTIONS :
+    [] => optional parameters
+
+    --db-instance-identifier <string> 
+        The DB instance identifier.
+
+    --db-snapshot-identifier <string>
+        The identifier of the DB snapshot.
+        
+
+EXAMPLES :
+    jcs rds create-db-snapshot --db-instance-identifier jcs-cli-changed-2  --db-snapshot-identifier cli-manual-today
+
+
+SAMPLE OUTPUT:
+    {
+        "CreateDBSnapshotResponse": {
+            "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
+            "CreateDBSnapshotResult": {
+                "DBSnapshot": {
+                    "AllocatedStorage": "20", 
+                    "BackupRetentionPeriod": "2", 
+                    "DBInstanceIdentifier": "jcs-cli-changed-2", 
+                    "DBSnapshotIdentifier": "cli-manual-today", 
+                    "Engine": "mysql", 
+                    "EngineVersion": "5.6.26", 
+                    "InstanceCreateTime": "2016-05-25 03:48:25.104000", 
+                    "LicenseModel": "general-public-license", 
+                    "MasterUsername": "master", 
+                    "Port": "3306", 
+                    "SnapshotType": "MANUAL", 
+                    "Status": "creating"
+                }
+            }, 
+            "ResponseMetadata": {}
+        }
+    }
+    Request-Id: 8aa9bdc2-222d-11e6-98bd-38eaa7117c80
+
