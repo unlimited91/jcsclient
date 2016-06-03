@@ -1,0 +1,43 @@
+
+NAME :
+    list-metrics
+
+
+DESCRIPTION :
+    list metrics that are currently visible under your JCS
+    account.
+
+    The metrics can be listed on basis of metric name, namespace
+    or on the basis of certain dimensions which returns
+    metrics returned by those dimensions. For complete list of 
+    metrics, refer to monitoring help guide for APIs.
+
+
+SYNOPSIS :
+    list-metrics
+    [--namespace <value>]
+    [--metric-name <value>]
+    [--dimensions <value>]
+    [--starting-token <value>]
+
+OPTIONS :
+    --namespace (string)
+    The namespace to filter against.
+
+    --metric-name (string)
+    The name of the metric to filter against.
+
+    --dimensions (list)
+    A list of dimensions to filter against.
+    Shorthand Syntax:
+    Name=string,Value=string ...
+
+    --starting-token (string)
+    A token to specify where to start paginating. This is the next-token from a previously truncated response.
+
+EXAMPLES :
+    jcs mon list-metrics
+
+    jcs mon list-metrics --metric-name CPUUtilization
+
+    jcs mon list-metrics --dimensions Name=xyz,Value=abc Name=pqr,Value=tuv
