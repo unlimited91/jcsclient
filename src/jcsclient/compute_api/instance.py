@@ -140,6 +140,8 @@ def get_password_data(url, verb, headers, version, args):
     processed = vars(processed)
     private_key_file = processed.get('private_key_file')
     passphrase = processed.get('key_passphrase')
+    if response.status_code != 200:
+        return response
     response_json = utils.web_response_to_json(response)
     try:
         response_body = response_json['GetPasswordDataResponse']

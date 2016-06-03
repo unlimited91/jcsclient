@@ -4,8 +4,8 @@ NAME :
 
 
 DESCRIPTION :
-    Create Volume in your JCS account. A empty volume can be created using 
-    size paramater. Volume can be created from a existing snapshot id.
+    Creates Volume in your JCS account. An empty volume can be created using 
+    size paramater. Volume can be created from an existing snapshot as well.
     Size can also be passed as a paramater while creating volume from snapshot.
 
 
@@ -16,11 +16,11 @@ SYNOPSIS :
 
 
 OPTIONS :
-    [--size <integer> ]
-    Size of the volume that need to be created
+    [--size <integer>]
+    Size of the volume that needs to be created
 
     [--snapshot-id <value>]
-    SnapshotId from which the volume needs to be created
+    Id of Snapshot using which the volume needs to be created
 
 EXAMPLES :
     jcs compute create-volume --size 5

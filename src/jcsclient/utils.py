@@ -27,7 +27,7 @@ import argparse
 import json
 import binascii
 import xmltodict
-from jcsclient import help
+from jcsclient import constants
 from jcsclient import exception
 from Crypto.PublicKey import RSA
 # Set codes for success and failure of APIs.
@@ -252,7 +252,7 @@ def get_argument_parser():
     to edit its behaviour in how the help is shown
     and how errors are handled.
     """
-    return argparse.ArgumentParser(add_help=False, usage=help.ERROR_STRING,
+    return argparse.ArgumentParser(add_help=False, usage=constants.ERROR_STRING,
                              formatter_class=argparse.RawTextHelpFormatter)
 
 def web_response_to_json(response):

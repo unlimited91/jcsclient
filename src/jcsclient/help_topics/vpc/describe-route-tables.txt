@@ -2,7 +2,7 @@ NAME
 	describe-route-tables - you can View available route tables.
 
 SYNOPSIS
-	describe-route-tables [--route-tables-ids <route-table-id> <route-table-id>]
+	describe-route-tables [--route-table-ids <route-table-id> <route-table-id>]
 	describe-route-tables [help]
 
 
@@ -14,8 +14,8 @@ DESCRIPTION
 
 
 OPTIONS :
-	--route-tables-ids List of route table ids
+	--route-table-ids List of route table ids
 
 EXAMPLES :
-	jcs vpc describe-route-tables --route-tables-ids rtb-34rfsa35 rtb-hgf45678
+	jcs vpc describe-route-tables --route-table-ids rtb-34rfsa35 rtb-hgf45678
 

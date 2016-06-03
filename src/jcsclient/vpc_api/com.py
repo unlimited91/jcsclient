@@ -229,9 +229,9 @@ def delete_route(url, verb, headers, version, args):
     params['Action'] = utils.dash_to_camelcase(args[0])
     params['Version'] = version
     args = args[1:]
-    parser.add_argument('--router-table-id',required=True)
-    parser.add_argument('--destination-cidr-block',required=True)
     parser = utils.get_argument_parser()
+    parser.add_argument('--route-table-id',required=True)
+    parser.add_argument('--destination-cidr-block',required=True)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)

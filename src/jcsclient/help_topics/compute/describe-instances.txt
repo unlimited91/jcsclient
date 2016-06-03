@@ -33,4 +33,4 @@ EXAMPLES :
 
     jcs compute describe-instances --instance-ids i-xxxxxxxx i-xxxxxxxx
 
-    jcs compute describe-instances --filters "[{"Name":"xyz", "Values":["abc"]}]"
+    jcs compute describe-instances --filters "Name=instance-type,Values=c1.small"

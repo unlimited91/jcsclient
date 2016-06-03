@@ -23,7 +23,6 @@
 import hmac
 import base64
 from hashlib import sha1
-from email.utils import formatdate
 import urllib2
 
 
@@ -31,11 +30,12 @@ class DSSAuth(object):
     """Class for handling authorization in DSS requests
     """
 
-    def __init__(self, http_method, access_key, secret_key, path = '/', query_str = None, content_type = None, use_time_in_seconds=False, expiry_time=0):
+    def __init__(self, http_method, access_key, secret_key, date_str, path = '/', query_str = None, content_type = None, use_time_in_seconds=False, expiry_time=0):
         self.http_method = http_method
         self.access_key = access_key
         self.secret_key = secret_key
         self.path = path
+        self.date_str = date_str
         self.query_str = query_str
         self.content_type = content_type
         self.use_time_in_seconds = use_time_in_seconds
@@ -44,9 +44,8 @@ class DSSAuth(object):
     def get_cannonical_str(self):
         cannonical_str = ''
         md5_checksum   = ''
-        date           = formatdate(usegmt=True)
         if(self.use_time_in_seconds):
-            date = str(self.expiry_time)
+            self.date_str = str(self.expiry_time)
         path           = self.get_path_for_cannonical_str()
 
         cannonical_str += self.http_method
@@ -55,7 +54,7 @@ class DSSAuth(object):
             cannonical_str += "\n" + self.content_type
         else:
           cannonical_str += "\n"
-        cannonical_str += "\n" + date
+        cannonical_str += "\n" + self.date_str
         cannonical_str += "\n" + path
         return cannonical_str
 
@@ -76,7 +75,7 @@ class DSSAuth(object):
         return auth
 
     def get_path_for_cannonical_str(self):
-        path = urllib2.quote(self.path.encode("utf8"))
+        path = self.path
         if(self.query_str is not None):
             path += '?' + self.query_str
         return str(path)
