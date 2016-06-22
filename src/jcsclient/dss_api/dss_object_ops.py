@@ -155,7 +155,7 @@ class PutObjectOp(ObjectOp):
 
             return None
         else:
-            return self.put_object(self.object_name, self.local_file_name)
+            return self.put_single_object(self.object_name, self.local_file_name)
 
     def put_single_object(self, object_name, input_file_path, is_folder = False):
         self.dss_op_path = '/' + self.bucket_name + '/' + object_name
