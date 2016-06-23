@@ -8,8 +8,7 @@ DESCRIPTION :
     account.
 
     The metrics can be listed on basis of metric name, namespace
-    or on the basis of certain dimensions which returns
-    metrics returned by those dimensions. For complete list of 
+    or on certain dimensions. For complete list of
     metrics, refer to monitoring help guide for APIs.
 
 

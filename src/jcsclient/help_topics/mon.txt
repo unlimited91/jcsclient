@@ -4,8 +4,10 @@ NAME :
 
 
 DESCRIPTION :
-    JCS monitoring manages monitoring of user resources
-    like instances, volumes, storage
+    JCS Monitoring service enables the customer to track
+    and monitor important metrics about usage, health
+    and performance of JCS Compute resources
+    (such as CPU, storage and network resources).
 
 
 AVAILABLE COMMANDS :
