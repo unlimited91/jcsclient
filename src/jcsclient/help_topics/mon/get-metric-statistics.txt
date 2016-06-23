@@ -4,14 +4,11 @@ NAME :
 
 
 DESCRIPTION :
-    list metrics that are currently visible under your JCS
-    account.
+    Fetches metric statistics for the given metric name
+    and other parameters.
 
-    The metrics can be listed on basis of metric name, namespace
-    or on the basis of certain dimensions which returns
-    metrics returned by those dimensions. For complete list of 
-    metrics, refer to monitoring help guide for APIs.
-
+    For complete list of metrics and usage, refer to
+    reference guide for monitoring APIs.
 
 SYNOPSIS :
     get-metric-statistics
