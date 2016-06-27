@@ -1,10 +1,8 @@
-
 NAME :
     delete-db-instance 
 
-
 DESCRIPTION :
-    Submits a request to delete the database instance. Manual DB Snapshots of the database instance are not deleted.
+    Submits a request to delete the specified database instance. All automated database snapshots are deleted. However, any manual database snapshots taken from the database instance are retained. 
 
 SYNOPSIS :
     delete-db-instance 
@@ -16,18 +14,19 @@ OPTIONS :
     [] => optional parameters
 
     --db-instance-identifier <string> 
-        The DB instance identifier.
+        Specify the identifier of the database instance to delete.
 
     [--final-db-snapshot-identifier <string>]
-        Specify a unique identifier for the snapshot that RDS takes before deleting the DB instance.
+        Specify a unique identifier for the snapshot that RDS takes before deleting the database instance.
 
     [--skip-final-snapshot]
-        Specify whether to create a final snapshot before deleting the DB instance.
-        To skip creating a final snapshot, pass this variable.
-        Default = False, needs value for --final-db-snapshot-identifier 
+        Specify whether to create a final snapshot before deleting the database instance.
+        To skip creating a final snapshot, specify this parameter.
+        Default: False, needs value for --final-db-snapshot-identifier 
         
 
-EXAMPLES :
-    jcs rds delete-db-instance --db-instance-identifier jcs-cli --final-db-snapshot-identifier mysql-snapshot
+EXAMPLES:
+    jcs rds delete-db-instance --db-instance-identifier SalesMetaData --final-db-snapshot-identifier mysql-snapshot
 
-    jcs rds delete-db-instance --db-instance-identifier jcs-cli --skip-final-snapshot 
+    jcs rds delete-db-instance --db-instance-identifier SalesMetaData --skip-final-snapshot
+
