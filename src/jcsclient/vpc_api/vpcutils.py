@@ -1,7 +1,7 @@
 
 from jcsclient import exception
 from jcsclient import utils
-from jcsclient import help
+from jcsclient import constants
 import ast
 
 def populate_params_from_cli_args(params, args):
@@ -50,13 +50,13 @@ def push_ip_permissions(params, key, vals):
                 if 'CidrIp' in cidr :
                     params[key+ '.' + str(indx)+'.IpRanges.'+str(cidr_indx)+'.CidrIp'] = cidr['CidrIp']
                 else :
-                    msg = help.ERROR_STRING
+                    msg = constants.ERROR_STRING
                     msg =msg+'\njcs: error: unsupported value: '+str(val)
                     raise ValueError(msg)                
                 cidr_indx +=1
             indx += 1 
         else:
-            msg = help.ERROR_STRING
+            msg = constants.ERROR_STRING
             msg =msg+'\njcs: error: unsupported value: '+ str(val)
             raise ValueError(msg)
 

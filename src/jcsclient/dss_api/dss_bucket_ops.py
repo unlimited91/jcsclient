@@ -31,7 +31,6 @@ import json
 import base64
 import requests
 import exceptions
-from email.utils import formatdate
 import xml.sax
 
 class BucketOp(DSSOp):
@@ -49,6 +48,7 @@ class BucketOp(DSSOp):
         args_dict = vars(args)
         self.bucket_name = args_dict['bucket']
         self.dss_op_path = '/' + self.bucket_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
 
 
     def validate_args(self):
@@ -122,6 +122,7 @@ class ListObjectsOp(BucketOp):
         args_dict = vars(args)
         self.bucket_name = args_dict['bucket']
         self.dss_op_path = '/' + self.bucket_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
         is_query_params_set = False
         self.dss_query_str = ''
         if(args_dict['prefix'] is not None):

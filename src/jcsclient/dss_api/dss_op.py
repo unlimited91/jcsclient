@@ -25,6 +25,7 @@ from abc import ABCMeta, abstractmethod
 from jcsclient import config
 import json
 import requests
+from email.utils import formatdate
 from dss_auth import *
 
 class DSSOp(object):
@@ -74,13 +75,15 @@ class DSSOp(object):
 
     def make_request(self):
         # get signature
-        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, self.dss_op_path, query_str = self.dss_query_str_for_signature)
+        date_str = formatdate(usegmt=True)
+        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, date_str, self.dss_op_path, query_str = self.dss_query_str_for_signature)
         signature = auth.get_signature()
         self.http_headers['Authorization'] = signature
-        self.http_headers['Date'] = formatdate(usegmt=True)
+        self.http_headers['Date'] = date_str
 
         # construct request
-        request_url = self.dss_url + self.dss_op_path 
+        request_url = self.dss_url + self.dss_op_path
+
         if(self.dss_query_str is not None):
             request_url += '?' + self.dss_query_str  
         # make request

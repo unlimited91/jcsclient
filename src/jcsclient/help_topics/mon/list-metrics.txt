@@ -8,8 +8,7 @@ DESCRIPTION :
     account.
 
     The metrics can be listed on basis of metric name, namespace
-    or on the basis of certain dimensions which returns
-    metrics returned by those dimensions. For complete list of 
+    or on certain dimensions. For complete list of
     metrics, refer to monitoring help guide for APIs.
 
 
@@ -19,7 +18,6 @@ SYNOPSIS :
     [--metric-name <value>]
     [--dimensions <value>]
     [--starting-token <value>]
-    [--max-items <value>]
 
 OPTIONS :
     --namespace (string)
@@ -35,9 +33,6 @@ OPTIONS :
 
     --starting-token (string)
     A token to specify where to start paginating. This is the next-token from a previously truncated response.
-
-    --max-items (integer)
-    The total number of items to return. If the total number of items available is more than the value specified in max-items then a next-token will be provided in the output that you can use to resume pagination. This next-token response element should not be used directly outside of the JCS CLI.
 
 EXAMPLES :
     jcs mon list-metrics

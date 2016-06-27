@@ -4,7 +4,7 @@ NAME :
 
 DESCRIPTION :
     Detaches a SBS volume from the specified JCS compute
-    instance. To detach a volume you must specify both the
+    instance. To detach a volume you must specify the
     volume ID. Specifying the instance ID is optional, but
     it should be the one to which the volume was attached.
 

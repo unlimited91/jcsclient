@@ -27,7 +27,7 @@ from jcsclient.utils import FAILURE
 from jcsclient import help
 from jcsclient import exception
 from jcsclient import config
-from jcsclient.help import ERROR_STRING
+from jcsclient.constants import ERROR_STRING
 from jcsclient import output
 
 def main(args = sys.argv):

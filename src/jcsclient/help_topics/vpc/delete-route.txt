@@ -20,6 +20,6 @@ OPTIONS :
               match the CIDR for the route exactly.
 
 EXAMPLES :
-       jcs vpc delete-route -route-table-id rtb-22574640
+       jcs vpc delete-route --route-table-id rtb-22574640
                       --destination-cidr-block 0.0.0.0/0
 

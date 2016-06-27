@@ -4,14 +4,11 @@ NAME :
 
 
 DESCRIPTION :
-    list metrics that are currently visible under your JCS
-    account.
+    Fetches metric statistics for the given metric name
+    and other parameters.
 
-    The metrics can be listed on basis of metric name, namespace
-    or on the basis of certain dimensions which returns
-    metrics returned by those dimensions. For complete list of 
-    metrics, refer to monitoring help guide for APIs.
-
+    For complete list of metrics and usage, refer to
+    reference guide for monitoring APIs.
 
 SYNOPSIS :
     get-metric-statistics
@@ -93,4 +90,4 @@ OPTIONS :
         None
 
 EXAMPLES :
-    jcs mon get-metric-statistics --metric-name CPUUtilization --start-time 2014-04-08T23:18:00 --end-time 2014-04-09T23:18:00 --period 3600 --namespace JCS/Compute --statistics Maximum --dimensions Name=InstanceId,Value=i-abcdef
+    jcs mon get-metric-statistics --metric-name CPUUtilization --start-time 2014-04-08T23:18:00Z --end-time 2014-04-09T23:18:00Z --period 3600 --namespace JCS/Compute --statistics Maximum --dimensions Name=InstanceId,Value=i-abcdef
