@@ -72,7 +72,7 @@ EXAMPLES :
     jcs compute run-instances --image-id jmi-xxxx
                               --instance-type-id c1.small
                               --key-name abc
-                              --security-groups sg-123 sg-456
+                              --security-group-ids sg-123 sg-456
 
     jcs compute run-instances --image-id jmi-xxxx 
                               --instance-type-id c1.small

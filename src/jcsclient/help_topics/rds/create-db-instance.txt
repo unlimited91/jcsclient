@@ -1,10 +1,9 @@
-
 NAME :
     create-db-instance 
 
 
 DESCRIPTION :
-    Create Database instance in your JCS account.
+    Creates a new database instance in your JCS account that runs a specified database engine. Specify an instance class that meets the hardware requirements and storage capacity. Optionally, specify the preferred maintenance window, backup window, and backup retention period, if automatic backup is required.
 
 
 SYNOPSIS :
@@ -25,48 +24,51 @@ OPTIONS :
     [] => optional parameters
 
     --db-instance-identifier <string> 
-        The DB instance identifier.
+        Specify the unique identifier of the database instance to create.
 
     --db-instance-class <string>
-        Specify the instance class that represents a specific compute and memory capacity for the DB instance.
+        Specify the instance class that represents a specific compute and memory capacity for the database instance.
 
     --engine <string>
-        Specify name of a supported database engine. 
+        Specify the name of the supported database engine. For example, --engine mysql 
 
     --allocated-storage <integer>
-        Specify the allocated storage size in GB.
+        Specify the storage size (in GB) to allocate for the new database instance.
 
     --master-username <string>
-        Specify the master user name for the DB instance. Must be 1 to 16 alphanumeric characters.
+        Specify the master user name for the database instance. Must be 1 to 16 alphanumeric characters.
 
     --master-user-password <string>
         Specify the password for the master database user. Can be any printable ASCII character except "/", """, or "@".
-        Note: Your password should be at least 8 to 41 characters long.
+        The password should be at least 8 to 41 characters long.
 
     [--engine-version <string>]
-        The preferred version of the database engine that JCS supports.
+        Specify the preferred version of the database engine that JCS supports. 
+         Examples 
+--engine mysql  --engine-version 5.6.26
+--engine postgresql --engine-version 9.3.13
 
     [--preferred-maintenance-window <string>]
-        The weekly time period during which system maintenance can
-        occur. This period might result in a brief outage.
-        Format: ddd:hh24:mi- ddd:hh24:mi
-        Default: A random 30 minute window chosen during the night (10:00 pm - 6:00 am).
+        Specify the weekly time period during which system maintenance can occur. This period might result in a brief outage.
+        Format: ddd:hh24:mi- ddd:hh24:mi 
+        Example: SUN:22:00-SUN:22:30
+        Default: A random 30-minute window chosen during the night (10:00 pm - 6:00 am IST).
     
     [--preferred-backup-window <string>]
-        Specify the daily time range during which JCS runs the automated backup tasks, provided BackupRetentionPeriod is greater than 0.
-        Make sure to select a time period when you expect the least amount of DB instance access to maximize performance.
+Specify the daily time range during which JCS can run the automated backup tasks provided BackupRetentionPeriod is greater than 0.
+        To improve performance, select a time period when access to the database instance is at a minimum.
         Format: hh24:mi- hh24:mi
-        Default: A random 30 minute window chosen during the night (10:00 pm - 6:00 am).
+        Example: 22:00-22:30
+        Default: A random 30-minute window chosen during the night (10:00 pm - 6:00 am IST).
     
     [--backup-retention-period <integer>]
-        Specify a value greater than 0 (in days) to enable Automated backups.
-        JCS RDS retains the automated DB snapshot backups till the specified period.
-        Any automated backups exceeding the cut-off days are deleted.
-        Maximum days to retain: 35.
+Specify the number of days that JCS RDS must retain the automated database backups. JCS RDS retains the automated DB snapshot backups till the specified period. Supported Range: 0 -35 (days).
+
+
         
 
 EXAMPLES :
-    jcs rds create-db-instance --db-instance-identifier jcs-cli --db-instance-class c1.small --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass
+    jcs rds create-db-instance --db-instance-identifier ProdInventory --db-instance-class c1.small --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass
 
-    jcs rds create-db-instance --db-instance-identifier jcs-cli-2 --db-instance-class c1.medium --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass --preferred-maintenance-window SAT:21:26-SAT:21:56 --backup-retention-period 5 --preferred-backup-window 23:12-23:42
+    jcs rds create-db-instance --db-instance-identifier SalesMasterData --db-instance-class c1.medium --engine MySQL --allocated-storage 20 --master-username master --master-user-password masterpass --preferred-maintenance-window SAT:21:26-SAT:21:56 --backup-retention-period 5 --preferred-backup-window 23:12-23:42
 

@@ -34,6 +34,7 @@ import exceptions
 from email.utils import formatdate
 import xml.sax
 import json
+from jcsclient import output
 
 class ObjectOp(DSSOp):
 
@@ -115,26 +116,65 @@ class PutObjectOp(ObjectOp):
         self.bucket_name = args_dict['bucket']
         self.object_name = args_dict['key']
         self.local_file_name = args_dict['body'] 
-        self.dss_op_path = '/' + self.bucket_name + '/' + self.object_name
-        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
 
 
     def validate_args(self):
         pass
 
     def execute(self):
+        result = None
+        # check if the local_file_name is a directory or not
+        if(os.path.isdir(self.local_file_name)):
+            # recursivley upload all the files and subfolders
+
+            self.local_file_name = os.path.normpath(self.local_file_name)
+            dir_name = self.object_name
+            # create top level folder
+            print ("\nCreating folder " + self.object_name)
+            result = self.put_single_object(os.path.normpath(self.object_name) + "/", None, is_folder = True)
+            self.process_result(result)
+            output.format_result(result)
+            for root, dirs, files in os.walk(self.local_file_name):
+                # iterate over files 
+                for name in files:
+                    input_file_path = os.path.join(root, name)
+                    object_name = dir_name + "/" + os.path.normpath(input_file_path[len(self.local_file_name) + 1:])
+                    print ("\nUploading file " + input_file_path + " as " + object_name)
+                    result = self.put_single_object(object_name, input_file_path)
+                    self.process_result(result)
+                    output.format_result(result)
+                # iterate over sub directories
+                for name in dirs:
+                    input_file_path = os.path.join(root, name)
+                    object_name = dir_name + "/" + os.path.normpath(input_file_path[len(self.local_file_name) + 1:]) + "/"
+                    print ("\nCreating folder " + object_name)
+                    result = self.put_single_object(object_name, input_file_path, True)
+                    self.process_result(result)
+                    output.format_result(result)
+                  
+
+            return None
+        else:
+            return self.put_single_object(self.object_name, self.local_file_name)
+
+    def put_single_object(self, object_name, input_file_path, is_folder = False):
+        self.dss_op_path = '/' + self.bucket_name + '/' + object_name
+        self.dss_op_path = urllib2.quote(self.dss_op_path.encode("utf8"))
         # get signature
-        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, self.dss_op_path, content_type = 'application/octet-stream')
+        date_str = formatdate(usegmt=True)
+        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, date_str, self.dss_op_path, content_type = 'application/octet-stream')
         signature = auth.get_signature()
         self.http_headers['Authorization'] = signature
-        self.http_headers['Date'] = formatdate(usegmt=True)
+        self.http_headers['Date'] = date_str
         statinfo = os.stat(self.local_file_name)
         self.http_headers['Content-Length'] = statinfo.st_size
         self.http_headers['Content-Type'] = 'application/octet-stream'
 
         # construct request
         request_url = self.dss_url + self.dss_op_path
-        data = open(self.local_file_name, 'rb')
+        data = None
+        if(not is_folder):
+          data = open(input_file_path, 'rb')
         # make request
         resp = requests.put(request_url, headers = self.http_headers, data=data, verify = self.is_secure_request)
         return resp
@@ -185,10 +225,11 @@ class GetObjectOp(ObjectOp):
 
     def execute(self):
         # get signature
-        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, self.dss_op_path)
+        date_str = formatdate(usegmt=True)
+        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, date_str, self.dss_op_path)
         signature = auth.get_signature()
         self.http_headers['Authorization'] = signature
-        self.http_headers['Date'] = formatdate(usegmt=True)
+        self.http_headers['Date'] = date_str
 
         # construct request
         request_url = self.dss_url + self.dss_op_path
@@ -248,8 +289,9 @@ class GetPresignedURLOp(ObjectOp):
 
     def execute(self):
         # get signature
+        date_str = formatdate(usegmt=True)
         expiry_time  = int(time.time()) + int(self.validity)
-        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, self.dss_op_path, use_time_in_seconds = True, expiry_time = expiry_time)
+        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, date_str, self.dss_op_path, use_time_in_seconds = True, expiry_time = expiry_time)
         signature = auth.get_signature()
         # url encode the signature 
 
@@ -403,11 +445,12 @@ class UploadPartOp(ObjectOp):
 
     def execute(self):
         # get signature
+        date_str = formatdate(usegmt=True)
         query_str = 'partNumber=' + self.part_number + '&uploadId=' + self.upload_id
-        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, self.dss_op_path, query_str = self.dss_query_str_for_signature, content_type = 'application/octet-stream')
+        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, date_str, self.dss_op_path, query_str = self.dss_query_str_for_signature, content_type = 'application/octet-stream')
         signature = auth.get_signature()
         self.http_headers['Authorization'] = signature
-        self.http_headers['Date'] = formatdate(usegmt=True)
+        self.http_headers['Date'] = date_str
         statinfo = os.stat(self.local_file_name)
         self.http_headers['Content-Length'] = statinfo.st_size
         self.http_headers['Content-Type'] = 'application/octet-stream'
@@ -464,10 +507,11 @@ class CompleteMPUploadOp(ObjectOp):
 
     def execute(self):
         # get signature
-        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, self.dss_op_path, query_str = self.dss_query_str_for_signature, content_type = 'text/xml')
+        date_str = formatdate(usegmt=True)
+        auth = DSSAuth(self.http_method, self.access_key, self.secret_key, date_str, self.dss_op_path, query_str = self.dss_query_str_for_signature, content_type = 'text/xml')
         signature = auth.get_signature()
         self.http_headers['Authorization'] = signature
-        self.http_headers['Date'] = formatdate(usegmt=True)
+        self.http_headers['Date'] = date_str
         statinfo = os.stat(self.local_file_name)
         self.http_headers['Content-Length'] = statinfo.st_size
         self.http_headers['Content-Type'] = 'text/xml'
