@@ -56,7 +56,8 @@ class UnknownCredentials(Exception):
     """
     def __init__(self):
         self.msg = ("ACCESS_KEY or SECRET_KEY not set in the environment."
-                    "Please export the variables as given in README.rst.")
+                    "Please refer JCS CLI Guide for more information on how"
+                    " to export these variables.")
         super(UnknownCredentials, self).__init__(self.msg)
 
 class UnknownOutputFormat(Exception):
