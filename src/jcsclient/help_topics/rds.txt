@@ -27,6 +27,8 @@ AVAILABLE COMMANDS :
 
     restore-db-instance-from-db-snapshot
 
+    describe-db-types
+
 
 To see detailed help for any command, type
     jcs rds <command> help

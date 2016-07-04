@@ -1,0 +1,22 @@
+NAME :
+    describe-db-instances
+
+
+DESCRIPTION :
+    Lists the detailed information of all the database engine that rds supports. To list the details for a specific database engine, specify the database type id.
+   
+SYNOPSIS :
+    describe-db-types 
+    [--db-type-id] <string>
+
+
+OPTIONS :
+    [] => optional parameters
+
+    [--db-type-id] <string> 
+        The unique identifier of the database engine type.
+
+
+EXAMPLES :
+    jcs rds describe-db-instances
+    jcs rds describe-db-instances --db-type-id
