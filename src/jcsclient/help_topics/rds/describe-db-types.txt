@@ -1,0 +1,54 @@
+
+NAME :
+    describe-db-types 
+
+
+DESCRIPTION :
+    Lists the detailed information of a particular database engine supported if a database type identifier is specified.
+    Otherwise, RDS lists the information of all the database engines supported.
+
+SYNOPSIS :
+    describe-db-types 
+    [--db-type-id] <string>
+
+
+OPTIONS :
+    [] => optional parameters
+
+    [--db-instance-id] <string> 
+        The unique identifier of the DB Engine ex mysql / postgresql.
+
+
+EXAMPLES :
+    jcs rds describe-db-types
+    jcs rds describe-db-types --db-type-id mysql
+
+
+SAMPLE OUTPUT:
+{
+    "DescribeDBTypesResponse": {
+        "@xmlns": "https://rds.ind-west-1.jiocloudservices.com/doc/2016-03-01/", 
+        "DescribeDBTypesResult": {
+            "DBTypes": {
+                "DBType": [
+                    {
+                        "DBTypeId": "mysql", 
+                        "DBTypeVersionSet": {
+                            "DBTypeState": "Preferred", 
+                            "DBTypeVersion": "5.6.26"
+                        }
+                    }, 
+                    {
+                        "DBTypeId": "postgresql", 
+                        "DBTypeVersionSet": {
+                            "DBTypeState": "Preferred", 
+                            "DBTypeVersion": "9.3.13"
+                        }
+                    }
+                ]
+            }
+        }, 
+        "ResponseMetadata": {}
+    }
+}
+Request-Id: b997bea4-41c7-11e6-9e46-38eaa7117ae8

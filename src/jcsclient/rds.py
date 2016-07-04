@@ -73,3 +73,8 @@ class Controller(object):
     def restore_db_instance_from_db_snapshot(self, args):
         return rds.restore_db_instance_from_db_snapshot(
             self.url, self.verb, self.headers, self.version, args)
+    
+    def describe_db_types(self, args):
+        return rds.describe_db_types(
+            self.url, 'GET', self.headers, self.version, args)
+
