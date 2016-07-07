@@ -33,5 +33,4 @@ OPTIONS :
 EXAMPLES :
 
     jcs rds describe-db-types
-
     jcs rds describe-db-types --db-type-id mysql
