@@ -145,7 +145,7 @@ def describe_db_types(url, verb, headers, version, args):
     params['Version'] = version
     args = args[1:]
     parser = utils.get_argument_parser()
-    parser.add_argument('--db-type-id', required=False, help='server name')
+    parser.add_argument('--db-type-id', required=False, help='database engine name')
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
