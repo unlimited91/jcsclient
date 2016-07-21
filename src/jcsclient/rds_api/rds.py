@@ -138,3 +138,14 @@ def restore_db_instance_from_db_snapshot(url, verb, headers, version, args):
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
+
+def describe_db_types(url, verb, headers, version, args):
+    params = {}
+    params['Action'] = utils.dash_to_camelcase(args[0])
+    params['Version'] = version
+    args = args[1:]
+    parser = utils.get_argument_parser()
+    parser.add_argument('--db-type-id', required=False, help='database engine name')
+    args = parser.parse_args(args)
+    utils.populate_params_from_cli_args(params, args)
+    return requestify.make_request(url, verb, headers, params)
