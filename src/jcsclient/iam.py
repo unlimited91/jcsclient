@@ -504,7 +504,7 @@ class Controller(object):
         params, parser, args = utility(args)
         parser.add_argument('--policy-name')
         parser.add_argument('--policy-id')
-        parser.add_argument('--policy-document', required = True)
+        parser.add_argument('--resource', required = True)
         args = parser.parse_args(args)
         if args.policy_name is None and args.policy_id is None:
             parser.error("at least one of --policy-name and --policy-id required")
@@ -517,7 +517,7 @@ class Controller(object):
         params, parser, args = utility(args)
         parser.add_argument('--policy-name')
         parser.add_argument('--policy-id')
-        parser.add_argument('--policy-document', required = True)
+        parser.add_argument('--resource', required = True)
         args = parser.parse_args(args)
         if args.policy_name is None and args.policy_id is None:
             parser.error("at least one of --policy-name and --policy-id required")
