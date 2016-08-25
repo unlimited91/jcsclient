@@ -1,0 +1,26 @@
+NAME :
+    create-db-snapshot 
+DESCRIPTION :
+    Creates a snapshot of the database instance. The current state of the database instance must be in available state. 
+    Once the create snapshot command is issued, the database instance goes in to backing-up state and no user actions are permitted on the database instance until the snapshot is created.
+
+
+SYNOPSIS :
+    create-db-snapshot 
+    --db-instance-identifier <string>
+    --db-snapshot-identifier <string>
+
+
+OPTIONS :
+
+    --db-instance-identifier <string> 
+        Specify the identifier of the database instance to create a snapshot.
+
+    --db-snapshot-identifier <string>
+        Specify the unique identifier of the database snapshot to create.
+        
+
+EXAMPLES :
+    jcs rds create-db-snapshot --db-instance-identifier SalesMetaData  --db-snapshot-identifier SalesMetaDataJun
+
+

@@ -1,0 +1,22 @@
+NAME
+      describe-security-groups - shows security groups parameter
+
+SYNOPSIS
+      describe-security-groups [--group-ids <group-id> group-id]
+      describe-security-groups [help]
+
+DESCRIPTION
+       Describes all security groups and its parameters under
+       a project. If you wish to dsplay params of particular
+       security groups, you need to mention them as list with
+       group id argument.
+
+       Mandatory arguments: None 
+
+
+OPTIONS :
+       --group-ids list of group ids 
+
+EXAMPLES :
+       jcs vpc describe-security-groups --group-ids sg-34efsa12 sg-7609ng12
+

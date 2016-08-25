@@ -1,0 +1,24 @@
+Name
+    get-presigned-url
+
+Description
+    This operation is used to generate a url to download an object stored in dss
+
+Synopsis
+    get-presigned-url
+    --bucket <value>
+    --key <value>
+    --expiry <value>
+  
+Options
+    --bucket (string)
+    
+    --key (string)
+    
+    --expiry (interger) time in seconds for the download url will be valid
+
+Examples
+    The following command generates an url which is valid for 1000 seconds to download 
+    an object named myobject from bucket named my-bucket:
+
+    jcs dss get-presigned-url --bucket my-bucket --key myobject --expiry 1000

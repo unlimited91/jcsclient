@@ -1,0 +1,35 @@
+NAME :
+    describe-db-instances
+
+
+DESCRIPTION :
+    Lists the detailed information of all the database instances. To list the details for a specific database instance, specify the database instance identifier.
+   
+    The possible database instance states are:  
+(1) available – the database instance is ready for available operations, such as modify, backup and so on.
+(2) backing-up – JCS RDS is currently taking a snapshot of the database instance 
+(3) creating - JCS RDS is creating a database instance
+(4) deleting - JCS RDS is deleting the specified database instance 
+(5) maintenance - JCS RDS is running maintenance updates to the database instance according to the time specified in PreferredMaintenanceWindow 
+(6) modifying - JCS RDS is performing the requested modifications to the database instance  
+(7) restoring - JCS RDS is restoring the database from a specified snapshot 
+(8) restore-error -  JCS RDS was unsuccessful while attempting to restore from a snapshot
+(9) failed - The instance failed and JCS RDS unsuccessfully tried to recover the database instance.  Perform a restore from the available snapshots of the instance to recover the data. 
+
+
+SYNOPSIS :
+    describe-db-instances 
+    [--db-instance-identifier] <string>
+
+
+OPTIONS :
+    [] => optional parameters
+
+    [--db-instance-identifier] <string> 
+        The unique identifier of the database instance.
+
+
+EXAMPLES :
+    jcs rds describe-db-instances
+    jcs rds describe-db-instances --db-instance-identifier SalesDB
+

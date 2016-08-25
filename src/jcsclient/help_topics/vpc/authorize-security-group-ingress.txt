@@ -1,0 +1,42 @@
+NAME
+      authorize-security-group-ingress - Adds one or more security-group rule to inbound direction. 
+
+SYNOPSIS
+      authorize-security-group-ingress --group-id <group-id> --protocol <tcp|icmp|udp> --port <port-number> --cidr <cidr-block> 
+      authorize-security-group-ingress --group-id <group-id> --protocol <tcp|icmp|udp> --port <port-number> --source-group <source-group-id>
+      authorize-security-group-ingress --group-id <group-id> --ip-permissions <ip permissions list>
+      authorize-security-group-ingress [help]
+
+DESCRIPTION
+      One or more inbound rules will be added to a specific
+      security group. Packets matching specified value will 
+      be allowed
+
+      Mandatory arguments: 
+    
+      group-id
+       
+
+
+OPTIONS :
+      --group-id specify group id where you want to authorize the rule
+     
+      --ip-permissions List of permissions if you want to remove one or 
+                       more than one rules in a singel request.
+ 
+      --protocol Value of protocol. Valid value are tcp , udp , icmp
+
+      --port If value of protocol is icmp: A single integer representating type and code
+             If value of protocol is tcp/udp: A single integer representating port value
+
+      --cidr source cidr block
+    
+      --source-group ID of source security group. Cannot be used when specifying a cidr address
+         
+EXAMPLES :
+       
+      jcs vpc authorize-security-group-ingress --group-id sg-123456 --protocol tcp --port 80 --cidr 10.0.0.0/24  
+
+      jcs vpc authorize-security-group-ingress --group-id sg-123456 --protocol udp --port 80 --source-group sg-987456        
+
+      jcs vpc authorize-security-group-ingress --group-id sg-123456 --ip-permissions '[{"IpProtocol": "icmp", "FromPort": 10, "ToPort": 11, "IpRanges":              [{"CidrIp": "0.0.0.0/0"}]}]' '[{"IpProtocol": "tcp", "FromPort": 22, "ToPort": 22, "IpRanges": [{"CidrIp": "10.0.0.0/0"}, {"CidrIp": "20.              0.0.0/0"}]}]'

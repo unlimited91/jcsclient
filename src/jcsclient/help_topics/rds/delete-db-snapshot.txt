@@ -1,0 +1,23 @@
+NAME :
+    delete-db-snapshot 
+
+
+DESCRIPTION :
+    Deletes the database snapshot once the request is successfully processed.
+    The database snapshot must be in available state. 
+    
+
+
+SYNOPSIS :
+    delete-db-snapshot  
+    --db-snapshot-identifier <string>
+
+
+OPTIONS :
+    
+    --db-snapshot-identifier <string>
+        The identifier of the database snapshot to delete.
+        
+EXAMPLE :
+    jcs rds delete-db-snapshot --db-snapshot-identifier SalesTempJun
+

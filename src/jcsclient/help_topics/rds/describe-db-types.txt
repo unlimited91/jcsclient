@@ -1,0 +1,36 @@
+NAME :
+
+    describe-db-types
+
+
+
+DESCRIPTION :
+
+    Lists detailed information of all the database engines that JCS RDS supports, such as the supported database engine versions and the preferred database engine version. To list the details for a specific database engine, specify the database type-id. 
+
+   
+
+SYNOPSIS :
+
+    describe-db-types 
+
+    [--db-type-id] <string>
+
+
+
+OPTIONS :
+
+    [] => optional parameter
+
+
+
+    [--db-type-id] <string> 
+
+        The unique identifier of the database engine type such as mysql, postgresql etc.
+
+
+
+EXAMPLES :
+
+    jcs rds describe-db-types
+    jcs rds describe-db-types --db-type-id mysql

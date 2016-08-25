@@ -1,0 +1,46 @@
+
+NAME :
+    describe-snapshots
+
+
+DESCRIPTION :
+    Describes snapshots that are currently visible under your JCS account. By default,
+    all snapshots in your account are listed. If you need to describe specific snapshots,
+    you can use the --snapshot-ids option.
+
+
+SYNOPSIS :
+    describe-snapshots
+    [--snapshot-ids <values>]
+    [--max-results <integer>]
+    [--next-token <volume_id>]
+    [--detail <True | False>]
+
+
+OPTIONS :
+    [--snapshot-ids <values>]
+    List of ids that need to be described.
+
+    [--max-results <integer>]
+    Maximum number of results to be shown in response.
+    
+    [--next-token <volume_id>]
+    NextToken - Id of last snapshot seen if maximum number of results
+    is less than total number of snapshots.
+
+    [--detail <True | False>]
+    Detail - by default this is true. Set to false to supress 
+    detailed response
+
+ 
+
+EXAMPLES :
+    jcs compute describe-snapshots
+
+    jcs compute describe-snapshots --snapshot-ids f0eb9973-3f88-4612-abbc-c7d211a3ed80
+
+    jcs compute describe-snapshots --snapshot-ids f0eb9973-3f88-4612-abbc-c7d211a3ed80 54da80d1-fdb7-46b3-9d1a-7b9fd5286916
+
+    jcs compute describe-snapshots --next-token 54da80d1-fdb7-46b3-9d1a-7b9fd5286916
+
+    jcs compute describe-snapshots --max-results 6 

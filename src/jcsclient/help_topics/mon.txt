@@ -1,0 +1,20 @@
+
+NAME :
+    mon
+
+
+DESCRIPTION :
+    JCS Monitoring service enables the customer to track
+    and monitor important metrics about usage, health
+    and performance of JCS Compute resources
+    (such as CPU, storage and network resources).
+
+
+AVAILABLE COMMANDS :
+
+    list-metrics
+    get-metric-statistics
+
+To see detailed help for any command, type
+    jcs mon <command> help
+

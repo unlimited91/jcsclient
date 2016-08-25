@@ -1,0 +1,26 @@
+Name
+    put-object
+
+Description
+    Upload an object to a bucket.
+
+Synopsis
+    put-object
+    --body <value>
+    --bucket <value>
+    --key <value>
+      
+      
+Options
+
+      --body local file which needs to be uploaded as object
+
+      --bucket (string) Name of the bucket in which the object is to be updated.
+
+      --key (string) Name of the key.
+
+
+Examples
+    The following example uses the put-object command to upload an object to dss:
+
+    jcs dss  put-object --bucket mybucket --key myobj --body local_file

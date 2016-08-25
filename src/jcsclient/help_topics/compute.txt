@@ -1,0 +1,47 @@
+
+NAME :
+    compute
+
+
+DESCRIPTION :
+    JCS compute manages handling of compute resources, everything from
+    creation, modification and termination of the resources. Using JCS
+    compute, one can drop the infrastructure costs and be able to work
+    on developing and deploying your applications faster.
+
+
+AVAILABLE COMMANDS :
+
+    describe-images
+    describe-instance-types
+
+    create-key-pair
+    describe-key-pairs
+    import-key-pair
+    delete-key-pair
+
+    run-instances
+    describe-instances
+    start-instances
+    stop-instances
+    reboot-instances
+    terminate-instances
+
+    attach-volume
+    create-volume
+    describe-volumes
+    detach-volume
+    delete-volume
+
+    create-snapshot
+    describe-snapshots
+    delete-snapshot
+
+    show-delete-on-termination-flag
+    update-delete-on-termination-flag
+ 
+    get-password-data
+
+To see detailed help for any command, type
+    jcs compute <command> help
+

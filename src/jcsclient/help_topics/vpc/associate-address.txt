@@ -1,0 +1,22 @@
+NAME
+      associate-address - To associate an RJIL routable IP address to an instance
+
+SYNOPSIS
+      associate-address --instance-id <instance-id-value> --allocation-id <allocation-id-value>
+      associate-address [help]
+
+DESCRIPTION
+
+       Associates an IP address to an instance
+
+       Mandatory arguments: --instance-id --allocation-id
+
+OPTIONS :
+
+       --instance-id The Instance ID to which the RJIL routable IP address has to be associated
+
+       --allocation-id The allocation ID
+
+EXAMPLES :
+       jcs vpc associate-address --instance-id i-4fd243321 --allocation-id eipalloc-5723fe12
+

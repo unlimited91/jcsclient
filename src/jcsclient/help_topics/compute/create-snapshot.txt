@@ -1,0 +1,21 @@
+
+NAME :
+    create-snapshot
+
+
+DESCRIPTION :
+    Creates Snapshot from a specified volume in your JCS account.
+
+
+SYNOPSIS :
+    create-snapshot
+    --volume-id <value>
+
+
+OPTIONS :
+    --volume-id <value>
+    VolumeId using which the snapshot needs to be created
+
+EXAMPLES :
+    jcs compute create-snapshot --volume-id b2ba5a18-d8cc-4223-bf62-2a866f5890bf
+    

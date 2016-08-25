@@ -1,0 +1,22 @@
+NAME
+	disassociate-address - Disassociate an IP address from an instance.
+
+SYNOPSIS
+	disassociate-address --association-id <Association Id>
+	disassociate-address [help]
+
+
+DESCRIPTION
+	You can disassociate an IP address from an instance, run the disassociate-address action.
+    Disaasociated ip will go in the pool of allocated ips
+
+	Mandatory arguments: --association-id
+
+
+OPTIONS :
+	--association-id  The unique identifier representing the association between the instance and the RJIL routable IP address
+
+
+EXAMPLES :
+	jcs vpc disassociate-address --association-id eipassoc-aa7486c3
+
