@@ -77,3 +77,7 @@ class Controller(object):
     def describe_db_types(self, args):
         return rds.describe_db_types(
             self.url, 'GET', self.headers, self.version, args)
+
+    def upload_db_instance_logs(self, args):
+        return rds.upload_db_instance_logs(
+            self.url, self.verb, self.headers, self.version, args)
