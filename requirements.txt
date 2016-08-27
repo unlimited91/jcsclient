@@ -4,3 +4,4 @@ six
 pyyaml
 Crypto
 pycrypto
+filechunkio

@@ -1,0 +1,30 @@
+Name
+    download-folder
+    
+Description
+    Retrieves folders or complete bucket from dss
+
+Synopsis
+    download-folder
+    --bucket <value>
+    --key <value>
+    --outdir <value>
+    [--complete-bucket]
+  
+Options
+    --bucket (string)
+
+    --key (string) folder name. must end with "/"
+
+    --outdir (string) local directory to which contents are downloaded
+
+    --complete-bucket (optional) if this is set, key argument is ignored and the entire bucket is downloaded
+
+Examples
+    The following example uses the download-folder command to download a folder from dss:
+
+    jcs dss download-folder --bucket text-content --key folder1/ --outdir ./local_dir
+    
+    The following example uses the download-folder command to download a bucket from dss:
+
+    jcs dss download-folder --bucket text-content --key folder1/ --outdir ./local_dir --complete-bucket

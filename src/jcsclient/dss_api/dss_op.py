@@ -97,4 +97,13 @@ class DSSOp(object):
         resp_json = resp_json.replace("\\", "")
         print(resp_json)
 
+    def raise_for_failure(self, res):
+        status = res.status_code
+        if status != 200 and status != 204:
+            output_msg = "\nRequest-Id: " + res.headers.get('x-jcs-request-id')
+            print(output_msg)
+            res.raise_for_status()
+            
+
+
 

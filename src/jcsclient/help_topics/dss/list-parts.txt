@@ -17,9 +17,15 @@ Options
 
     --upload-id (string) Upload ID identifying the multipart upload whose parts are being listed.
 
+    --outfile (string) optional - create a xml file at this path containg the part numbers and etags. 
+      this file can be used in complete-multipart-upload
+
 Examples
     The following command lists all of the parts that have been uploaded for a multipart upload with key mp1
     in the bucket mybucket:
 
     jcs dss list-parts --bucket mybucket --key 'mp1' --upload-id
     bkOyypJJx2iGklFYxhX7f2v4oHVYjxc
+    
+    jcs dss list-parts --bucket mybucket --key 'mp1' --upload-id
+    bkOyypJJx2iGklFYxhX7f2v4oHVYjxc --outfile ./mp.xml

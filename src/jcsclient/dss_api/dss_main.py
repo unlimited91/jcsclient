@@ -43,7 +43,7 @@ class DSS(object):
         5. process the result to make it compatible with the cli driver
         6. return the result
         """
-        
+   
         op_factory = DSSOpFactory()
         op = op_factory.get_op(args[0])
         if(op is None):
@@ -98,5 +98,9 @@ class DSSOpFactory(object):
 			return ListPartsOp()
         if(cli_action == 'upload-part'):
 			return UploadPartOp()
+        if(cli_action == 'download-folder'):
+			return DownloadFolderOp()
+        if(cli_action == 'rename-object'):
+			return RenameObjectOp()
         
         return None
