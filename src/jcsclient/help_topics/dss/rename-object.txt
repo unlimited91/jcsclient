@@ -1,0 +1,27 @@
+Name
+    rename-object
+
+Description
+    Rename an object already uploaded.
+
+Synopsis
+    rename-object
+    --bucket <value>
+    --key <value>
+    --new-name <value>
+      
+      
+Options
+
+
+      --bucket (string) Name of the bucket in which the object is to be updated.
+
+      --key (string) current name of the key.
+
+      --new-name (string) new name to be given to the key.
+
+
+Examples
+    The following example uses the rename-object command to rename an object in dss:
+
+    jcs dss  rename-object --bucket mybucket --key myobj --new-name myobj_new

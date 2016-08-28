@@ -55,6 +55,8 @@ class Controller(object):
                               'complete_multipart_upload',
                               'abort_multipart_upload',
                               'list_multipart_uploads',
+                              'download_folder',
+                              'rename_object',
                              ]
 
     def __getattr__(self, name):
