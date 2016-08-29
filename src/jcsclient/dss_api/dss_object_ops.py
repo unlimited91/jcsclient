@@ -38,7 +38,7 @@ import xml.sax
 import json
 from jcsclient import output
 import xmltodict
-from filechunkio import FileChunkIO
+from filechunkio import *
 
 
 
