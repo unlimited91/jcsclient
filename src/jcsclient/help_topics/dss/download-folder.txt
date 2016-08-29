@@ -9,7 +9,7 @@ Synopsis
     --bucket <value>
     --key <value>
     --outdir <value>
-    [--complete-bucket]
+    --complete-bucket <value>
   
 Options
     --bucket (string)
@@ -18,7 +18,7 @@ Options
 
     --outdir (string) local directory to which contents are downloaded
 
-    --complete-bucket (optional) if this is set, key argument is ignored and the entire bucket is downloaded
+    --complete-bucket (optional: true/false) if this is set to true, key argument is ignored and the entire bucket is downloaded
 
 Examples
     The following example uses the download-folder command to download a folder from dss:
@@ -27,4 +27,4 @@ Examples
     
     The following example uses the download-folder command to download a bucket from dss:
 
-    jcs dss download-folder --bucket text-content --key folder1/ --outdir ./local_dir --complete-bucket
+    jcs dss download-folder --bucket text-content --key folder1/ --outdir ./local_dir --complete-bucket true

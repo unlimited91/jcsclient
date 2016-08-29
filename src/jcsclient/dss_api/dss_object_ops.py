@@ -370,13 +370,13 @@ class DownloadFolderOp(ObjectOp):
         parser.add_argument('--bucket', required=True)
         parser.add_argument('--key', required=True)
         parser.add_argument('--outdir', required=True)
-        parser.add_argument('--complete-bucket', action='store_true')
+        parser.add_argument('--complete-bucket')
         args = parser.parse_args(args)
         args_dict = vars(args)
         self.bucket_name = args_dict['bucket']
         self.object_name = args_dict['key']
         self.local_dir_name = args_dict['outdir'] 
-        if(args_dict['complete_bucket'] is not None):
+        if(args_dict['complete_bucket'] is not None and args_dict['complete_bucket'] == "true"):
             self.download_complete_bucket = True
         else:
             self.download_complete_bucket = False
