@@ -376,7 +376,7 @@ class DownloadFolderOp(ObjectOp):
         self.bucket_name = args_dict['bucket']
         self.object_name = args_dict['key']
         self.local_dir_name = args_dict['outdir'] 
-        if(args_dict['complete_bucket'] is not None):
+        if(args_dict['complete_bucket'] is not None and args_dict['complete_bucket'] == "true"):
             self.download_complete_bucket = True
         else:
             self.download_complete_bucket = False
