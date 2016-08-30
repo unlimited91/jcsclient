@@ -24,6 +24,7 @@ import sys
 import requests
 from jcsclient import config
 from jcsclient import auth_handler
+from six.moves import urllib
 
 common_headers = {
     'Content-Type': 'application/json',
@@ -55,8 +56,15 @@ def make_request(url, verb, headers, params, path=None, data=None):
     # Now restore the trailing '/' in url
     url += '/?'
     request_string = url
+    default_params = ['SignatureVersion', 'Version', 'JCSAccessKeyId',
+                'Signature', 'Action', 'Timestamp', 'SignatureMethod']
     for key, val in params.items():
-        request_string += str(key) + '=' + str(val) + '&'
+        if key in default_params:
+            request_string += str(key) + '=' + str(val) + '&'
+        else:
+            request_string += str(key) + '=' +\
+              urllib.parse.quote(auth_obj._get_utf8_value(str(val)), safe='-_~')\
+              + '&'
     request_string = request_string[:-1]
     global common_headers
     headers.update(common_headers)

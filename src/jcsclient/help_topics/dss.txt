@@ -28,6 +28,8 @@ AVAILABLE COMMANDS :
     complete-multipart-upload
     abort-multipart-upload
     list-multipart-uploads
+    download-folder
+    rename-object
 
 
 To see detailed help for any command, type

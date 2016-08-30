@@ -22,8 +22,13 @@ OPTIONS :
     [--snapshot-id <value>]
     Id of Snapshot using which the volume needs to be created
 
+    [--encrypted <boolean>]
+    Specify this to allow volume to be encrypted
+
 EXAMPLES :
     jcs compute create-volume --size 5
+
+    jcs compute create-volume --size 10 --encrypted true
 
     jcs compute create-volume --snapshot-id b2ba5a18-d8cc-4223-bf62-2a866f5890bf
     
