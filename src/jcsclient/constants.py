@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 #
 
-VERSION = '\nJCS CLI 2.0 (June 28 2016)'
+VERSION = '\nJCS CLI 2.1 (Aug 30 2016)'
 
 ERROR_STRING = (
     "jcs <service> <API> [parameters]\n"
