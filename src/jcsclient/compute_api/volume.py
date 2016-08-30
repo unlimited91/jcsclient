@@ -80,6 +80,7 @@ def create_volume(url, verb, headers, version, args):
     parser = utils.get_argument_parser()
     parser.add_argument('--size', type=int, required=False)
     parser.add_argument('--snapshot-id', required=False)
+    parser.add_argument('--encrypted', type=bool, required=False)
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
@@ -108,4 +109,7 @@ def describe_volumes(url, verb, headers, version, args):
     args = parser.parse_args(args)
     utils.populate_params_from_cli_args(params, args)
     return requestify.make_request(url, verb, headers, params)
+
+
+
 
