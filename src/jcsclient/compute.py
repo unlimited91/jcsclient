@@ -291,6 +291,7 @@ class Controller(object):
         The function expects either of the following -
         1. Size as integer (for empty volume)
         2. Snapshot Id
+        3. Encrypted
         """
         return volume.create_volume(self.url, self.verb,
                                     self.headers, self.version,
