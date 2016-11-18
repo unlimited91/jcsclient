@@ -302,6 +302,7 @@ def modify_db_instance(DBInstanceIdentifier, **optional_params):
         'PreferredBackupWindow',
         'BackupRetentionPeriod',
         'NewDBInstanceIdentifier'
+        'DBInstanceClass'
     ]
     mandatory_params = {
         'Action': 'ModifyDBInstance',
